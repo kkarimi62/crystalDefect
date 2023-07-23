@@ -1,0 +1,3 @@
+#TypeId    AtomId IniTopoId SadTopoId FinTopoId   eventId   Spec_id     barrier     inv_bar    asy_ener   true_rate   inisad_dr   inifin_dr   refined
+#******   *******   *******   *******   *******   *******   *******     *******   *********   *********   *********   *********   *********   *******
+      1       827    928491   1168794     44324   1228037         1    0.064845    0.448695   -0.383851   4.712E+12    0.610785    1.435440         T
