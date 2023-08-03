@@ -27,16 +27,12 @@ if __name__ == '__main__':
 
     nruns	 = np.arange(0,3)
     #
-    nThreads = 2 #32 #16 #8
+    nThreads = 8
     nNode	 = 1
     #
     jobname  = {
-                0:'NiCoCrNatom1KTemp0K', 
-                1:'CantorNatom16KTemp1400KTrajectories', 
-                2:'NiCoCrNatom10KTemp1300K', 
-                3:'topoIgnore',
-                4:'nicocrNatom1K/md/temp0', 
-               }[4]
+                0:'niNatom1KTemp1000K', 
+               }[0]
     sourcePath = os.getcwd() +\
                 {	
                     0:'/junk',
@@ -127,15 +123,15 @@ if __name__ == '__main__':
                 9:[5,'p4',51,'p3',1.0], #--- minimize, add vacancy, kart input, invoke kart
                 93:[5,'p4','p7','p3',1.0], #--- minimize, add vacancy, create Topo_ignore, kart input ,invoke kart
                 91:[5,'p3',3.0], #--- minimize, kart input, invoke kart
-                92:[5,'p4',51,'p3',1.0], #--- minimize, add vacancy, minimize, kart input ,invoke kart
                 93:[5,'p4',7], #--- minimize, add vacancy, thermalize
-              }[93]
+                92:[5,'p4',51,'p3',1.0], #--- minimize, add vacancy, minimize, kart input ,invoke kart
+              }[92]
     Pipeline = list(map(lambda x:LmpScript[x],indices))
 #	Variables = list(map(lambda x:Variable[x], indices))
 #        print('EXEC=',EXEC)
     #
     EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
-    durtn = ['95:59:59','23:59:59','167:59:59'][ 1 ]
+    durtn = ['95:59:59','23:59:59','167:59:59'][ 2 ]
     mem = '8gb'
     partition = ['gpu-v100','parallel','cpu2019','single','bigmem'][1]
     #--
