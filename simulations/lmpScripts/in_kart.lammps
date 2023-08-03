@@ -1,0 +1,56 @@
+
+variable	INC	getenv	INCLUDE
+variable	PathEam	getenv PathEAM
+variable	DataFile getenv	DATAFILE
+#log             log_kart.lammps # if you want to see output of lammps (becareful huge file)
+
+
+#--- include files
+include ${INC}/initSoftWall.mod
+atom_modify     map array
+read_data       ${DataFile} #Equilibrated_500.dat #${DataFile} #conf.sw
+include ${INC}/potential.mod
+
+
+
+# Pure Si crystal structure need to initialize lammps in kART!!!!!!!!!
+# Need only to create the box not creating atoms!!!!!!!
+#units		    metal
+#atom_style      atomic	
+
+#------------ There are two methods to initialize coord in lammps  ---------------#
+#      1) using a input file:
+
+#      2) creating a box and putting atoms ramdomly in it by using lammps commands:
+#region Box block 0 21.72  0 21.72  0 21.72 # iD, xlo xhi ylo yhi zlo zhi (this is box size)
+#create_box      1 Box # 3 Box           # Number of atom types (this case 1), region-iD
+#create_atoms    1 random 511 124675 Box # Type1, Number of atoms, seed, region-iD
+#create_atoms    2 random 5  124676 Box # Type2, Number of atoms, seed, region-iD
+#create_atoms    3 random 50 124677 Box # Type3, Number of atoms, seed, region-iD
+
+#      3 ) Or creating the full cristalline box and then remove a atom
+
+#lattice         diamond 5.430
+#region          my_Box block 0 4  0 4  0 4 # iD, xlo xhi ylo yhi zlo zhi (this is box size)
+#create_box      1 my_Box              # 3 Box           # Number of atom types (this case 1), region-iD
+#create_atoms    1 box    
+#delete_atom     porosity fraction 1.0/512.0
+#mass            1 28.0855
+
+
+
+#----------------------------------------------------------------------------------#
+
+
+#pair_style	comb
+#pair_coeff	* * ffield.comb Si
+
+#pair_style      sw
+#pair_coeff * *  Si.sw Si
+
+# Those lines increase the speed of calculating forces by a factor of almost 2:
+#neighbor        0.0  bin # multi
+# page must be x10 the value of one
+#neigh_modify    delay 0 every 1 check no one 50 page 550 #binsize 0.1
+#
+#write_data ${WriteData}	

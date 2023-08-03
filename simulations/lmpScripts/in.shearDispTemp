@@ -1,0 +1,50 @@
+# ---------- Initialize Simulation --------------------- 
+include ${INC}/initSoftWall.mod
+# ---------- Create Atoms ---------------------
+include ${INC}/CreateBox.mod
+change_box all triclinic
+# ---------- Define Interatomic Potential --------------------- 
+include ${INC}/potential.mod
+#--- fix buffer zone
+include ${INC}/buffer.mod
+
+
+#--- set variables
+variable GammaXY    equal	${gammaxy}	#--- total strain
+variable GammaDot	equal	${gammadot} #--- strain rate
+#
+variable Nstep  	equal	floor(${GammaXY}/${dt}/${GammaDot}) #--- timesteps
+variable Nevery  	equal	ceil(${Nstep}/${ndump})
+
+# ---------- Initialize Simulation --------------------- 
+
+#-----------------------------
+#--- compute & dump variables
+#-----------------------------
+compute     1 all stress/atom NULL pair
+dump        1 all custom ${Nevery} ${OUT_PATH}/${DumpFile} id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
+dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+
+#--- initial stress
+run	0
+#variable tmp equal pxy
+#variable sxy0 equal ${tmp}
+#
+
+#--- thermostats & barostats
+#fix			FixTherm        all        npt temp   $T  $T  ${damp_t} xy	${sxy0} ${SIGMA} ${damp_p} drag	1.0  
+fix			FixTherm        all        npt temp   $T  $T  ${damp_t} x $P $P ${damp_p} y $P $P ${damp_p} drag	1.0 #--- change !!! 
+
+ 
+#--- shear deformation
+#fix		FixShear all deform 1 xy erate ${GammaDot} units box #--- change!!!
+fix		FixShear all deform 1 z erate ${GammaDot} units box #--- change!!!
+
+#--- include thermo info
+include ${INC}/thermo.mod
+
+#--- set discretization time 
+timestep	${dt}
+
+
+run	${Nstep}
