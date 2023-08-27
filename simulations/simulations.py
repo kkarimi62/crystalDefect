@@ -31,7 +31,7 @@ if __name__ == '__main__':
     nNode	 = 1
     #
     jobname  = {
-                0:'niNatom1KTemp1000K/mcSampling', 
+                0:'niNatom1KTemp1000K', 
                }[0]
     sourcePath = os.getcwd() +\
                 {	
@@ -39,7 +39,7 @@ if __name__ == '__main__':
                     1:'/../postprocess/NiCoCrNatom1K',
                     2:'/niNatom1KTemp1000K',
                     5:'/topoIgnore',
-                }[2] #--- must be different than sourcePath. set it to 'junk' if no path
+                }[0] #--- must be different than sourcePath. set it to 'junk' if no path
         #
     sourceFiles = { 0:False,
                     1:['Equilibrated_300.dat'],
@@ -49,7 +49,7 @@ if __name__ == '__main__':
                     5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
                     6:['FeNi_2000.dat'], 
                     7:['sortieproc.0','data_minimized.txt'], 
-                 }[4] #--- to be copied from the above directory. set it to '0' if no file
+                 }[0] #--- to be copied from the above directory. set it to '0' if no file
     #
     EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
     #
@@ -132,9 +132,9 @@ if __name__ == '__main__':
 #        print('EXEC=',EXEC)
     #
     EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
-    durtn = ['95:59:59','23:59:59','167:59:59'][ 1 ]
+    durtn = ['95:59:59','00:59:59','167:59:59'][ 1 ]
     mem = '8gb'
-    partition = ['gpu-v100','parallel','cpu2019','single','bigmem'][1]
+    partition = ['gpu-v100','parallel','cpu2019','single','bigmem'][2]
     #--
     DeleteExistingFolder = True
 
