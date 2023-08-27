@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     nruns	 = np.arange(8)
     #
-    nThreads = 8
+    nThreads = 2
     nNode	 = 1
     #
     jobname  = {
