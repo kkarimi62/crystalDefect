@@ -25,21 +25,21 @@ if __name__ == '__main__':
     import os
     import numpy as np
 
-    nruns	 = np.arange(0,3)
+    nruns	 = np.arange(8)
     #
     nThreads = 8
     nNode	 = 1
     #
     jobname  = {
-                0:'niNatom1KTemp1000K', 
+                0:'niNatom1KTemp1000K/mcSampling', 
                }[0]
     sourcePath = os.getcwd() +\
                 {	
                     0:'/junk',
                     1:'/../postprocess/NiCoCrNatom1K',
-                    2:'/NiCoCrNatom1KTemp0K',
+                    2:'/niNatom1KTemp1000K',
                     5:'/topoIgnore',
-                }[0] #--- must be different than sourcePath. set it to 'junk' if no path
+                }[2] #--- must be different than sourcePath. set it to 'junk' if no path
         #
     sourceFiles = { 0:False,
                     1:['Equilibrated_300.dat'],
@@ -49,7 +49,7 @@ if __name__ == '__main__':
                     5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
                     6:['FeNi_2000.dat'], 
                     7:['sortieproc.0','data_minimized.txt'], 
-                 }[0] #--- to be copied from the above directory. set it to '0' if no file
+                 }[4] #--- to be copied from the above directory. set it to '0' if no file
     #
     EXEC_DIR = '/home/kamran.karimi1/Project/git/lammps2nd/lammps/src' #--- path for executable file
     #
@@ -125,13 +125,14 @@ if __name__ == '__main__':
                 91:[5,'p3',3.0], #--- minimize, kart input, invoke kart
                 93:[5,'p4',7], #--- minimize, add vacancy, thermalize
                 92:[5,'p4',51,'p3',1.0], #--- minimize, add vacancy, minimize, kart input ,invoke kart
-              }[92]
+                93:['p3',1.0], #--- kart input ,invoke kart
+              }[93]
     Pipeline = list(map(lambda x:LmpScript[x],indices))
 #	Variables = list(map(lambda x:Variable[x], indices))
 #        print('EXEC=',EXEC)
     #
     EXEC_lmp = ['lmp_mpi','lmp_serial'][0]
-    durtn = ['95:59:59','23:59:59','167:59:59'][ 2 ]
+    durtn = ['95:59:59','23:59:59','167:59:59'][ 1 ]
     mem = '8gb'
     partition = ['gpu-v100','parallel','cpu2019','single','bigmem'][1]
     #--
