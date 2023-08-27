@@ -30,10 +30,6 @@ if __name__ == '__main__':
         nNode	 = 1
         #
         jobname  = {
-                    0:'NiMultTemp/Temp600K', 
-                    1:'NiNatom16KTemp1400K', 
-                    2:'NiCoCrNatom1KTemp1400K', 
-                    3:'Ni2ndMultTemp/Temp600K',#'NicoCrMultTemp/Temp600K',#'CantorNatom128KTemp1400K', 
                     4:'niNatom1KTemp1000K', 
                    }[4]
         sourcePath = os.getcwd() +\
