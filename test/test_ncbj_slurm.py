@@ -23,15 +23,15 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
 if __name__ == '__main__':
     import os
 #
-    runs	 = range(8)
+    runs	 = range(24)
     nNode    = 1
     nThreads = 1
     jobname  = {
-                '4':'niNatom1KTemp1000K', 
+                '4':'niNatom1KTemp1000K2nd', 
                 }['4']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
-                                '4':'/../simulations/niNatom1KTemp1000K',
+                                '4':'/../simulations/niNatom1KTemp1000K2nd',
                             }['4'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
