@@ -1,11 +1,12 @@
 from backports import configparser
-def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv):
+def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     #--- parse conf. file
     confParser = configparser.ConfigParser()
     confParser.read('configuration.ini')
     #--- set parameters
     confParser.set('input files','lib_path',os.getcwd()+'/../../HeaDef/postprocess')
     confParser.set('input files','input_path',argv)
+    confParser.set('neural net','input_path',argvv)
     #--- write
     confParser.write(open('configuration.ini','w'))	
     #--- set environment variables
@@ -28,19 +29,21 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'niNatom1KTemp1000K3rd', 
-                }['4']
+                '5':'neuralNet/niNatom1KTemp1000K3rd', 
+                }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
-                            }['4'] #--- source
+                                '5':'/niNatom1KTemp1000K3rd',
+                            }['5'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '32gb'
     partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][-1]
     argv = "%s"%(readPath) #--- don't change! 
     PYFILdic = { 
-        0:'postproc.ipynb',
-        1:'test.ipynb',
+        0:'buildDescriptors.ipynb',
+        1:'neuralNetwork.ipynb',
         }
     keyno = 1
     convert_to_py = True
@@ -61,7 +64,7 @@ if __name__ == '__main__':
         writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
         os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
 #		os.system( 'cp utility.py LammpsPostProcess2nd.py OvitosCna.py %s' % ( writPath ) ) #--- cp python module
-        makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s"%counter) # --- make oar script
+        makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s"%counter, argvv) # --- make oar script
         os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s; cp configuration.ini %s;cp %s/%s %s' % ( writPath, writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
         os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
                                  --chdir %s --ntasks-per-node=%s --nodes=%s %s/oarScript.sh >> jobID.txt'\
