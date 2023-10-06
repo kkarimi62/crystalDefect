@@ -27,11 +27,11 @@ if __name__ == '__main__':
     nNode    = 1
     nThreads = 1
     jobname  = {
-                '4':'niNatom1KTemp1000K2nd', 
+                '4':'niNatom1KTemp1000K', 
                 }['4']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
-                                '4':'/../simulations/niNatom1KTemp1000K2nd',
+                                '4':'/../simulations/niNatom1KTemp1000K',
                             }['4'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
