@@ -30,12 +30,12 @@ if __name__ == '__main__':
     jobname  = {
                 '4':'niNatom1KTemp1000K3rd', 
                 '5':'neuralNet/niNatom1KTemp1000K3rd', 
-                }['4']
+                }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/niNatom1KTemp1000K3rd',
-                            }['4'] #--- source
+                            }['5'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '32gb'
@@ -45,7 +45,7 @@ if __name__ == '__main__':
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         }
-    keyno = 0
+    keyno = 1
     convert_to_py = True
 #---
 #---
