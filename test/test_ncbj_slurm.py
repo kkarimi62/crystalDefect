@@ -45,7 +45,7 @@ if __name__ == '__main__':
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         }
-    keyno = 1
+    keyno = 0
     convert_to_py = True
 #---
 #---
