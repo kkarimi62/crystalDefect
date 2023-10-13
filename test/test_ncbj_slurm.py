@@ -29,7 +29,7 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'niNatom1KTemp1000K3rd', 
-                '5':'neuralNet/niNatom1KTemp1000K3rd', 
+                '5':'neuralNet/niNatom1KTemp1000K4th', 
                 }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
