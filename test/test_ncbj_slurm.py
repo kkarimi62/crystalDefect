@@ -29,12 +29,12 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'niNatom1KTemp1000K3rd', 
-                '5':'neuralNet/niNatom1KTemp1000K3rd', 
+                '5':'neuralNet/niNatom1KTemp1000K5th', 
                 }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
-                                '5':'/niNatom1KTemp1000K3rd',
+                                '5':'/niNatom1KTemp1000K5th',
                             }['5'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
