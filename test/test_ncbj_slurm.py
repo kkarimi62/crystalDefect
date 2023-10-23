@@ -34,8 +34,8 @@ if __name__ == '__main__':
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
-                                '5':'descriptors/niNatom1KTemp1000K6th',
-                            }['5'] #--- source
+                                '5':'/descriptors/niNatom1KTemp1000K6th',
+                            }['4'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '32gb'
