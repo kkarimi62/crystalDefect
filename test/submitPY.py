@@ -5,7 +5,7 @@ if __name__ == '__main__':
     #---
     lnums = [ 32, 10 ]
     script = 'postproc.py test_ncbj_slurm.py'.split()[1]
-    PHI  = dict(zip(range(6),[1e-1,1e0,1e1,1e2]))
+    PHI  = dict(zip(range(6),[1e2]))
 
     string=open(script).readlines() #--- python script
     #---
