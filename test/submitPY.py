@@ -21,7 +21,7 @@ if __name__ == '__main__':
         #---	densities
                 inums = lnums[ 1 ] - 1
 #                 string[ inums ] = "\t\'3\':\'/../simulations/NiCoCrNatom1KTemp%sK\',\n"%(temp)
-                string[ inums ] = "\tconfParser.set(\'neural net\',\'alpha\','[%s]'),\n"%(alpha)
+                string[ inums ] = "\tconfParser.set(\'neural net\',\'alpha\','[%s]')\n"%(alpha)
         #
                 sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
                 os.system( 'python3 junk%s.py'%count )
