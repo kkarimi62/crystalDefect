@@ -29,7 +29,7 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni', 
-                '5':'neuralNet/ni/decreased_tol7th', 
+                '5':'neuralNet/ni/keras', 
                 }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '32gb'
-    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][-1]
+    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
     argv = "%s"%(readPath) #--- don't change! 
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
