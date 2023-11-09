@@ -29,7 +29,7 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni', 
-                '5':'neuralNet/ni/keras/cnn4th', 
+                '5':'neuralNet/ni/keras/cnn5th', 
                 }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
