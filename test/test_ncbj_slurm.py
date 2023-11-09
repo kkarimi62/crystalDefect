@@ -30,22 +30,22 @@ if __name__ == '__main__':
     jobname  = {
                 '4':'descriptors/ni', 
                 '5':'neuralNet/ni/keras/cnn2nd', 
-                }['5']
+                }['4']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni',
-                            }['5'] #--- source
+                            }['4'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
-    mem = '64gb'
+    mem = '32gb'
     partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
     argv = "%s"%(readPath) #--- don't change! 
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         }
-    keyno = 1
+    keyno = 0
     convert_to_py = True
 #---
 #---
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     #--- update argV
     #---
     if DeleteExistingFolder:
-        print('rm %s'%jobname)
+        print('rm -f %s'%jobname)
         os.system( 'rm -rf %s' % jobname ) # --- rm existing
     # --- loop for submitting multiple jobs
     for counter in runs:
