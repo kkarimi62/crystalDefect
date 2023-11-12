@@ -26,7 +26,7 @@ if __name__ == '__main__':
 #
     runs	 = range(3) #32)
     nNode    = 1
-    nThreads = 1
+    nThreads = 4
     jobname  = {
                 '4':'descriptors/ni/20x20', 
                 '5':'neuralNet/ni/keras/20x20/cnn', 
