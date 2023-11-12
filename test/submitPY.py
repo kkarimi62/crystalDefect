@@ -15,21 +15,21 @@ if __name__ == '__main__':
     #---
     count = 0
     for key_n in number_hidden_layers:
-            number_hidden_layer = number_hidden_layers[key_n]
+        number_hidden_layer = number_hidden_layers[key_n]
         for key_c in n_channels:
             n_channel = n_channels[key_n]
 
-            #---	
-                inums = lnums[ 0 ] - 1
-                string[ inums ] = "\t\'5\':\'neuralNet/ni/keras/20x20/cnn/layer%s/channel%s\',\n" % (key_n,key_c) #--- change job name
-        #---	densities
-                inums = lnums[ 1 ] - 1
-                string[ inums ] = "    confParser.set(\'neural net\',\'n_channels\',\'%s\')\n"%(n_channel)
-                #
-                inums = lnums[ 2 ] - 1
-                string[ inums ] = "    confParser.set(\'neural net\',\'number_hidden_layers\',\'%s\')\n"%(number_hidden_layer)
-                #
-                sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
-                os.system( 'python3 junk%s.py'%count )
-                os.system( 'rm junk%s.py'%count )
-                count += 1
+        #---	
+            inums = lnums[ 0 ] - 1
+            string[ inums ] = "\t\'5\':\'neuralNet/ni/keras/20x20/cnn/layer%s/channel%s\',\n" % (key_n,key_c) #--- change job name
+    #---	densities
+            inums = lnums[ 1 ] - 1
+            string[ inums ] = "    confParser.set(\'neural net\',\'n_channels\',\'%s\')\n"%(n_channel)
+            #
+            inums = lnums[ 2 ] - 1
+            string[ inums ] = "    confParser.set(\'neural net\',\'number_hidden_layers\',\'%s\')\n"%(number_hidden_layer)
+            #
+            sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
+            os.system( 'python3 junk%s.py'%count )
+            os.system( 'rm junk%s.py'%count )
+            count += 1
