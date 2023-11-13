@@ -33,7 +33,7 @@ if __name__ == '__main__':
                 string[ inums ] = "    confParser.set(\'neural net\',\'number_hidden_layers\',\'%s\')\n"%(number_hidden_layer)
                 #
                 inums = lnums[ 3 ] - 1
-                string[ inums ] = "    confParser.set(\'neural net\',\'activation\',\'%s\')\n"%(activation)
+                string[ inums ] = "    confParser.set(\'neural net\',\'activation\',\"\'%s\'\")"%(activation)
                 #
                 sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
                 os.system( 'python3 junk%s.py'%count )

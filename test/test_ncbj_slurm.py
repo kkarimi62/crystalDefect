@@ -7,7 +7,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     confParser.set('neural net','input_path',argvv)
     confParser.set('neural net','n_channels','1')
     confParser.set('neural net','number_hidden_layers','1')
-    confParser.set('neural net','activation','linear')
+    confParser.set('neural net','activation',"'linear'")
     #--- write
     confParser.write(open('configuration.ini','w'))	
     #--- set environment variables
