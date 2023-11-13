@@ -17,7 +17,7 @@ if __name__ == '__main__':
     for key_n in number_hidden_layers:
         number_hidden_layer = number_hidden_layers[key_n]
         for key_c in n_channels:
-            n_channel = n_channels[key_n]
+            n_channel = n_channels[key_c]
 
         #---	
             inums = lnums[ 0 ] - 1
