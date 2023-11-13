@@ -5,7 +5,7 @@ if __name__ == '__main__':
     #---
     lnums = [ 32, 9, 10 ]
     script = 'postproc.py test_ncbj_slurm.py'.split()[1]
-    number_hidden_layers  = dict(zip(range(4),[1,2,3,4]))
+    number_hidden_layers  = dict(zip(range(4),[1,2,3]))
     n_channels  = dict(zip(range(4),[2,4,8,16]))
 
     string=open(script).readlines() #--- python script
