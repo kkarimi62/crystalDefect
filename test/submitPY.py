@@ -6,8 +6,9 @@ if __name__ == '__main__':
     lnums = [ 32, 8, 9, 10 ]
     script = 'postproc.py test_ncbj_slurm.py'.split()[1]
     number_hidden_layers  = dict(zip(range(4),[1,2,3]))
-    n_channels  = dict(zip(range(4),[4,8,16,32]))
-    activations = dict(zip(range(20),['linear','sigmoid','relu','softmax','softplus','softsign','tanh','selu','elu','exponential']))
+    n_channels  = dict(zip(range(4),[16,32,64,128]))
+#     activations = dict(zip(range(20),['linear','sigmoid','relu','softmax','softplus','softsign','tanh','selu','elu','exponential']))
+    activations = dict(zip(range(20),['linear']))
 
     string=open(script).readlines() #--- python script
     #---
