@@ -24,12 +24,12 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs	 = range(3) #32)
+    runs	 = range(32) #32)
     nNode    = 1
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/20x20', 
-                '5':'neuralNet/ni/keras/20x20/cnn', 
+                '5':'neuralNet/ni/keras/20x20/cnn/classification', 
                 }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
