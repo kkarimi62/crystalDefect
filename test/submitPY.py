@@ -3,10 +3,10 @@ if __name__ == '__main__':
     import os
     import numpy as np
     #---
-    lnums = [ 32, 8, 9, 10, 11 ]
+    lnums = [ 33, 8, 9, 10, 11 ]
     script = 'postproc.py test_ncbj_slurm.py'.split()[1]
-    number_hidden_layers  = dict(zip(range(4),[1,2,3,4]))
-    hidden_layer_size     = dict(zip(range(4),[10,100,1000,10000]))
+    number_hidden_layers  = dict(zip(range(4),[1,2,3]))
+    hidden_layer_size     = dict(zip(range(4),[1]))
     n_channels            = dict(zip(range(4),[8,16,32,64]))
 #     activations = dict(zip(range(20),['linear','sigmoid','relu', 'softmax','softplus','softsign','tanh','selu','elu','exponential']))
     activations           = dict(zip(range(20),['linear']))
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
         #---	
                     inums = lnums[ 0 ] - 1
-                    string[ inums ] = "\t\'5\':\'neuralNet/ni/keras/20x20/ann/classifier/layer%s/channel%s/activation%s/layer_size%s\',\n" % (key_n,key_c,key_a,key_h) #--- change job name
+                    string[ inums ] = "\t\'5\':\'neuralNet/20x20/cnn/classifier/layer%s/channel%s/activation%s/layer_size%s\',\n" % (key_n,key_c,key_a,key_h) #--- change job name
             #---	densities
                     inums = lnums[ 1 ] - 1
                     string[ inums ] = "    confParser.set(\'neural net\',\'n_channels\',\'%s\')\n"%(n_channel)
@@ -40,7 +40,7 @@ if __name__ == '__main__':
                     string[ inums ] = "    confParser.set(\'neural net\',\'activation\',\"\'%s\'\")\n"%(activation)
                     #
                     inums = lnums[ 4 ] - 1
-                    string[ inums ] = "    confParser.set(\'neural net\',\'hidden_layer_size\',\'%s\')\n"%(number_hidden_layer)
+                    string[ inums ] = "    confParser.set(\'neural net\',\'hidden_layer_size\',\'%s\')\n"%(nsize)
                     #
                     sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
                     os.system( 'python3 junk%s.py'%count )
