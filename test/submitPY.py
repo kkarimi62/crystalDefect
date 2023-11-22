@@ -8,7 +8,7 @@ if __name__ == '__main__':
     number_hidden_layers  = dict(zip(range(4),[1,2,3,4]))
     hidden_layer_size     = dict(zip(range(4),[10,100,1000,10000]))
     n_channels            = dict(zip(range(4),[8,16,32,64]))
-#     activations = dict(zip(range(20),['linear','sigmoid','relu','softmax','softplus','softsign','tanh','selu','elu','exponential']))
+#     activations = dict(zip(range(20),['linear','sigmoid','relu', 'softmax','softplus','softsign','tanh','selu','elu','exponential']))
     activations           = dict(zip(range(20),['linear']))
 
     string=open(script).readlines() #--- python script
