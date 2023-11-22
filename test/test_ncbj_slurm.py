@@ -2,7 +2,7 @@ from backports import configparser
 def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     confParser = configparser.ConfigParser()
     confParser.read('configuration.ini')
-    confParser.set('input files','lib_path',os.getcwd()+'/../../HeaDef/postprocess')
+    confParser.set('input files','lib_path','%s %s'%(os.getcwd()+'/../../HeaDef/postprocess'),os.getcwd())
     confParser.set('input files','input_path',argv)
     confParser.set('neural net','input_path',argvv)
     confParser.set('neural net','n_channels','1')
@@ -29,12 +29,14 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/20x20', 
-                '5':'neuralNet/ni/keras/20x20/cnn/classification', 
+                '5':'neuralNet/ni/keras/20x20/cnn/classification2nd', 
+                '6':'neuralNet/ni/mlmc', 
                 }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni/20x20',
+                                '6':'/neuralNet/ni/keras/20x20/cnn/classification', 
                             }['5'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
@@ -44,6 +46,7 @@ if __name__ == '__main__':
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
+        2:'mlmc.ipynb',
         }
     keyno = 1
     convert_to_py = True
