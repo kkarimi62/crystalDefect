@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
         #---	
                     inums = lnums[ 0 ] - 1
-                    string[ inums ] = "\t\'5\':\'neuralNet/ni/keras/20x20/ann/classifier/layer%s/channel%s/activation%s\',\n" % (key_n,key_c,key_a,key_h) #--- change job name
+                    string[ inums ] = "\t\'5\':\'neuralNet/ni/keras/20x20/ann/classifier/layer%s/channel%s/activation%s/layer_size%s\',\n" % (key_n,key_c,key_a,key_h) #--- change job name
             #---	densities
                     inums = lnums[ 1 ] - 1
                     string[ inums ] = "    confParser.set(\'neural net\',\'n_channels\',\'%s\')\n"%(n_channel)
