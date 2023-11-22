@@ -2,7 +2,7 @@ from backports import configparser
 def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     confParser = configparser.ConfigParser()
     confParser.read('configuration.ini')
-    confParser.set('input files','lib_path','%s %s'%(os.getcwd()+'/../../HeaDef/postprocess'),os.getcwd())
+    confParser.set('input files','lib_path', '%s %s'%(os.getcwd()+'/../../HeaDef/postprocess',os.getcwd()))
     confParser.set('input files','input_path',argv)
     confParser.set('neural net','input_path',argvv)
     confParser.set('neural net','n_channels','1')
