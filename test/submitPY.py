@@ -27,22 +27,22 @@ if __name__ == '__main__':
                     nsize = hidden_layer_size[key_h]
 
         #---	
-                inums = lnums[ 0 ] - 1
-                string[ inums ] = "\t\'5\':\'neuralNet/ni/keras/20x20/ann/classifier/layer%s/channel%s/activation%s\',\n" % (key_n,key_c,key_a) #--- change job name
-        #---	densities
-                inums = lnums[ 1 ] - 1
-                string[ inums ] = "    confParser.set(\'neural net\',\'n_channels\',\'%s\')\n"%(n_channel)
-                #
-                inums = lnums[ 2 ] - 1
-                string[ inums ] = "    confParser.set(\'neural net\',\'number_hidden_layers\',\'%s\')\n"%(number_hidden_layer)
-                #
-                inums = lnums[ 3 ] - 1
-                string[ inums ] = "    confParser.set(\'neural net\',\'activation\',\"\'%s\'\")"%(activation)
-                #
-                inums = lnums[ 4 ] - 1
-                string[ inums ] = "    confParser.set(\'neural net\',\'hidden_layer_size\',\'%s\')\n"%(number_hidden_layer)
-                #
-                sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
-                os.system( 'python3 junk%s.py'%count )
-                os.system( 'rm junk%s.py'%count )
-                count += 1
+                    inums = lnums[ 0 ] - 1
+                    string[ inums ] = "\t\'5\':\'neuralNet/ni/keras/20x20/ann/classifier/layer%s/channel%s/activation%s\',\n" % (key_n,key_c,key_a,key_h) #--- change job name
+            #---	densities
+                    inums = lnums[ 1 ] - 1
+                    string[ inums ] = "    confParser.set(\'neural net\',\'n_channels\',\'%s\')\n"%(n_channel)
+                    #
+                    inums = lnums[ 2 ] - 1
+                    string[ inums ] = "    confParser.set(\'neural net\',\'number_hidden_layers\',\'%s\')\n"%(number_hidden_layer)
+                    #
+                    inums = lnums[ 3 ] - 1
+                    string[ inums ] = "    confParser.set(\'neural net\',\'activation\',\"\'%s\'\")\n"%(activation)
+                    #
+                    inums = lnums[ 4 ] - 1
+                    string[ inums ] = "    confParser.set(\'neural net\',\'hidden_layer_size\',\'%s\')\n"%(number_hidden_layer)
+                    #
+                    sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
+                    os.system( 'python3 junk%s.py'%count )
+                    os.system( 'rm junk%s.py'%count )
+                    count += 1
