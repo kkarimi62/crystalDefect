@@ -29,7 +29,7 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/20x20', 
-                '5':'neuralNet/ni/keras/20x20/ann/classifier2nd', 
+                '5':'neuralNet/ni/keras/20x20/ann/classifier', 
                 '6':'neuralNet/ni/mlmc', 
                 }['5']
     DeleteExistingFolder = True
