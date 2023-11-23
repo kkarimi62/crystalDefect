@@ -30,10 +30,10 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/20x20', 
-                '5':'neuralNet/ni/keras/20x20/ann/classifier', 
+                '5':'neuralNet/20x20/ml', 
                 '6':'neuralNet/ni/mlmc', 
                 }['5']
-    DeleteExistingFolder = True
+    DeleteExistingFolder = False
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni/20x20',
