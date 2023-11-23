@@ -31,14 +31,14 @@ if __name__ == '__main__':
     jobname  = {
                 '4':'descriptors/ni/20x20', 
                 '5':'test',#'neuralNet/20x20/ml', 
-                '6':'neuralNet/ni/mlmc', 
-                }['5']
+                '6':'mlmc', 
+                }['6']
     DeleteExistingFolder = False
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni/20x20',
-                                '6':'/neuralNet/ni/keras/20x20/cnn/classification', 
-                            }['5'] #--- source
+                                '6':'/test', 
+                            }['6'] #--- source
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '64gb'
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         1:'neuralNetwork.ipynb',
         2:'mlmc.ipynb',
         }
-    keyno = 1
+    keyno = 2
     convert_to_py = True
 #---
 #---
