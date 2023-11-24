@@ -31,26 +31,26 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/20x20', 
-                '5':'test',#'neuralNet/20x20/ml', 
+                '5':'neuralNet/20x20/ml', 
                 '6':'mlmc', 
                 }['5']
-    DeleteExistingFolder = False
+    DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni/20x20',
                                 '6':'/test', 
                             }['5'] #--- source
-    EXEC_DIR = '.'     #--- path for executable file
-    durtn = '23:59:59'
-    mem = '64gb'
-    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
-    argv = "%s"%(readPath) #--- don't change! 
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         2:'mlmc.ipynb',
         }
     keyno = 1
+    EXEC_DIR = '.'     #--- path for executable file
+    durtn = '23:59:59'
+    mem = '64gb'
+    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
+    argv = "%s"%(readPath) #--- don't change! 
     convert_to_py = True
 #---
 #---
