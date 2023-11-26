@@ -33,7 +33,7 @@ if __name__ == '__main__':
                 '4':'descriptors/ni/20x20', 
                 '5':'test',#'neuralNet/20x20/ml', 
                 '6':'mlmc', 
-                }['6']
+                }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
