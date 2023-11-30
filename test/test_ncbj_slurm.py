@@ -38,7 +38,7 @@ if __name__ == '__main__':
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni/20x20',
-                                '6':'test', #'/neuralNet/20x20/ml', 
+                                '6':'/test', #'/neuralNet/20x20/ml', 
                             }['6'] #--- source
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
