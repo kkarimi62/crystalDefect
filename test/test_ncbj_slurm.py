@@ -61,7 +61,7 @@ if __name__ == '__main__':
     #--- update argV
     #---
     if DeleteExistingFolder:
-        print('rm -f %s'%jobname)
+        print('rm %s'%jobname)
         os.system( 'rm -rf %s' % jobname ) # --- rm existing
     # --- loop for submitting multiple jobs
     for counter in runs:
