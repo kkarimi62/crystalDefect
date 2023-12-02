@@ -33,19 +33,19 @@ if __name__ == '__main__':
                 '4':'descriptors/ni/20x20', 
                 '5':'test4th',#'neuralNet/20x20/ml', 
                 '6':'mlmc', 
-                }['5']
+                }['6']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni/20x20',
                                 '6':'/test2nd', #'/neuralNet/20x20/ml', 
-                            }['5'] #--- source
+                            }['6'] #--- source
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         2:'mlmc.ipynb',
         }
-    keyno = 1
+    keyno = 2
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '64gb'
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         writPath = os.getcwd() + '/%s/Run%s' % ( jobname, counter ) # --- curr. dir
         os.system( 'mkdir -p %s' % ( writPath ) ) # --- create folder
         for keys in PYFILdic:
-            os.system( 'ln -s %s/%s %s/%s' % ( os.getcwd(),PYFILdic[keys],writPath,PYFILdic[keys] ) ) #--- cp python module
+            os.system( 'ln -s %s/%s %s/%s' % ( os.getcwd(),PYFILdic[keys],writPath,PYFILdic[keys] ) ) #--- cp python modules
         makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s"%counter, argv) # --- make oar script
         os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s; cp configuration.ini %s;cp %s/%s %s' % ( writPath, writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
         os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
