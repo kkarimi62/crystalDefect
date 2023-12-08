@@ -33,19 +33,19 @@ if __name__ == '__main__':
                 '4':'descriptors/ni/20x20', 
                 '5':'neuralNet/20x20/ml', 
                 '6':'mlmc', 
-                }['5']
+                }['6']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/niNatom1KTemp1000K3rd',
                                 '5':'/descriptors/ni/20x20',
-                                '6':'/test2nd', #'/neuralNet/20x20/ml', 
-                            }['5'] #--- source
+                                '6':'/neuralNet/20x20/ml', 
+                            }['6'] #--- source
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         2:'mlmc.ipynb',
         }
-    keyno = 1
+    keyno = 2
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '64gb'
