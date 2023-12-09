@@ -44,9 +44,9 @@ def isInside(atoms, box, smBox):
 def GetSphericalVoid(atoms, box, radius):
     
     
-    center = box.CellOrigin + np.matmul( box.CellVector, np.array( 0.5 * [ 1, 1, 1 ] ) )
+    center = box.CellOrigin + np.matmul( box.CellVector, 0.5 * np.array( [ 1, 1, 1 ] ) )
     dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
-    dr_sq  = np.sum( dr * dr, axis = 0 )
+    dr_sq  = np.sum( dr * dr, axis = 1 )
     
     isInside = dr_sq < radius * radius
     
