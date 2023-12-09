@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         nruns	 = 8 #24
         #
-        nThreads = 4
+        nThreads = 8 #4
         nNode	 = 1
         #
         jobname  = {
@@ -103,7 +103,7 @@ if __name__ == '__main__':
                     'p3':' data_minimized.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
                     'p4':' data_void.dat dataVoidVac.dat %s 1'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
-                    'p6':' data_pure.dat data_void.dat %s 6.0'%(os.getcwd()+'/lmpScripts'),
+                    'p6':' data_pure.dat data_void.dat %s 4.0'%(os.getcwd()+'/lmpScripts'),
                      1.0:'DataFile=data_minimized.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     #        print('EXEC=',EXEC)
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
-        durtn = ['95:59:59','00:59:59','167:59:59'][ 1 ]
+        durtn = ['95:59:59','23:59:59','167:59:59'][ 1 ]
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][3]
         #--
