@@ -156,7 +156,7 @@ box = lp.Box( BoxBounds = rd.BoxBounds[0], AddMissing = np.array([0.0,0.0,0.0] )
 
 #--- pick at random & remove
 df=pd.DataFrame(atoms.__dict__)
-df=df.sample(n=df.shape[0]-nout,random_state=1)
+df=df.sample(n=df.shape[0]-nout) #,random_state=1)
 #idout = np.sum(atoms.id)-np.sum(df['id']) #--- atom id taken out
 atomd = lp.Atoms(**df.to_dict(orient='series'))
 atomd.id=np.arange(1,len(atomd.id)+1) #--- reset id
