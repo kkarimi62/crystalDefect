@@ -104,7 +104,7 @@ if __name__ == '__main__':
                     'p4':' data_void.dat dataVoidVac.dat %s 1'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 5.0'%(os.getcwd()+'/lmpScripts'),
-                     1.0:'DataFile=data_thermalized.dat',
+                     1.0:'DataFile=data_minimized.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
             return Variable
