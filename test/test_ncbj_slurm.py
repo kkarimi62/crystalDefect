@@ -36,7 +36,7 @@ if __name__ == '__main__':
                 }['4']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
-                                '4':'/../simulations/void',
+                                '4':'/../simulations/ni/void',
                                 '5':'/descriptors/ni/20x20',
                                 '6':'/neuralNet/20x20/ml', 
                             }['4'] #--- source
