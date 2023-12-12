@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 32
+        nruns	 = 8 #32
         #
         nThreads = 4
         nNode	 = 1
@@ -32,7 +32,8 @@ if __name__ == '__main__':
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
                     5:'ni/void3rd', 
-                   }[5]
+                    6:'ni/kmc', 
+                   }[6]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -129,7 +130,7 @@ if __name__ == '__main__':
     #        print('EXEC=',EXEC)
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
-        durtn = ['95:59:59','23:59:59','167:59:59'][ 1 ]
+        durtn = ['23:59:59','167:59:59'][ 0 ]
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][3]
         #--
