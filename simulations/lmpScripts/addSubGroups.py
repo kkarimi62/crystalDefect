@@ -11,10 +11,18 @@ if __name__ == '__main__':
 	
 	sys.path.append(lib_path)
 
-	import LammpsPostProcess as lp
+	import LammpsPostProcess2nd as lp
 
 	fp = 'data_void_twoGroups.dat'
 	os.system('ovitos %s/OvitosCna.py %s %s 1 0'%(lib_path,fin,fp))
+
+    
+	rd    = lp.ReadDumpFile( fin )
+    
+	rd.ReadData()
+	
+	
+	mass  = rd.mass
 
 	#--- load cna data
 	rd = lp.ReadDumpFile( fp )
@@ -32,9 +40,8 @@ if __name__ == '__main__':
     
 	box      = lp.Box(BoxBounds=rd.BoxBounds[0],AddMissing=np.array([0,0,0]))
     
-	wd   = lp.WriteDataFile(atom, box, {1:1,2:1}) #--- modify!!
-    
-	wd.Write( fin )
+   
+	lp.WriteDataFile( atom, box, mass ).Write( fin )
 
 	os.system('rm %s'%fp)
 	#pdb.set_trace()
