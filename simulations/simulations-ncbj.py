@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 3#8 #32
+        nruns	 = 3 #8 #32
         #
         nThreads = 16 #4
         nNode	 = 1
@@ -106,7 +106,7 @@ if __name__ == '__main__':
                     'p4':' data_void.dat dataVoidVac.dat %s 1'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0'%(os.getcwd()+'/lmpScripts'),
-                    'p7':' %s data_void.dat'%('/mnt/home/kkarimi/Project/git/HeaDef/postprocess'),
+                    'p7':' %s data_void.dat'%(os.getcwd()+'/lmpScripts'),
                      1.0:'DataFile=data_minimized.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
