@@ -26,26 +26,26 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs	 = range(32)
+    runs	 = range(3) #2)
     nNode    = 1
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/kmc/inactive', 
-                '5':'neuralNet/ni/void', 
+                '5':'neuralNet/ni/kmc/inactive', 
                 '6':'mlmc', 
-                }['4']
+                }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/ni/kmc/inactive',
-                                '5':'/descriptors/ni/void',
+                                '5':'/descriptors/ni/kmc/inactive',
                                 '6':'/neuralNet/ni/void', 
-                            }['4'] #--- source
+                            }['5'] #--- source
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         2:'mlmc.ipynb',
         }
-    keyno = 0
+    keyno = 1
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '64gb'
