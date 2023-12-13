@@ -32,7 +32,7 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/void5th', 
-                '5':'neuralNet/ni/void8th', 
+                '5':'neuralNet/ni/void5th', 
                 '6':'mlmc', 
                 }['5']
     DeleteExistingFolder = True
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     keyno = 1
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
-    mem = '64gb'
+    mem = '128gb'
     partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
     argv = "%s"%(readPath) #--- don't change! 
     convert_to_py = True
