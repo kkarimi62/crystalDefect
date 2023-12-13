@@ -19,11 +19,11 @@ setenv INI_FILE_NAME             'init_xyz.conf'   # The file name containing th
 setenv NBRE_KMC_STEPS                100       # The max number of KMC steps to be executed
 setenv TOTAL_TIME                    1000000.0        # Maximum simulation time in seconds (def: 20 s)
 
-setenv TEMPERATURE                   ${temp} #500.0    # The simulated temperature in kelvin
+setenv TEMPERATURE                   ${temp}     # The simulated temperature in kelvin
 
-setenv NUMBER_ATOMS                   ${natom} #864     # The total number of atoms 
-setenv SIMULATION_BOX                ${lx} #21.47   # The size of the simulation box (x, y and z)
-setenv NSPECIES                       2 #3 #5     # The number of different atom types (default: 2)
+setenv NUMBER_ATOMS                   ${natom}      # The total number of atoms 
+setenv SIMULATION_BOX                ${lx}    # The size of the simulation box (x, y and z)
+setenv NSPECIES                       2       # The number of different atom types (default: 2)
 setenv ATOMIC_SYMBOLS					"Ni:active NiVoid:inactive" #"Ni Co Cr" #'Ni Co Cr Fe Mn' #"Ni Co Cr"
 #setenv NTRAVAILLEUR                     3     # The number of cores associated with forces calculations per ARTnouveau search (default:1)
 ###################################### Restart options #####################################################
