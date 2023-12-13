@@ -49,8 +49,8 @@ if __name__ == '__main__':
     keyno = 1
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
-    mem = '128gb'
-    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
+    mem = '192gb'
+    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 1 ]
     argv = "%s"%(readPath) #--- don't change! 
     convert_to_py = True
 #---
