@@ -31,9 +31,9 @@ if __name__ == '__main__':
         #
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
-                    5:'ni/void3rd', 
+                    5:'ni/void4th', 
                     6:'ni/kmc/inactive', 
-                   }[6]
+                   }[5]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -125,9 +125,9 @@ if __name__ == '__main__':
                     7:[5,'p4','p3',1.0], #--- minimize, add vacancy, kart input, invoke kart
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
                     10:[5,'p4',7,'p3','p5',1.0], #--- minimize, add vacancy, thermalize, kart input, kart.sh to bash shell ,invoke kart
-                    11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     12:[ 'p5',1.0], #--- restart 11: set restart = True in kmc.sh
-                  }[12]
+                    11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
+                  }[11]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
@@ -137,7 +137,7 @@ if __name__ == '__main__':
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][3]
         #--
-        DeleteExistingFolder = False
+        DeleteExistingFolder = True
 
         EXEC = list(map(lambda x:np.array([EXEC_lmp,'py','kmc'])[[ type(x) == type(0), type(x) == type(''), type(x) == type(1.0) ]][0], indices))	
         if DeleteExistingFolder:
