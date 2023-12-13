@@ -32,7 +32,7 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/kmc/inactive', 
-                '5':'neuralNet/ni/kmc/inactive', 
+                '5':'neuralNet/ni/kmc/inactive/cpu', 
                 '6':'mlmc', 
                 }['5']
     DeleteExistingFolder = True
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '64gb'
-    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
+    partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
     argv = "%s"%(readPath) #--- don't change! 
     convert_to_py = True
 #---
