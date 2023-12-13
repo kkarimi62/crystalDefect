@@ -137,7 +137,7 @@ if __name__ == '__main__':
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][3]
         #--
-        DeleteExistingFolder = True
+        DeleteExistingFolder = False
 
         EXEC = list(map(lambda x:np.array([EXEC_lmp,'py','kmc'])[[ type(x) == type(0), type(x) == type(''), type(x) == type(1.0) ]][0], indices))	
         if DeleteExistingFolder:
