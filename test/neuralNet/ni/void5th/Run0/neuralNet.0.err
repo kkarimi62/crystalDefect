@@ -1,0 +1,78 @@
+2023-12-14 18:26:33.509243: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2023-12-14 18:26:33.571916: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2023-12-14 18:26:33.572407: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-12-14 18:26:35.476174: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+WARNING:absl:Found untraced functions such as _update_step_xla while saving (showing 1 of 1). These functions will not be directly callable after loading.
+INFO:tensorflow:Assets written to: best_model/convnetClassifier_from_scratch.tf/assets
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+ln: failed to create symbolic link './dump.xyz': File exists
+mkdir: cannot create directory 'best_model': File exists
+WARNING:absl:Found untraced functions such as _jit_compiled_convolution_op, _jit_compiled_convolution_op, _jit_compiled_convolution_op, _jit_compiled_convolution_op, _update_step_xla while saving (showing 5 of 5). These functions will not be directly callable after loading.
+INFO:tensorflow:Assets written to: best_model/convnetRegressor_from_scratch.tf/assets
+mkdir: cannot create directory 'png': File exists
+
+real	45m10.580s
+user	61m40.886s
+sys	3m54.004s
