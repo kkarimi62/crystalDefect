@@ -77,7 +77,7 @@ if __name__ == '__main__':
         makeOAR( writPath, 1, 1, durtn, PYFIL, argv+"/Run%s"%counter, argv) # --- make oar script
         os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s; cp configuration.ini %s;cp %s/%s %s' % ( writPath, writPath, EXEC_DIR, PYFIL, writPath ) ) # --- create folder & mv oar scrip & cp executable
         os.system( 'sbatch --partition=%s --mem=%s --time=%s %s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
-                                 --chdir %s --ntasks-per-node=%s --nodes=%s %s/oarScript.sh >> jobID.txt'\
+                                 --chdir %s --ntasks-per-node=%s --nodes=%s --export=slurm_path=%s %s/oarScript.sh >> jobID.txt'\
                             % ( partition, mem, durtn, additional_args, jobname.split('/')[0], counter, jobname.split('/')[0], counter, jobname.split('/')[0], counter \
-                                , writPath, nThreads, nNode, writPath ) ) # --- runs oarScript.sh! 
+                                , writPath, nThreads, nNode, writPath, writPath ) ) # --- runs oarScript.sh! 
 
