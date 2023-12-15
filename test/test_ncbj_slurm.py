@@ -32,7 +32,7 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/void5th', 
-                '5':'neuralNet/test',#'neuralNet/ni/void5th', 
+                '5':'neuralNet/regr_void5th',#'neuralNet/ni/void5th', 
                 '6':'mlmc', 
                 }['5']
     DeleteExistingFolder = True
