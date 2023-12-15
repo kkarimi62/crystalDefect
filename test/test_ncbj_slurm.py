@@ -32,21 +32,21 @@ if __name__ == '__main__':
     nThreads = 1
     jobname  = {
                 '4':'descriptors/ni/void5th', 
-                '5':'neuralNet/ni/void5th', 
+                '5':'neuralNet/test',#'neuralNet/ni/void5th', 
                 '6':'mlmc', 
-                }['6']
+                }['5']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
                                 '4':'/../simulations/ni/void5th',
                                 '5':'/descriptors/ni/void5th',
                                 '6':'/neuralNet/ni/void5th', 
-                            }['6'] #--- source
+                            }['5'] #--- source
     PYFILdic = { 
         0:'buildDescriptors.ipynb',
         1:'neuralNetwork.ipynb',
         2:'mlmc.ipynb',
         }
-    keyno = 2
+    keyno = 1
     EXEC_DIR = '.'     #--- path for executable file
     durtn = '23:59:59'
     mem = '128gb'
