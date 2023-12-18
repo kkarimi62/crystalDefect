@@ -76,5 +76,5 @@ if __name__ == '__main__':
                                  --chdir %s --ntasks-per-node=%s --nodes=%s --export=slurm_path=%s %s/oarScript.sh >> jobID.txt'\
                             % ( partition, mem, durtn, additional_args, jobname.split('/')[0], counter, jobname.split('/')[0], counter, jobname.split('/')[0], counter \
                                 , writPath, nThreads, nNode, writPath, writPath ) ) # --- runs oarScript.sh! 
-        os.system('echo $slurm_path')
+#         os.system('echo $slurm_path')
 
