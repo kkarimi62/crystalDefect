@@ -31,7 +31,7 @@ if __name__ == '__main__':
         #
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
-                    5:'ni/void5th', 
+                    5:'ni/void_long', 
                     6:'ni/kmc/inactive', 
                    }[5]
         sourcePath = os.getcwd() +\
