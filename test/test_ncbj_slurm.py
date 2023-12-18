@@ -7,10 +7,6 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     confParser.set('input files','input_path',argv)
     confParser.set('ml mc','input_path',argv)
     confParser.set('neural net','input_path',argvv)
-#     confParser.set('neural net','n_channels','1')
-#     confParser.set('neural net','number_hidden_layers','1')
-#     confParser.set('neural net','activation',"'linear'")
-#     confParser.set('neural net','hidden_layer_size','100')
     #--- write
     confParser.write(open('configuration.ini','w'))	
     #--- set environment variables
@@ -27,7 +23,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs	 = range(1) #32)
+    runs	 = range(32)
     nNode    = 1
     nThreads = 1
     jobname  = {
