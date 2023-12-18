@@ -29,7 +29,7 @@ if __name__ == '__main__':
     jobname  = {
                 '4':'descriptors/ni/void5th', 
                 '5':'neuralNet/ni/new_void5th', 
-                '6':'mlmc/ni/new_void5th', 
+                '6':'mlmc/ni/latest_void5th', 
                 }['6']
     DeleteExistingFolder = True
     readPath = os.getcwd() + {
