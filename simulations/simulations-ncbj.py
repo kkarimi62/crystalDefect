@@ -164,7 +164,7 @@ if __name__ == '__main__':
             #---
             makeOAR( path, 1, nThreads, durtn) # --- make oar script
             os.system( 'chmod +x oarScript.sh; mv oarScript.sh %s' % ( writPath) ) # --- create folder & mv oar scrip & cp executable
-            jobname0 = jobname.split('/')[0] #--- remove slash
+            jobname0 = jobname.replace('/','_')
             os.system( 'sbatch --partition=%s --mem=%s --time=%s --job-name %s.%s --output %s.%s.out --error %s.%s.err \
                                 --chdir %s --ntasks-per-node=%s --nodes=%s %s/oarScript.sh >> jobID.txt'\
                            % ( partition, mem, durtn, jobname0, counter, jobname0, counter, jobname0, counter \
