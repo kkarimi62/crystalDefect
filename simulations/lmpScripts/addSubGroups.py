@@ -30,6 +30,7 @@ if __name__ == '__main__':
     rd = lp.ReadDumpFile( fp )
     rd.GetCords()
     df = rd.coord_atoms_broken[ 0 ]
+    atoms = lp.Atoms(**df.to_dict(orient='series'))
 
     #--- assign types
 
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
     dr_sq  = np.sum( dr * dr, axis = 1 )
     filtr = np.all([dr_sq < rmax * rmax,dr_sq >= rmin * rmin],axis=0)
-
+    pdb.set_trace()
     
     #--- non-crystalline atoms
 #    filtr = df.StructureType.astype(int) == 0
