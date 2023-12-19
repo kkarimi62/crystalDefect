@@ -31,7 +31,7 @@ if __name__ == '__main__':
         #
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
-                    5:'ni/void_long_2d', 
+                    5:'ni/void_long_2d_small', 
                    }[5]
         sourcePath = os.getcwd() +\
                     {	
@@ -91,7 +91,7 @@ if __name__ == '__main__':
                     0:' -var natoms 100000 -var cutoff 3.52 -var ParseData 0 -var ntype 3 -var DumpFile dumpInit.xyz -var WriteData data_init.txt',
                     6:' -var T 300 -var DataFile Equilibrated_300.dat',
                     4:' -var T 600.0 -var t_sw 20.0 -var DataFile Equilibrated_600.dat -var nevery 100 -var ParseData 1 -var WriteData swapped_600.dat', 
-                    5:' -var buff 0.0 -var nevery 1000 -var ParseData 0 -var lx 20 -var ly 20 -var lz 3 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData data_pure.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
+                    5:' -var buff 0.0 -var nevery 1000 -var ParseData 0 -var lx 20 -var ly 20 -var lz 2 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData data_pure.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     51:' -var buff 0.0 -var nevery 1000 -var ParseData 1 -var DataFile dataVoidVac.dat -var DumpFile dumpMin.xyz -var WriteData data_minimized.dat', 
                     7:' -var buff 0.0 -var T 300.0 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile data_minimized.dat -var DumpFile dumpThermalized.xyz -var WriteData data_thermalized.dat -var rnd %s'%np.random.randint(1001,9999),
                     71:' -var buff 0.0 -var T 0.1 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile swapped_600.dat -var DumpFile dumpThermalized2.xyz -var WriteData Equilibrated_0.dat',
