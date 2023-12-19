@@ -24,14 +24,14 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 1 #32
+        nruns	 = 32
         #
         nThreads = 8 #16 #4
         nNode	 = 1
         #
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
-                    5:'test', #'ni/void_long', 
+                    5:'ni/void_long_buffer', 
                    }[5]
         sourcePath = os.getcwd() +\
                     {	
