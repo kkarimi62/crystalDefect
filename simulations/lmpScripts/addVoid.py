@@ -41,12 +41,15 @@ def isInside(atoms, box, smBox):
 #             setkey='type', setval=np.max(atoms.type)+1,      
 #             )
     
-def GetSphericalVoid(atoms, box, radius):
+def GetSphericalVoid(atoms, box, radius, ndime = 3 ):
     
     
     center = box.CellOrigin + np.matmul( box.CellVector, 0.5 * np.array( [ 1, 1, 1 ] ) )
     dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
-    dr_sq  = np.sum( dr * dr, axis = 1 )
+    if ndime == 3:
+        dr_sq  = np.sum( dr * dr, axis = 1 )
+    elif ndime == 2:
+        dr_sq  = dr[:,0]*dr[:,0] + dr[:,1]*dr[:,1]
     
     isInside = dr_sq < radius * radius
     
@@ -157,6 +160,7 @@ def main():
     output   = sys.argv[ 2 ]
     lib_path = sys.argv[ 3 ]
     radius   = float( sys.argv[ 4 ] )
+    ndime    = int( sys.argv[ 5 ] )
 
     sys.path.append( lib_path )
     import LammpsPostProcess2nd as lp
@@ -168,7 +172,7 @@ def main():
     box   = lp.Box( BoxBounds = rd.BoxBounds[ 0 ], AddMissing = np.array( [ 0.0, 0.0, 0.0 ] ) )
 
     #--- rm atoms within the void
-    df_void  = GetSphericalVoid( atoms, box, radius )
+    df_void  = GetSphericalVoid( atoms, box, radius, ndime )
     atomd    = lp.Atoms( **df_void.to_dict( orient = 'series' ) )
     atomd.id = np.arange( 1, len( atomd.id ) + 1 ) #--- reset id
 

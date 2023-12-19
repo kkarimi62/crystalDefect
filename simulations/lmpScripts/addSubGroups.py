@@ -7,8 +7,8 @@ if __name__ == '__main__':
     lib_path = sys.argv[1] 
 
     fin      = sys.argv[2]
-    rmin     = float(sys.argv[3])
-    rmax     = float(sys.argv[4])
+#     rmin     = float(sys.argv[3])
+#     rmax     = float(sys.argv[4])
 
     sys.path.append(lib_path)
 
@@ -35,13 +35,13 @@ if __name__ == '__main__':
     #--- assign types
 
     #--- within (rmin,rmax)
-    center = box.CellOrigin + np.matmul( box.CellVector, 0.5 * np.array( [ 1, 1, 1 ] ) )
-    dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
-    dr_sq  = np.sum( dr * dr, axis = 1 )
-    filtr = np.all([dr_sq < rmax * rmax,dr_sq >= rmin * rmin],axis=0)
+#     center = box.CellOrigin + np.matmul( box.CellVector, 0.5 * np.array( [ 1, 1, 1 ] ) )
+#     dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
+#     dr_sq  = np.sum( dr * dr, axis = 1 )
+#     filtr = np.all([dr_sq < rmax * rmax,dr_sq >= rmin * rmin],axis=0)
     
     #--- non-crystalline atoms
-#    filtr = df.StructureType.astype(int) == 0
+    filtr = df.StructureType.astype(int) == 0
 
     indices_secondType = df[ filtr ].index
     df.loc[ indices_secondType,'type' ] = 2

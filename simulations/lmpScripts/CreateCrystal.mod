@@ -1,14 +1,14 @@
 #--- comment this block if atoms are parsed from a data file
 #--- Create box
 variable 	a      			equal   ${cutoff}   #--- lattice constant
-variable    volume          equal   ${natoms}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
-variable    lx              equal   floor(${volume}^(1.0/3.0)/${a})
+#variable    volume          equal   ${natoms}*${a}^3.0/4.0 #--- natom * vol. of the voronoi cell
+#variable    lx              equal   floor(${volume}^(1.0/3.0)/${a})
 
 #--- define crystal structure and lattice constant a0
 #--- define direction vectors, i.e., set x=[100], y=[010], z=[001] and origin point.
 lattice    fcc ${a} orient    x 1 0 0 orient y 0 1 0 orient z 0 0 1 &   
            origin 0.1 0.1 0.1
-region    		mybox block 0 ${lx} 0 ${lx} 0 ${lx}   ## define box sizes along x, y, z (in the unit of a0)
+region    		mybox block 0 ${lx} 0 ${ly} 0 ${lz}   ## define box sizes along x, y, z (in the unit of a0)
 create_box      ${ntype} mybox              ## create the simulation box, allowing a max of three species
 create_atoms    1 box               ## create type-1 metal atoms in the box
 #
