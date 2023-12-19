@@ -24,15 +24,14 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 32
+        nruns	 = 1 #32
         #
         nThreads = 8 #16 #4
         nNode	 = 1
         #
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
-                    5:'ni/void_long', 
-                    6:'ni/kmc/inactive', 
+                    5:'test', #'ni/void_long', 
                    }[5]
         sourcePath = os.getcwd() +\
                     {	
@@ -106,7 +105,7 @@ if __name__ == '__main__':
                     'p4':' data_void.dat dataVoidVac.dat %s 1 1'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0'%(os.getcwd()+'/lmpScripts'),
-                    'p7':' %s data_void.dat'%(os.getcwd()+'/lmpScripts'),
+                    'p7':' %s data_void.dat 4.0 6.6'%(os.getcwd()+'/lmpScripts'),
                      1.0:'DataFile=data_minimized.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
