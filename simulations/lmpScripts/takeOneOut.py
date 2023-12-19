@@ -168,7 +168,8 @@ def main():
     dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
     dr_sq  = np.sum( dr * dr, axis = 1 )
     filtr2 = dr_sq > rdist * rdist
-
+    assert np.any( filtr2 ), 'decrease distance!'
+    
     #--- filter
     filtr = np.all( [ filtr1, filtr2 ], axis = 0 )
     indx_rm = np.random.choice(df[filtr].index,size=nout,replace=False)
