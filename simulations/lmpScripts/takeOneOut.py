@@ -140,40 +140,54 @@ def isEmpty( val ):
     if type(val) == type({}):
         return True if len( val ) == 0 else False
 
-path = sys.argv[1]
-output = sys.argv[2]
-lib_path = sys.argv[3]
-nout = int(sys.argv[4])
-itype = int(sys.argv[5])
+def main():
+    path     = sys.argv[1]
+    output   = sys.argv[2]
+    lib_path = sys.argv[3]
+    nout     = int(sys.argv[4])
+    itype    = int(sys.argv[5])
+    rdist    = float(sys.argv[6])
+    
+    sys.path.append(lib_path)
+    import LammpsPostProcess2nd as lp
+    
+    #--- read data
+    rd = lp.ReadDumpFile(path)
+    rd.ReadData()
+    atoms = lp.Atoms( **rd.coord_atoms_broken[0].to_dict(orient='series') )
+    box = lp.Box( BoxBounds = rd.BoxBounds[0], AddMissing = np.array([0.0,0.0,0.0] ))
+    
+    #--- pick at random & remove
+    df=pd.DataFrame(atoms.__dict__)
+    
+    #--- only given type
+    filtr1 = df.type.astype(int) == itype
+    
+    #--- distance
+    center = box.CellOrigin + np.matmul( box.CellVector, 0.5 * np.array( [ 1, 1, 1 ] ) )
+    dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
+    dr_sq  = np.sum( dr * dr, axis = 1 )
+    filtr2 = dr_sq > rdist * rdist
 
-sys.path.append(lib_path)
-import LammpsPostProcess2nd as lp
+    #--- filter
+    filtr = np.all( [ filtr1, filtr2 ], axis = 0 )
+    indx_rm = np.random.choice(df[filtr].index,size=nout,replace=False)
+    df.drop(index=indx_rm, inplace=True)
+    
+    #df=df.sample(n=df.shape[0]-nout) #,random_state=1)
+    #idout = np.sum(atoms.id)-np.sum(df['id']) #--- atom id taken out
+    atomd = lp.Atoms(**df.to_dict(orient='series'))
+    atomd.id=np.arange(1,len(atomd.id)+1) #--- reset id
+    boxd = lp.Box( BoxBounds = rd.BoxBounds[0], AddMissing = np.array([0.0,0.0,0.0] ))
+    
+    #--- center atom positions
+    #CenterAtoms( atoms, box,
+    #             atomd, boxd, #--- will be modified
+    #            idcent = idout,
+    #            CenterAtZero=True, #--- don't change!
+    #            )
+    #--- write
+    lp.WriteDataFile(atomd,boxd,rd.mass).Write(output)
 
-#--- read data
-rd = lp.ReadDumpFile(path)
-rd.ReadData()
-atoms = lp.Atoms( **rd.coord_atoms_broken[0].to_dict(orient='series') )
-box = lp.Box( BoxBounds = rd.BoxBounds[0], AddMissing = np.array([0.0,0.0,0.0] ))
-
-#--- pick at random & remove
-df=pd.DataFrame(atoms.__dict__)
-
-filtr = df.type.astype(int) == itype
-indx_rm = np.random.choice(df[filtr].index,size=nout,replace=False)
-df.drop(index=indx_rm, inplace=True)
-
-#df=df.sample(n=df.shape[0]-nout) #,random_state=1)
-#idout = np.sum(atoms.id)-np.sum(df['id']) #--- atom id taken out
-atomd = lp.Atoms(**df.to_dict(orient='series'))
-atomd.id=np.arange(1,len(atomd.id)+1) #--- reset id
-boxd = lp.Box( BoxBounds = rd.BoxBounds[0], AddMissing = np.array([0.0,0.0,0.0] ))
-
-#--- center atom positions
-#CenterAtoms( atoms, box,
-#             atomd, boxd, #--- will be modified
-#            idcent = idout,
-#            CenterAtZero=True, #--- don't change!
-#            )
-#--- write
-lp.WriteDataFile(atomd,boxd,rd.mass).Write(output)
-
+if __name__ == '__main__':
+    main()
