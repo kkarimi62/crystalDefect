@@ -19,30 +19,30 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     else:
         print('jupyter nbconvert --execute $EXEC_DIR/%s --to html --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html'%(PYFIL), file=someFile)
     someFile.close()										  
-#
+
 if __name__ == '__main__':
     import os
 #
-    runs	             = range( 8 )
+    runs	             = range( 32 )
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/void_2d', 
+                            '4':'descriptors/ni/void_2d_training', 
                             '5':'neuralNet/ni/void_2d', 
                             '6':'mlmc/ni/void_2d', 
-                            }['6']
+                            }['4']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
-                                            '4':'/../simulations/ni/void_2d',
+                                            '4':'/../simulations/ni/void_2d_training',
                                             '5':'/descriptors/ni/void_2d',
                                             '6':'/neuralNet/ni/void_2d', 
-                                        }['6'] #--- source
+                                        }['4'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 2
+    keyno                = 0
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '128gb'
