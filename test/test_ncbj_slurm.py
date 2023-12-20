@@ -23,12 +23,12 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs	             = range( 1 )
+    runs	             = range( 32 )
     nNode                = 1
     nThreads             = 1
     jobname              = {
                             '4':'descriptors/ni/void_2d_training', 
-                            '5':'neuralNet/ni/void_2d', 
+                            '5':'neuralNet/ni/void_2d_training', 
                             '6':'mlmc/ni/void_2d', 
                             }['5']
     DeleteExistingFolder = True
