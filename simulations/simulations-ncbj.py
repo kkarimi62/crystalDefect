@@ -24,16 +24,16 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 8
+        nruns	 = 32
         #
         nThreads = 8 #4
         nNode	 = 1
         #
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
-                    5:'ni/void_2d', 
+                    5:'ni/void_2d_training', 
                     6:'ni/pure', 
-                   }[6]
+                   }[5]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -103,8 +103,8 @@ if __name__ == '__main__':
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 135.0 67.0 135.0 data.txt 5'%(os.getcwd()+'/../postprocess'),
                     'p3':' data_minimized.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
-#                    'p4':' data_void.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
-                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
+                    'p4':' data_void.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
+#                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
                     'p7':' %s data_void.dat'%(os.getcwd()+'/lmpScripts'),
@@ -127,9 +127,9 @@ if __name__ == '__main__':
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
                     10:[5,'p4',7,'p3','p5',1.0], #--- minimize, add vacancy, thermalize, kart input, kart.sh to bash shell ,invoke kart
                     12:[ 'p5',1.0], #--- restart 11: set restart = True in kmc.sh
-                    11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     13:[5, 'p4', 51, 'p3','p5',1.0], #--- min.,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
-                  }[13]
+                    11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
+                  }[11]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
