@@ -53,7 +53,7 @@ def WriteDataFile(AtomskOutpt, mass, LmpInput):
 
 pathlib = sys.argv[1]
 sys.path.append(pathlib)
-import LammpsPostProcess as lp
+import LammpsPostProcess2nd as lp
 
 
 #--- modify atom types and associated masses 
@@ -97,3 +97,4 @@ if 1: #Atomsk:
     os.system('atomsk final.cfg lmp')
     #
     WriteDataFile('final.lmp',mass, sys.argv[6])
+    os.system('rm *.lmp *.cfg *.xsf')
