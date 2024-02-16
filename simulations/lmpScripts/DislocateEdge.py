@@ -53,7 +53,7 @@ def WriteDataFile(AtomskOutpt, mass, LmpInput):
 
 pathlib = sys.argv[1]
 sys.path.append(pathlib)
-import LammpsPostProcess2nd as lp
+import LammpsPostProcess as lp
 
 
 #--- modify atom types and associated masses 
