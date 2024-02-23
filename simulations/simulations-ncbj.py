@@ -33,7 +33,7 @@ if __name__ == '__main__':
                     4:'ni/niNatom1KTemp300K', 
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
-                    7:'ni/dislocation', 
+                    7:'ni/dislocation2nd', 
                    }[7]
         sourcePath = os.getcwd() +\
                     {	
