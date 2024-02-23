@@ -102,13 +102,13 @@ if __name__ == '__main__':
                     10:' -var ParseData 1 -var DataFile swapped_600.dat',
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
-                    'p2':' %s 3.52 135.0 67.0 135.0 data_dislocated.txt 5'%(os.getcwd()+'/lmpScripts'),
+                    'p2':' %s 3.52 135.0 67.0 10.0 data_dislocated.txt 5'%(os.getcwd()+'/lmpScripts'),
                     'p3':' data_minimized.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
                     'p4':' data_dislocated.dat data_dislocated_void.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
-                    'p7':' %s data_void.dat'%(os.getcwd()+'/lmpScripts'),
+                    'p7':' %s data_dislocated_void.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
                      1.0:'DataFile=data_minimized.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
@@ -130,7 +130,7 @@ if __name__ == '__main__':
                     12:[ 'p5',1.0], #--- restart 11: set restart = True in kmc.sh
                     13:[5, 'p4', 51, 'p3','p5',1.0], #--- min.,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
-                    14:['p2', 'p4', 51, 'p3','p5',1.0], #--- put disc. by atomsk, add vacancy, minimize, kmc input,kart.sh to bash ,invoke kart
+                    14:['p2', 'p4', 'p7', 51, 'p3','p5',1.0], #--- put disc. by atomsk, add vacancy, add subgroup, minimize, kmc input,kart.sh to bash ,invoke kart
                   }[14]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))

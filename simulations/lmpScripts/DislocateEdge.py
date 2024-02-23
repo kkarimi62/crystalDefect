@@ -53,14 +53,15 @@ def WriteDataFile(AtomskOutpt, mass, LmpInput):
 
 pathlib = sys.argv[1]
 sys.path.append(pathlib)
-import LammpsPostProcess as lp
+import LammpsPostProcess2nd as lp
 
 
 #--- modify atom types and associated masses 
-if 1: #Atomsk:
+if __name__ == '__main__':
     mass={1:58.693, # Ni
-        2:58.933195, # Co
-        3:51.9961 #Cr,
+#		  2:58.693, # Ni
+#        2:58.933195, # Co
+#        3:51.9961 #Cr,
        } 
 	#
     a = float(sys.argv[2]) #3.52
