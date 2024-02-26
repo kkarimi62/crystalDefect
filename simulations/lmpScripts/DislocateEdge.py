@@ -5,6 +5,43 @@ import sys
 import os
 import pdb
 
+def Center(atoms,box):
+    #--- center
+    #--- add box bounds
+    rcent = np.matmul(box.CellVector,np.array([.5,.5,.5]))
+    box.CellOrigin -= rcent
+    loo=box.CellOrigin
+    hii=box.CellOrigin+np.matmul(box.CellVector,np.array([1,1,1]))
+    box.BoxBounds=np.c_[loo,hii,np.array([0,0,0])]
+
+    atoms.x -= rcent[0]
+    atoms.y -= rcent[1]
+    atoms.z -= rcent[2]
+
+def zeroShift(atoms,box):
+    atoms.x -= box.CellOrigin[0]
+    atoms.y -= box.CellOrigin[1]
+    atoms.z -= box.CellOrigin[2]
+    
+    box.CellOrigin = np.array([0.0,0.0,0.0])
+    loo=np.array([0.0,0.0,0.0])
+    hii=np.matmul(box.CellVector,np.array([1,1,1]))
+    box.BoxBounds=np.c_[loo,hii,np.array([0,0,0])]
+    
+def Center(atoms,box):
+    #--- center
+    #--- add box bounds
+    rcent = np.matmul(box.CellVector,np.array([.5,.5,.5]))
+    box.CellOrigin -= rcent
+    loo=box.CellOrigin
+    hii=box.CellOrigin+np.matmul(box.CellVector,np.array([1,1,1]))
+    box.BoxBounds=np.c_[loo,hii,np.array([0,0,0])]
+
+    atoms.x -= rcent[0]
+    atoms.y -= rcent[1]
+    atoms.z -= rcent[2]
+
+    
 def WriteDataFile(AtomskOutpt, mass, LmpInput):
     #--- read data file
     lmpData = lp.ReadDumpFile( AtomskOutpt )
@@ -17,17 +54,9 @@ def WriteDataFile(AtomskOutpt, mass, LmpInput):
     wrap = lp.Wrap( atoms, box )
     wrap.WrapCoord()
     wrap.Set( atoms )
-    #--- center
-    #--- add box bounds
-    rcent = np.matmul(box.CellVector,np.array([.5,.5,.5]))
-    box.CellOrigin -= rcent
-    loo=box.CellOrigin
-    hii=box.CellOrigin+np.matmul(box.CellVector,np.array([1,1,1]))
-    box.BoxBounds=np.c_[loo,hii,np.array([0,0,0])]
-
-    atoms.x -= rcent[0]
-    atoms.y -= rcent[1]
-    atoms.z -= rcent[2]
+    
+#    Center( atoms, box )
+    zeroShift( atoms, box )
 
     if len(mass) > 1: #--- multi-component alloy: assign random types
         dff=pd.DataFrame(atoms.__dict__)
