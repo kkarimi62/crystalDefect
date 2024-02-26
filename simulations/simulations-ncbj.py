@@ -33,7 +33,7 @@ if __name__ == '__main__':
                     4:'ni/niNatom1KTemp300K', 
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
-                    7:'ni/dislocation11th', 
+                    7:'ni/dislocation12th', 
                    }[7]
         sourcePath = os.getcwd() +\
                     {	
@@ -78,7 +78,7 @@ if __name__ == '__main__':
                         10:'in.elasticSoftWall',
                         'p0':'partition.py', #--- python file
                         'p1':'WriteDump.py',
-                        'p2':'DislocateEdge.py',
+                        'p2':'DislocateEdge2nd.py',
                         'p3':'kartInput.py',
                         'p4':'takeOneOut.py',
                         'p5':'bash-to-csh.py',
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                     10:' -var ParseData 1 -var DataFile swapped_600.dat',
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
-                    'p2':' %s 3.52 135 67.0 10.0 data_dislocated.dat 1'%(os.getcwd()+'/lmpScripts'),
+                    'p2':' %s 3.52 26.0 18.0 26.0 data_dislocated.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
                     'p3':' data_minimized.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
                     'p4':' data_dislocated.dat data_dislocated_void.dat %s 1 1 24.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
