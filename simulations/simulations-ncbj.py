@@ -33,7 +33,7 @@ if __name__ == '__main__':
                     4:'ni/niNatom1KTemp300K', 
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
-                    7:'ni/dislocation3rd', 
+                    7:'ni/dislocation4th', 
                    }[7]
         sourcePath = os.getcwd() +\
                     {	
@@ -64,7 +64,7 @@ if __name__ == '__main__':
         if SCRATCH:
             OUT_PATH = '/scratch/${SLURM_JOB_ID}'
         #--- py script must have a key of type str!
-        LmpScript = {	                0:'in.PrepTemp0',
+            LmpScript = {0:'in.PrepTemp0',
                         1:'relax.in', 
                         2:'relaxWalls.in', 
                         7:'in.Thermalization', 
