@@ -104,7 +104,7 @@ if __name__ == '__main__':
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 67.5 33.5 10.0 data_dislocated.dat 5'%(os.getcwd()+'/lmpScripts'),
                     'p3':' data_minimized.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
-                    'p4':' data_dislocated.dat data_dislocated_void.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
+                    'p4':' data_dislocated.dat data_dislocated_void.dat %s 1 1 24.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
