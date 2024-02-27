@@ -32,7 +32,15 @@ sfile.write( '%s\n'%(len(df)))
 sfile.close()
 
 sfile = open('.lx.txt','w')
-sfile.write( '%s\n'%(np.ceil(lx)))
+sfile.write( '%16.15f\n'%lx) #np.ceil(lx))
+sfile.close()
+
+sfile = open('.ly.txt','w')
+sfile.write( '%16.15f\n'%ly) #np.ceil(ly))
+sfile.close()
+
+sfile = open('.lz.txt','w')
+sfile.write( '%16.15f\n'%lz) #np.ceil(lz))
 sfile.close()
 
 sfile = open('.temp.txt','w')
