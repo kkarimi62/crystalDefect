@@ -1,0 +1,1 @@
+/mnt/home/kkarimi/Project/git/crystalDefect/simulations/lmpScripts/kmc.sh
