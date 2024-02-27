@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 4
+        nruns	 = 1
         #
         nThreads = 16
         nNode	 = 1
@@ -34,14 +34,16 @@ if __name__ == '__main__':
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
-                   }[7]
+                    8:'ni/irradiation/dpa0', 
+                   }[8]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
                         1:'/../postprocess/NiCoCrNatom1K',
                         2:'/NiCoCrNatom1KTemp0K',
                         5:'/dataFiles/reneData',
-                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
+                        8:'/../data/ni/irradiation/dpa0',
+                    }[8] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -50,7 +52,8 @@ if __name__ == '__main__':
                         4:['data_minimized.txt'],
                         5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
                         6:['FeNi_2000.dat'], 
-                     }[0] #--- to be copied from the above directory. set it to '0' if no file
+                        8:['Atoms_dyn_Frank_Loop.dat'], 
+                     }[8] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -103,13 +106,13 @@ if __name__ == '__main__':
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
-                    'p3':' data_min.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
+                    'p3':' Atoms_dyn_Frank_Loop.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
                     'p4':' data_min.dat data_min.dat %s 1 1 24.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
                     'p7':' %s data_min.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
-                     1.0:'DataFile=data_min.dat',
+                     1.0:'DataFile=Atoms_dyn_Frank_Loop.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
             return Variable
@@ -131,7 +134,8 @@ if __name__ == '__main__':
                     13:[5, 'p4', 51, 'p3','p5',1.0], #--- min.,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     14:['p2', 51, 'p4', 51, 'p7', 'p3','p5',1.0], #--- put disc, min, add vacancy, min, add subgroup, kmc input,kart.sh to bash ,invoke kart
-                  }[14]
+                    15:['p3','p5',1.0], #--- irradiation: kmc input,kart.sh to bash ,invoke kart
+                  }[15]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
