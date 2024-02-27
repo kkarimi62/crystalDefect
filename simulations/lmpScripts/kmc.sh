@@ -3,6 +3,8 @@
 #--- set natom and box size (output of KartInput.py)
 set natom=`cat .natom.txt`
 set lx=`cat .lx.txt`
+set ly=`cat .ly.txt`
+set lz=`cat .lz.txt`
 set temp=`cat .temp.txt`
 
 #--- set directories for lmp scripts
