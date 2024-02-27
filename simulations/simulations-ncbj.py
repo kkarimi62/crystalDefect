@@ -52,7 +52,7 @@ if __name__ == '__main__':
                         4:['data_minimized.txt'],
                         5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
                         6:['FeNi_2000.dat'], 
-                        8:['Atoms_dyn_Frank_Loop.dat'], 
+                        8:['lammps_data.dat'], 
                      }[8] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
@@ -106,13 +106,13 @@ if __name__ == '__main__':
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
-                    'p3':' Atoms_dyn_Frank_Loop.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
+                    'p3':' lammps_data.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
                     'p4':' data_min.dat data_min.dat %s 1 1 24.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
                     'p7':' %s data_min.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
-                     1.0:'DataFile=Atoms_dyn_Frank_Loop.dat',
+                     1.0:'DataFile=lammps_data.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
             return Variable
