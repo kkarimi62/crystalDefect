@@ -52,7 +52,7 @@ if __name__ == '__main__':
                         4:['data_minimized.txt'],
                         5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
                         6:['FeNi_2000.dat'], 
-                        8:['lammps_data.dat'], 
+                        8:['Atoms_dyn_Frank_Loop.dat'], 
                      }[8] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
