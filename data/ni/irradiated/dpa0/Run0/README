@@ -1,0 +1,8 @@
+
+#--------------------------------------------------------------------------
+#--- irradiated ni
+#--- eam potential: "https://pubs.acs.org/doi/10.1021/acs.jctc.5b01194"
+#--- download from: "nist: https://www.ctcms.nist.gov/potentials/Download/2016--Stoller-R-E-Tamm-A-Beland-L-K-et-al--Ni"
+#--------------------------------------------------------------------------
+
+dpa=0.01
