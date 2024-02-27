@@ -34,7 +34,7 @@ if __name__ == '__main__':
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
-                    8:'ni/irradiation/dpa0', 
+                    8:'ni/irradiation/dpa0_2nd', 
                    }[8]
         sourcePath = os.getcwd() +\
                     {	
@@ -87,6 +87,7 @@ if __name__ == '__main__':
                         'p5':'bash-to-csh.py',
                         'p6':'addVoid.py',
                         'p7':'addSubGroups.py',
+                         'p8':'preprocess_data.py',
                         1.0:'kmc.sh', #--- bash script
                         2.0:'kmcUniqueCRYST.sh', #--- bash script
                     } 
@@ -97,7 +98,7 @@ if __name__ == '__main__':
                     6:' -var T 300 -var DataFile Equilibrated_300.dat',
                     4:' -var T 600.0 -var t_sw 20.0 -var DataFile Equilibrated_600.dat -var nevery 100 -var ParseData 1 -var WriteData swapped_600.dat', 
                     5:' -var buff 0.0 -var nevery 1000 -var ParseData 0 -var lx 20 -var ly 20 -var lz 3 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData data_pure.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
-                    51:' -var buff 0.0 -var nevery 1000 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat', 
+                    51:' -var buff 0.0 -var nevery 100 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat', 
                     7:' -var buff 0.0 -var T 300.0 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile data_minimized.dat -var DumpFile dumpThermalized.xyz -var WriteData data_thermalized.dat -var rnd %s'%np.random.randint(1001,9999),
                     71:' -var buff 0.0 -var T 0.1 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile swapped_600.dat -var DumpFile dumpThermalized2.xyz -var WriteData Equilibrated_0.dat',
                     8:' -var buff 0.0 -var T 0.1 -var sigm 1.0 -var sigmdt 0.0001 -var ndump 100 -var ParseData 1 -var DataFile Equilibrated_0.dat -var DumpFile dumpSheared.xyz',
@@ -112,6 +113,7 @@ if __name__ == '__main__':
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
                     'p7':' %s data_min.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
+                    'p8':' Atoms_dyn_Frank_Loop.dat lammps_data.dat %s'%(os.getcwd()+'/lmpScripts'),
                      1.0:'DataFile=lammps_data.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
@@ -134,7 +136,7 @@ if __name__ == '__main__':
                     13:[5, 'p4', 51, 'p3','p5',1.0], #--- min.,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     14:['p2', 51, 'p4', 51, 'p7', 'p3','p5',1.0], #--- put disc, min, add vacancy, min, add subgroup, kmc input,kart.sh to bash ,invoke kart
-                    15:[51,'p3','p5',1.0], #--- irradiation: min, kmc input,kart.sh to bash ,invoke kart
+                    15:['p8',51,'p3','p5',1.0], #--- irradiation: preprocess, min, kmc input,kart.sh to bash ,invoke kart
                   }[15]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
