@@ -18,11 +18,13 @@ This repository contains code and resources for a project that combines K-Art (K
 
 ```bash
 git clone https://github.com/your-username/your-repo.git
+```
 
 2. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
+```
 
 ## Usage
 1.Data Preparation
