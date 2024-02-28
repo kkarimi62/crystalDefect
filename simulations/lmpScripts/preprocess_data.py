@@ -39,7 +39,7 @@ if __name__ == '__main__':
 	lmpData.GetCords() #ReadData()
 	
 	#--- mass is hard-coded!
-	mass     = { 1:58.71, 2:58.71 }
+	mass     = { 1:58.71 } #, 2:58.71 }
 	
 
 	#--- atoms & box

@@ -34,7 +34,7 @@ if __name__ == '__main__':
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
-                    8:'ni/irradiation/dpa0_2nd', 
+                    8:'ni/irradiation/dpa0_3rd', 
                    }[8]
         sourcePath = os.getcwd() +\
                     {	
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
-                    'p7':' %s data_min.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
+                    'p7':' %s lammps_data.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
                     'p8':' Atoms_dyn_Frank_Loop.dat lammps_data.dat %s'%(os.getcwd()+'/lmpScripts'),
                      1.0:'DataFile=lammps_data.dat',
                      2.0:'DataFile=data_minimized.txt',
@@ -136,7 +136,7 @@ if __name__ == '__main__':
                     13:[5, 'p4', 51, 'p3','p5',1.0], #--- min.,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     14:['p2', 51, 'p4', 51, 'p7', 'p3','p5',1.0], #--- put disc, min, add vacancy, min, add subgroup, kmc input,kart.sh to bash ,invoke kart
-                    15:['p8',51,'p3','p5',1.0], #--- irradiation: preprocess, min, kmc input,kart.sh to bash ,invoke kart
+                    15:['p8',51,'p7','p3','p5',1.0], #--- irradiation: preprocess, min, add subgroup, kmc input,kart.sh to bash ,invoke kart
                   }[15]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
