@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         nruns	 = 1
         #
-        nThreads = 64
+        nThreads = 40
         nNode	 = 1
         #
         jobname  = {
@@ -34,7 +34,7 @@ if __name__ == '__main__':
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
-                    8:'ni/irradiation/dpa0_5th', 
+                    8:'ni/irradiation/dpa0_4th', 
                    }[8]
         sourcePath = os.getcwd() +\
                     {	
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         EXEC_lmp = ['lmp_g++_openmpi'][0]
         durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
         mem = '16gb' #'22gb'
-        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][0]
+        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
         #--
         DeleteExistingFolder = True
 
