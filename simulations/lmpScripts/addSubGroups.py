@@ -47,7 +47,6 @@ if __name__ == '__main__':
     
     #--- non-crystalline atoms
     filtr = df.StructureType.astype(int) == structureTypes[ structureType ]
-
     indices_secondType = df[ filtr ].index
     df.loc[ indices_secondType,'type' ] = typeAssigned
 

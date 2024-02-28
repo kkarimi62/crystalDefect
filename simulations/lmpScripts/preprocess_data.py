@@ -1,3 +1,9 @@
+import pdb
+
+def SetTypes( atoms, itype ):
+    atoms.type=np.ones(len(atoms.type),dtype=int)
+
+
 def Center(atoms,box):
     #--- center
     #--- add box bounds
@@ -39,9 +45,8 @@ if __name__ == '__main__':
 	lmpData.GetCords() #ReadData()
 	
 	#--- mass is hard-coded!
-	mass     = { 1:58.71 } #, 2:58.71 }
+	mass     = { 1:58.71, 2:58.71 }
 	
-
 	#--- atoms & box
 	itime    = list(lmpData.coord_atoms_broken.keys())[ 0 ]
 	atoms    = lp.Atoms( **lmpData.coord_atoms_broken[0].to_dict(orient='series') )
@@ -55,6 +60,9 @@ if __name__ == '__main__':
 	#--- shift coords
 	#    Center( atoms, box )
 	zeroShift( atoms, box )
+
+	#--- set atom types 
+	SetTypes( atoms, 1 )
 
 	#--- save
 	lp.WriteDataFile(atoms,box,mass).Write( fout )
