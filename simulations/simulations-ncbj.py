@@ -184,5 +184,5 @@ if __name__ == '__main__':
                                , writPath, nThreads, nNode, writPath ) ) # --- runs oarScript.sh! 
             counter += 1
 
-
+        print('jobname=',jobname)
         os.system( 'mv jobID.txt %s' % ( os.getcwd() + '/%s' % ( jobname ) ) )
