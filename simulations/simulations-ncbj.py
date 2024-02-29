@@ -35,7 +35,8 @@ if __name__ == '__main__':
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
-                   }[8]
+                    9:'ni/irradiation/kmc', 
+                   }[9]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -43,7 +44,8 @@ if __name__ == '__main__':
                         2:'/NiCoCrNatom1KTemp0K',
                         5:'/dataFiles/reneData',
                         8:'/../data/ni/irradiation/dpa0',
-                    }[8] #--- must be different than sourcePath. set it to 'junk' if no path
+                        9:'/ni/irradiation/cascade3rd',
+                    }[9] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -53,7 +55,8 @@ if __name__ == '__main__':
                         5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
                         6:['FeNi_2000.dat'], 
                         8:['Atoms_dyn_Frank_Loop.dat'], 
-                     }[8] #--- to be copied from the above directory. set it to '0' if no file
+                        9:['final.data'], 
+                     }[9] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -99,7 +102,7 @@ if __name__ == '__main__':
                     6:' -var T 300 -var DataFile Equilibrated_300.dat',
                     4:' -var T 600.0 -var t_sw 20.0 -var DataFile Equilibrated_600.dat -var nevery 100 -var ParseData 1 -var WriteData swapped_600.dat', 
                     5:' -var buff 0.0 -var nevery 1000 -var ParseData 0 -var lx 10 -var ly 10 -var lz 10 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
-                    51:' -var buff 0.0 -var nevery 100 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat', 
+                    51:' -var buff 0.0 -var nevery 100 -var ParseData 1 -var DataFile final.data -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat', 
                     7:' -var buff 0.0 -var T 300.0 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile data_minimized.dat -var DumpFile dumpThermalized.xyz -var WriteData data_thermalized.dat -var rnd %s'%np.random.randint(1001,9999),
                     71:' -var buff 0.0 -var T 0.1 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile swapped_600.dat -var DumpFile dumpThermalized2.xyz -var WriteData Equilibrated_0.dat',
                     8:' -var buff 0.0 -var T 0.1 -var sigm 1.0 -var sigmdt 0.0001 -var ndump 100 -var ParseData 1 -var DataFile Equilibrated_0.dat -var DumpFile dumpSheared.xyz',
@@ -140,7 +143,8 @@ if __name__ == '__main__':
                     14:['p2', 51, 'p4', 51, 'p7', 'p3','p5',1.0], #--- put disc, min, add vacancy, min, add subgroup, kmc input,kart.sh to bash ,invoke kart
                     15:['p8',51,'p7','p3','p5',1.0], #--- irradiation: preprocess, min, add subgroup, kmc input,kart.sh to bash ,invoke kart
                     16:[5,11], #--- irradiation: create & min, cascade
-                  }[16]
+                    17:[51,'p3','p5',1.0], #--- irradiation: min, kmc input,kart.sh to bash ,invoke kart
+                  }[17]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
