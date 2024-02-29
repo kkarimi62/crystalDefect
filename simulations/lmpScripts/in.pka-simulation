@@ -93,7 +93,7 @@ restart          30000 ./restart/pka-restart
 #variable         s equal next(f)
 shell mkdir     ./configs-${direction}
 #dump             5 all custom 500 ./configs-${direction}/configuration.* id type x y z vx vy vz c_kin c_pot
-dump             5 all custom 500 ./configs-${direction}/configuration.* id type x y z c_kin
+dump             5 all custom 100 ./configs-${direction}/configuration id type x y z c_kin
 #dump_modify      5 sort id pad 8 every v_s first yes
 
 
@@ -101,7 +101,7 @@ dump             5 all custom 500 ./configs-${direction}/configuration.* id type
 fix             1 boundary nvt temp 300 300 0.2
 fix             2 interior nve
 fix             es all electron/stopping 10.0 ${INC}/elstop-table.dat region int
-run             1000 #90000 #35000 #90000 #60000 #32000
+run             10000 #90000 #35000 #90000 #60000 #32000
 unfix           es
 unfix           2
 unfix           1
