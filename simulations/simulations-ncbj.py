@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         nruns	 = 1
         #
-        nThreads = 4 #40
+        nThreads = 16 #40
         nNode	 = 1
         #
         jobname  = {
