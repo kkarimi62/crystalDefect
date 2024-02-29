@@ -25,7 +25,7 @@ mass            1 58.693
 group           pka id 1 #varid #94583 
 #-----pka in [135] direction-----unit angstrom/ps------
 if "${epka}==1" then &
-"velocity        pka set 9.65685425349106 28.9705627604732 48.2842712674553 units box"  #E_pka=1eV
+"velocity        pka set 36.0 120.0 200.0 units box"  #E_pka=1eV
 if "${epka}==5" then &
 "velocity        pka set 215.93382559614 647.801476788419 1079.6691279807 units box"  #E_pka=5eV
 if "${epka}==10" then &
