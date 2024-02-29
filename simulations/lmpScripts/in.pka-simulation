@@ -27,7 +27,7 @@ group           pka id 1 #varid #94583
 if "${epka}==1" then &
 "velocity        pka set 36.0 120.0 200.0 units box"  #E_pka=1eV
 if "${epka}==5" then &
-"velocity        pka set 75.93382559614 225.801476788419 375.6691279807 units box"  #E_pka=5eV
+"velocity        pka set 120.93382559614 325.801476788419 575.6691279807 units box"  #E_pka=5eV
 if "${epka}==10" then &
 "velocity        pka set 305.376544733167 916.129634199503 1526.88272366584 units box"  #E_pka=10eV
 if "${epka}==20" then &
