@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         nruns	 = 1
         #
-        nThreads = 16 #40
+        nThreads = 8 #16 #40
         nNode	 = 1
         #
         jobname  = {
@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
-                    9:'ni/irradiation/kmc', 
+                    9:'ni/irradiation/kmc2nd', 
                    }[9]
         sourcePath = os.getcwd() +\
                     {	
