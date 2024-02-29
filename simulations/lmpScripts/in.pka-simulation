@@ -100,8 +100,8 @@ dump             5 all custom 500 ./configs-${direction}/configuration.* id type
 #use different ensemble for the surf and interior regions of the sample
 fix             1 boundary nvt temp 300 300 0.2
 fix             2 interior nve
-fix             es all electron/stopping 10.0 elstop-table.dat region int
-run             90000 #35000 #90000 #60000 #32000
+fix             es all electron/stopping 10.0 ${INC}/elstop-table.dat region int
+run             1000 #90000 #35000 #90000 #60000 #32000
 unfix           es
 unfix           2
 unfix           1

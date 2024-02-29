@@ -34,7 +34,7 @@ if __name__ == '__main__':
                     5:'ni/void_2d_training', 
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
-                    8:'ni/irradiation/cascade', 
+                    8:'ni/irradiation/cascade2nd', 
                    }[8]
         sourcePath = os.getcwd() +\
                     {	
