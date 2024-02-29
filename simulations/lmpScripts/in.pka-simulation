@@ -21,11 +21,11 @@ mass            1 58.693
 
 #replicate 2 2 2
 
-variable        epka equal varepka #KeV, kinetic energy of the pka
+#variable        epka equal varepka #KeV, kinetic energy of the pka
 group           pka id 1 #varid #94583 
 #-----pka in [135] direction-----unit angstrom/ps------
 if "${epka}==1" then &
-"velocity        pka set 96.5685425349106 289.705627604732 482.842712674553 units box"  #E_pka=1eV
+"velocity        pka set 9.65685425349106 28.9705627604732 48.2842712674553 units box"  #E_pka=1eV
 if "${epka}==5" then &
 "velocity        pka set 215.93382559614 647.801476788419 1079.6691279807 units box"  #E_pka=5eV
 if "${epka}==10" then &
@@ -89,12 +89,12 @@ thermo_style    custom step time temp c_tempint c_tempsurf v_ke1 v_pe1 etotal pr
 shell mkdir      ./restart
 restart          30000 ./restart/pka-restart
 
-variable         f file log.times
-variable         s equal next(f)
+#variable         f file log.times
+#variable         s equal next(f)
 shell mkdir     ./configs-${direction}
 #dump             5 all custom 500 ./configs-${direction}/configuration.* id type x y z vx vy vz c_kin c_pot
 dump             5 all custom 500 ./configs-${direction}/configuration.* id type x y z c_kin
-dump_modify      5 sort id pad 8 every v_s first yes
+#dump_modify      5 sort id pad 8 every v_s first yes
 
 
 #use different ensemble for the surf and interior regions of the sample
