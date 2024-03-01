@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
-                    9:'ni/irradiation/kmc2nd', 
+                    9:'ni/irradiation/kmc3rd', 
                    }[9]
         sourcePath = os.getcwd() +\
                     {	
