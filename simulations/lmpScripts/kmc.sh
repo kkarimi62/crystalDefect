@@ -24,9 +24,9 @@ setenv TOTAL_TIME                    1000000.0        # Maximum simulation time 
 setenv TEMPERATURE                   ${temp}     # The simulated temperature in kelvin
 
 setenv NUMBER_ATOMS                   ${natom}      # The total number of atoms 
-# setenv X_BOX                         ${lx}
-# setenv Y_BOX                         ${ly}
-# setenv Z_BOX                         ${lz}
+setenv X_BOX                         ${lx}
+setenv Y_BOX                         ${ly}
+setenv Z_BOX                         ${lz}
 setenv NSPECIES                       2       # The number of different atom types (default: 2)
 setenv ATOMIC_SYMBOLS					"Ni Ni" #"Ni NiHCP:inactive" #"Ni NiVoid:inactive" #"Ni Co Cr" #'Ni Co Cr Fe Mn' #"Ni Co Cr"
 #setenv NTRAVAILLEUR                     3     # The number of cores associated with forces calculations per ARTnouveau search (default:1)
