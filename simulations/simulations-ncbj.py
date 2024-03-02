@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 1
+        nruns	 = 8
         #
         nThreads = 8 #16 #40
         nNode	 = 1
@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     6:'ni/pure', 
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
-                    9:'ni/irradiation/dpa0_6th', 
+                    9:'ni/irradiation/dpa0_7th', 
                    }[9]
         sourcePath = os.getcwd() +\
                     {	
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     #        print('EXEC=',EXEC)
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
-        durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
+        durtn = ['23:59:59','47:59:59','167:59:59'][ 1 ]
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][2]
         #--
