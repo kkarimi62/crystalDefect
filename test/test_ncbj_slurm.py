@@ -78,4 +78,5 @@ if __name__ == '__main__':
                             % ( partition, mem, durtn, additional_args, jobname0, counter, jobname0, counter, jobname0, counter \
                                 , writPath, nThreads, nNode, writPath, writPath ) ) # --- runs oarScript.sh! 
 #         os.system('echo $slurm_path')
+    print('job name=%s'%jobname)
 
