@@ -7,7 +7,6 @@ pair_style	eam/alloy
 #pair_coeff              * * ${PathEam}/NiCoCr.lammps.eam Ni Ni
 #
 pair_style                eam
-#pair_coeff                * * ${PathEam}/Ni_u3.eam
 pair_coeff                * * ${PathEam}/Ni_u3.eam
 
 #pair_style meam/c

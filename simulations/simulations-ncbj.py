@@ -32,11 +32,11 @@ if __name__ == '__main__':
         jobname  = {
                     4:'ni/niNatom1KTemp300K', 
                     5:'ni/void_2d_training', 
-                    6:'ni/pure', 
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
-                   }[9]
+                    6:'ni/pure/test', 
+                   }[6]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -45,7 +45,7 @@ if __name__ == '__main__':
                         5:'/dataFiles/reneData',
                         8:'/../data/ni/irradiation/dpa0',
                         9:'/ni/irradiation/cascade3rd',
-                    }[9] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -56,7 +56,7 @@ if __name__ == '__main__':
                         6:['FeNi_2000.dat'], 
                         8:['Atoms_dyn_Frank_Loop.dat'], 
                         9:['final.data'], 
-                     }[9] #--- to be copied from the above directory. set it to '0' if no file
+                     }[0] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                     6:' -var T 300 -var DataFile Equilibrated_300.dat',
                     4:' -var T 600.0 -var t_sw 20.0 -var DataFile Equilibrated_600.dat -var nevery 100 -var ParseData 1 -var WriteData swapped_600.dat', 
                     5:' -var buff 0.0 -var nevery 1000 -var ParseData 0 -var lx 10 -var ly 10 -var lz 10 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
-                    51:' -var buff 0.0 -var nevery 100 -var ParseData 1 -var DataFile final.data -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat', 
+                    51:' -var buff 0.0 -var nevery 100 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat', 
                     7:' -var buff 0.0 -var T 300.0 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile data_minimized.dat -var DumpFile dumpThermalized.xyz -var WriteData data_thermalized.dat -var rnd %s'%np.random.randint(1001,9999),
                     71:' -var buff 0.0 -var T 0.1 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile swapped_600.dat -var DumpFile dumpThermalized2.xyz -var WriteData Equilibrated_0.dat',
                     8:' -var buff 0.0 -var T 0.1 -var sigm 1.0 -var sigmdt 0.0001 -var ndump 100 -var ParseData 1 -var DataFile Equilibrated_0.dat -var DumpFile dumpSheared.xyz',
@@ -113,7 +113,7 @@ if __name__ == '__main__':
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
                     'p3':' lammps_data.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
-                    'p4':' data_min.dat data_min.dat %s 1 1 24.0'%(os.getcwd()+'/lmpScripts'),
+                    'p4':' lammps_data.dat lammps_data.dat %s 1 1 14.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
@@ -135,7 +135,6 @@ if __name__ == '__main__':
                     5:[5,7], #--- minimize, thermalize
                     6:[5,'p3',2.0], #--- minimize, kart input, invoke kart
                     7:[5,'p4','p3',1.0], #--- minimize, add vacancy, kart input, invoke kart
-                    9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
                     10:[5,'p4',7,'p3','p5',1.0], #--- minimize, add vacancy, thermalize, kart input, kart.sh to bash shell ,invoke kart
                     12:[ 'p5',1.0], #--- restart 11: set restart = True in kmc.sh
                     13:[5, 'p4', 51, 'p3','p5',1.0], #--- min.,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
@@ -144,13 +143,14 @@ if __name__ == '__main__':
                     15:['p8',51,'p3','p5',1.0], #--- irradiation: preprocess, min, kmc input,kart.sh to bash ,invoke kart
                     16:[5,11], #--- irradiation: create & min, cascade
                     17:[51,'p3','p5',1.0], #--- irradiation: min, kmc input,kart.sh to bash ,invoke kart
-                  }[17]
+                    9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
+                  }[9]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
-        durtn = ['23:59:59','47:59:59','167:59:59'][ 1 ]
+        durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][2]
         #--
