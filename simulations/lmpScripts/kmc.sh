@@ -55,8 +55,8 @@ setenv CRYST_TOPO_RADIUS              3.0     # radius for crystal-like topologi
 setenv TOPOLOGY_FILE 				  'Topologies' # Store info about topologies
 setenv TOPO_STAT_FILE 				  'topos.list' # Store statistics about topologies
 setenv EVENT_IGNORE_FILE 			  'Event_ignore' # File where events to ignore are stored# (default: Event_ignore)
-setenv EVENT_REMOVE_FILE 			  'Event_remove' # File where events ids to remove from catalogue are stored #(applied at #setenv MAX_NODES_GRAPH				  22 #kam
-setenv UNIQUE_CRYST_STRUCT	.true. #kam
+setenv EVENT_REMOVE_FILE 			  'Event_remove' # File where events ids to remove from catalogue are stored #(applied at #setenv MAX_NODES_GRAPH				  22
+setenv UNIQUE_CRYST_STRUCT	.true.
 
 #################################### Force calculations ###############################
 
