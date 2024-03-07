@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 8
+        nruns	 = 1
         #
         nThreads = 8 #16 #40
         nNode	 = 1
@@ -36,7 +36,8 @@ if __name__ == '__main__':
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
                     6:'ni/pure/test', 
-                   }[6]
+                    61:'ni/interestitials/test', 
+                   }[61]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -92,6 +93,7 @@ if __name__ == '__main__':
                         'p6':'addVoid.py',
                         'p7':'addSubGroups.py',
                          'p8':'preprocess_data.py',
+                         'p9':'addAtom.py',
                         1.0:'kmc.sh', #--- bash script
                         2.0:'kmcUniqueCRYST.sh', #--- bash script
                     } 
@@ -119,6 +121,7 @@ if __name__ == '__main__':
                     'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
                     'p7':' %s lammps_data.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
                     'p8':' Atoms_dyn_Frank_Loop.dat lammps_data.dat %s'%(os.getcwd()+'/lmpScripts'),
+                    'p9':' %s lammps_data.dat lammps_data.dat 1'%(os.getcwd()+'/lmpScripts'),
                      1.0:'DataFile=lammps_data.dat',
                      2.0:'DataFile=data_minimized.txt',
                     } 
@@ -144,7 +147,8 @@ if __name__ == '__main__':
                     16:[5,11], #--- irradiation: create & min, cascade
                     17:[51,'p3','p5',1.0], #--- irradiation: min, kmc input,kart.sh to bash ,invoke kart
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[9]
+                    91:[5,'p9',51,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
+                  }[91]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
