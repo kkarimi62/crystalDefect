@@ -23,7 +23,7 @@ setenv TOTAL_TIME                    1000000.0        # Maximum simulation time 
 
 setenv TEMPERATURE                   ${temp}     # The simulated temperature in kelvin
 
-setenv Random_seed                   12345
+# setenv Random_seed                   12345
 
 setenv NUMBER_ATOMS                   ${natom}      # The total number of atoms 
 setenv X_BOX                         ${lx}
