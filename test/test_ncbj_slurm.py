@@ -27,26 +27,26 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/irradiation/kmc3rd', 
+                            '4':'descriptors/ni/irradiation/dpa0_7th', 
                             '5':'neuralNet/ni/irradiation/kmc3rd', 
                             '6':'mlmc/ni/void_2d_training', 
-                            }['5']
+                            }['4']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
-                                            '4':'/../simulations/ni/irradiation/kmc3rd',
+                                            '4':'/../simulations/ni/irradiation/dpa0_7th',
                                             '5':'/descriptors/ni/irradiation/kmc3rd',
                                             '6':'/neuralNet/ni/void_2d_training', 
-                                        }['5'] #--- source
+                                        }['4'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 1
+    keyno                = 0
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '128gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 2 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
