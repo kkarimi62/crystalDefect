@@ -27,22 +27,22 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/irradiation/dpa0_7th', 
+                            '4':'descriptors/ni/pure/test', 
                             '5':'neuralNet/ni/irradiation/dpa0_7th', 
                             '6':'mlmc/ni/void_2d_training', 
-                            }['5']
+                            }['4']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
-                                            '4':'/../simulations/ni/irradiation/dpa0_7th',
+                                            '4':'/../simulations/ni/pure/test',
                                             '5':'/descriptors/ni/irradiation/dpa0_7th',
                                             '6':'/neuralNet/ni/void_2d_training', 
-                                        }['5'] #--- source
+                                        }['4'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 1
+    keyno                = 0
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
