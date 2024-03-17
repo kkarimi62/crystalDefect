@@ -7,14 +7,15 @@ include ${INC}/initSoftWall.mod
 #boundary p p p
 #atom_style atomic
 
-# Define the potential
-include ${INC}/potential.mod
 
 # Create the simulation cell
 lattice fcc 3.52
 region box block 0 10 0 10 0 10
 create_box 1 box
 create_atoms 1 box
+
+# Define the potential
+include ${INC}/potential.mod
 
 # Define vacancies and interstitials
 group vacancy id 1
