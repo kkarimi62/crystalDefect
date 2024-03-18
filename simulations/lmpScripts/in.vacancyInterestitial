@@ -10,7 +10,7 @@ include ${INC}/initSoftWall.mod
 
 # Create the simulation cell
 lattice fcc 3.52
-region box block 0 6 0 6 0 6
+region box block 0 4 0 4 0 4
 create_box 1 box
 create_atoms 1 box
 
@@ -41,7 +41,7 @@ dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e" # %4.3e %4.3e %4.3
 #thermo_style custom step temp pe ke etotal
 #run 10000
 
-fix 3 all box/relax iso 0.0
+#fix 3 all box/relax iso 0.0
 minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
 
 write_data ${WriteData}
