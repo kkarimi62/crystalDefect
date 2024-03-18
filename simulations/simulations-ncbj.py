@@ -24,9 +24,9 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 1
+        nruns	 = 8
         #
-        nThreads = 1
+        nThreads = 4
         nNode	 = 1
         #
         jobname  = {
