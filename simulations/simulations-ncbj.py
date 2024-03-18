@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 32
+        nruns	 = 1
         #
         nThreads = 4
         nNode	 = 1
@@ -37,7 +37,8 @@ if __name__ == '__main__':
                     9:'ni/irradiation/kmc3rd', 
                     6:'ni/pure/test', 
                     61:'ni/interestitials/test2nd', 
-                   }[61]
+                    62:'ni/defects', 
+                   }[62]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -154,7 +155,7 @@ if __name__ == '__main__':
                     91:[5,'p9',51,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
                     92:[12,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- minimize, add defects, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[91]
+                  }[93]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
