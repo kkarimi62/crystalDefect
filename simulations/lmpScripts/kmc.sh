@@ -47,11 +47,11 @@ setenv MIN_SIG_BARRIER                 0.1    # Max height of barrier and inv. b
 
 #################################### Topology Params ##################################
 
-setenv TOPO_RADIUS                    4.0     # radius for topology cluster > CRYST_TOPO_RADIUS 
-setenv MAX_TOPO_CUTOFF                3.0     # length-cutoff used by default to link two atoms
-setenv MIN_TOPO_CUTOFF                2.2     # minimal length cutoff used when looking at secondary topologies 
+setenv TOPO_RADIUS                    6.5     # radius for topology cluster > CRYST_TOPO_RADIUS 
+setenv MAX_TOPO_CUTOFF                2.7     # length-cutoff used by default to link two atoms
+setenv MIN_TOPO_CUTOFF                2.3     # minimal length cutoff used when looking at secondary topologies 
 setenv CRYST_TOPOID                   1079097  # topo id of the crystalline-like topologies
-setenv CRYST_TOPO_RADIUS              3.0     # radius for crystal-like topologies (default: 4.0 A) 
+setenv CRYST_TOPO_RADIUS              4.0     # radius for crystal-like topologies (default: 4.0 A) 
 setenv TOPOLOGY_FILE 				  'Topologies' # Store info about topologies
 setenv TOPO_STAT_FILE 				  'topos.list' # Store statistics about topologies
 setenv EVENT_IGNORE_FILE 			  'Event_ignore' # File where events to ignore are stored# (default: Event_ignore)
@@ -92,7 +92,7 @@ setenv DTMAX_FIRE_MIN       0.05        # default value=DTMAX_FIRE
 ################# ART PARAMETERS ######################################################
 setenv SADDLE_PUSH_PARAM          0.1     # The fraction of the initial-saddle distance used to push saddle config. away from initial minimum (default: 0.1)
 setenv TYPE_OF_EVENTS             local   # Initial move for events - global or local
-setenv RADIUS_INITIAL_DEFORMATION 3.0     # Cutoff for local-move (in angstroems)
+setenv RADIUS_INITIAL_DEFORMATION 2.5     # Cutoff for local-move (in angstroems)
 setenv EIGENVALUE_THRESHOLD      -1.0     # Eigenvalue threshold for leaving basin
 
 setenv EXIT_FORCE_THRESHOLD       0.1    # Threshold for convergence at saddle point
@@ -101,38 +101,38 @@ setenv FORCE_THRESHOLD_PERP_REL   0.05    # Threshold for perpendicular relaxati
 setenv FINE_EXIT_FORCE_THRESHOLD       0.05    # finner Threshold for convergence at saddle point 
 setenv FINE_FORCE_THRESHOLD_PERP_REL   0.01    # finner Threshold for perpendicular relaxation
 
-#kam setenv MIN_NUMBER_KSTEPS          2       # Min. number of ksteps before calling lanczos
-setenv INCREMENT_SIZE             0.1     # Overall scale for the increment moves in activation
+setenv MIN_NUMBER_KSTEPS          1       # Min. number of ksteps before calling lanczos
+setenv INCREMENT_SIZE             0.15     # Overall scale for the increment moves in activation
 
-setenv INITIAL_STEP_SIZE          1.00    # Size of initial displacement, in A
+setenv INITIAL_STEP_SIZE          0.01    # Size of initial displacement, in A
 setenv BASIN_FACTOR               3.00
 setenv MIN_NUMBER_KSTEPS          10 #3       # Min. number of ksteps before calling lanczos
-setenv MAX_PERP_MOVES_BASIN       6       # Maximum number of perpendicular steps leaving basin
-setenv MAX_PERP_MOVES_ACTIV       20       # Maximum number of perpendicular steps during activation
-setenv MAX_ITER_BASIN             40      # Maximum number of iteraction for leaving the basin (kter)
+setenv MAX_PERP_MOVES_BASIN       2       # Maximum number of perpendicular steps leaving basin
+setenv MAX_PERP_MOVES_ACTIV       6       # Maximum number of perpendicular steps during activation
+setenv MAX_ITER_BASIN             15      # Maximum number of iteraction for leaving the basin (kter)
 
 
 
-setenv MAX_ITER_ACTIVATION        30      # Maximum number of iteraction during activation (iter)
+setenv MAX_ITER_ACTIVATION        50      # Maximum number of iteraction during activation (iter)
 
-setenv NUMBER_LANCZOS_VECTORS     15      # Number of vectors included in lanczos procedure
+setenv NUMBER_LANCZOS_VECTORS     25      # Number of vectors included in lanczos procedure
 setenv LANCZOS_STEP               1e-3    #1e-2    # Size of the step for the numerical derivative (def: 0.001)
 
 
 
 
 # CHECK_LANCZOS_STAB overwrite LANCZOS_STEP and loop for 1e-1 to 1e-7 to check stability and then stop the code. 
-# setenv CHECK_LANCZOS_STAB  .true.         # Check lanczos stability over 200 steps, each iteration uses previous lanczos vector
-setenv NBRE_POINTS_LANCZOS        2       # number of extra points for numerical derivative in lanczos default 1 supported 1 or 2 for now.
+setenv CHECK_LANCZOS_STAB        .false.         # Check lanczos stability over 200 steps, each iteration uses previous lanczos vector
+#setenv NBRE_POINTS_LANCZOS        2       # number of extra points for numerical derivative in lanczos default 1 supported 1 or 2 for now.
 
 
 #################################### GENERIC events parameters ########################
 setenv SEARCH_FREQUENCY      10           # Minimum number of attempts to find a GENERIC event per new topology encountered
 setenv THRES_INCREASE_FREQ   25           # Number of failed attempts encountered because increasing the EIGEN_THRESH
 setenv TYPE_EVENT_UPDATE     SPEC         # choose between SPEC or GENE 
-setenv USE_LOG_SEARCH       .true.       # Search frequency is multiplied by logarithmic increasing function (default .true.)
+setenv USE_LOG_SEARCH       .false.       # Search frequency is multiplied by logarithmic increasing function (default .true.)
 
-setenv CHECK_INI_SAD_CONNECTIVITY .true. # When GENERIC saddle is found, pushes the system towards the initial minimum
+#setenv CHECK_INI_SAD_CONNECTIVITY .true. # When GENERIC saddle is found, pushes the system towards the initial minimum
                                           #  and minimizes.
                                           # If minimized config. not the same as the initial one, the saddle is rejected.
 
