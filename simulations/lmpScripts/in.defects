@@ -24,16 +24,16 @@ variable dens_dislocation equal 1.0e-6  # Dislocation loop density
 # Introduce defects
 # Vacancies
 variable num_vacancies equal v_dens_vacancy*vol
-create_atoms 1 random {num_vacancies} 12345 box
+create_atoms 1 random ${num_vacancies} 12345 box
 
 # Interstitials
 variable num_interstitials equal v_dens_interstitial*vol
-create_atoms 1 random {num_interstitials} 54321 box
+create_atoms 1 random ${num_interstitials} 54321 box
 
 # Frenkel pairs
 variable num_frenkel equal v_dens_frenkel*vol
-create_atoms 1 random {num_frenkel} 98765 box
-create_atoms 1 random {num_frenkel} 56789 box
+create_atoms 1 random ${num_frenkel} 98765 box
+create_atoms 1 random ${num_frenkel} 56789 box
 
 # Dislocation loops
 variable num_dislocations equal v_dens_dislocation*vol
