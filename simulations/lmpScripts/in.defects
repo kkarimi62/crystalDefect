@@ -1,0 +1,50 @@
+# LAMMPS input script for simulating pure nickel with various defects including dislocation loops
+
+# Initialize simulation
+include ${INC}/initSoftWall.mod
+
+
+# Create lattice
+lattice fcc 3.52
+region box block 0 10 0 10 0 10
+create_box 1 box
+create_atoms 1 box
+replicate 2 2 2
+
+# Define potential
+include ${INC}/potential.mod
+
+
+variable dens_vacancy equal 1.0e-4  # Vacancy density
+variable dens_interstitial equal 5.0e-5  # Interstitial density
+variable dens_frenkel equal 2.0e-5  # Frenkel pair density
+variable dens_dislocation equal 1.0e-6  # Dislocation loop density
+
+
+# Introduce defects
+# Vacancies
+variable num_vacancies equal v_dens_vacancy*vol
+create_atoms 1 random {num_vacancies} 12345 box
+
+# Interstitials
+variable num_interstitials equal v_dens_interstitial*vol
+create_atoms 1 random {num_interstitials} 54321 box
+
+# Frenkel pairs
+variable num_frenkel equal v_dens_frenkel*vol
+create_atoms 1 random {num_frenkel} 98765 box
+create_atoms 1 random {num_frenkel} 56789 box
+
+# Dislocation loops
+variable num_dislocations equal v_dens_dislocation*vol
+create_atoms 1 region sphere 5 5 5 3.0 edge ${num_dislocations}
+
+dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z #c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
+dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e" # %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+
+fix 3 all box/relax iso 0.0
+minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
+
+write_data ${WriteData}
+
+run	0

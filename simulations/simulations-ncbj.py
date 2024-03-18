@@ -85,6 +85,7 @@ if __name__ == '__main__':
                         10:'in.elasticSoftWall',
                          11:'in.pka-simulation',
                          12:'in.vacancyInterestitial',
+                         13:'in.defects',
                         'p0':'partition.py', #--- python file
                         'p1':'WriteDump.py',
                         'p2':'DislocateEdge2nd.py',
@@ -113,6 +114,7 @@ if __name__ == '__main__':
                     10:' -var ParseData 1 -var DataFile swapped_600.dat',
                     11:' -var DataFile lammps_data.dat -var epka 5 ',
                     12:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
+                    13:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
@@ -150,7 +152,8 @@ if __name__ == '__main__':
                     17:[51,'p3','p5',1.0], #--- irradiation: min, kmc input,kart.sh to bash ,invoke kart
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
                     91:[5,'p9',51,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
-                    91:[12,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
+                    92:[12,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
+                    93:[13,'p3','p5',1.0], #--- minimize, add defects, minimize, kart input, kart.sh to bash shell ,invoke kart
                   }[91]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
