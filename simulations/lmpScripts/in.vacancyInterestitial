@@ -10,7 +10,7 @@ include ${INC}/initSoftWall.mod
 
 # Create the simulation cell
 lattice fcc 3.52
-region box block 0 10 0 10 0 10
+region box block 0 1 0 1 0 1
 create_box 1 box
 create_atoms 1 box
 
@@ -18,9 +18,9 @@ create_atoms 1 box
 include ${INC}/potential.mod
 
 # Define vacancies and interstitials
-group vacancy id 1
+#group vacancy id 1
 group interstitial id 2
-delete_atoms group vacancy
+#delete_atoms group vacancy
 create_atoms 1 single 0.5 0.5 0.5
 
 # Settings
