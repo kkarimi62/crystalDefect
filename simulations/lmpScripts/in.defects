@@ -23,21 +23,21 @@ variable dens_dislocation equal 1.0e-6  # Dislocation loop density
 
 # Introduce defects
 # Vacancies
-variable num_vacancies equal v_dens_vacancy*vol
-create_atoms 1 random ceil(${num_vacancies}) 12345 box
+variable num_vacancies equal ceil(${v_dens_vacancy}*${vol})
+create_atoms 1 random ${num_vacancies} 12345 box
 
 # Interstitials
-variable num_interstitials equal v_dens_interstitial*vol
-create_atoms 1 random ceil(${num_interstitials}) 54321 box
+variable num_interstitials equal ceil(${v_dens_interstitial}*${vol})
+create_atoms 1 random ${num_interstitials} 54321 box
 
 # Frenkel pairs
-variable num_frenkel equal v_dens_frenkel*vol
-create_atoms 1 random ceil(${num_frenkel}) 98765 box
-create_atoms 1 random ceil(${num_frenkel}) 56789 box
+variable num_frenkel equal ceil(${v_dens_frenkel}*${vol})
+create_atoms 1 random ${num_frenkel} 98765 box
+create_atoms 1 random ${num_frenkel} 56789 box
 
 # Dislocation loops
-variable num_dislocations equal v_dens_dislocation*vol
-create_atoms 1 region sphere 5 5 5 3.0 edge ceil(${num_dislocations})
+variable num_dislocations equal ceil(${v_dens_dislocation}*${vol})
+create_atoms 1 region sphere 5 5 5 3.0 edge ${num_dislocations}
 
 dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z #c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
 dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e" # %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
