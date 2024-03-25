@@ -5,8 +5,8 @@ if __name__ == '__main__':
     #---
     lnums = [ 37, 12,13 ]
     script = 'postproc.py test_ncbj_slurm.py'.split()[1]
-    number_hidden_layers  = dict(zip(range(4),[4,8,16]))
-    hidden_layer_size     = dict(zip(range(4),[16,32]))
+    number_hidden_layers  = dict(zip(range(4),[2,4]))
+    hidden_layer_size     = dict(zip(range(4),[8,16,32]))
 
     string=open(script).readlines() #--- python script
     #---
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
 #---	
             inums = lnums[ 0 ] - 1
-            string[ inums ] = "\t\'5\':\'neuralNet/ni/pure/test/layer%s/layer_size%s\',\n" % (key_n,key_h) #--- change job name
+            string[ inums ] = "\t\'5\':\'neuralNet/ni/pure/test2nd/layer%s/layer_size%s\',\n" % (key_n,key_h) #--- change job name
     #---	densities
             #
             inums = lnums[ 1 ] - 1
