@@ -9,8 +9,8 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     confParser.set('neural net','input_path',argvv)
     confParser.set('gnn','input_path',argvv)
     #
-    confParser.set('gnn','num_layers','8')
-    confParser.set('gnn','c_hidden','16')
+#    confParser.set('gnn','num_layers','8')
+#    confParser.set('gnn','c_hidden','16')
     #--- write
     confParser.write(open('configuration.ini','w'))	
     #--- set environment variables
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 #---
     additional_args      = ''
     if partition         == 'GPU_K80':
-        additional_args  = '--gres=gpu:tesla:1'
+        additional_args  = '--gres=gpu:tesla:2'
     PYFIL                = PYFILdic[ keyno ]
     if convert_to_py:
         os.system('jupyter nbconvert --to script %s --output py_script\n'%PYFIL)
