@@ -19,7 +19,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     print('#!/bin/bash\n',file=someFile)
     print('EXEC_DIR=%s\n\n'%( EXEC_DIR ),file=someFile)
 #    print('source /mnt/opt/spack-0.17/share/spack/setup-env.sh\n\nspack load python@3.8.12%%gcc@8.3.0\n\n',file=someFile)
-    print('source activate pytorch',file=someFile)
+    print('source activate pytorch_gpu4th',file=someFile)
     if convert_to_py:
         print('time ipython3 py_script.py\n',file=someFile)
     else:
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     nThreads             = 1
     jobname              = {
                             '4':'descriptors/ni/pure/test2nd',#'descriptors/ni/pure/test', 
-                            '5':'neuralNet/ni/pure/test3rd',#'neuralNet/ni/pure/test', 
+                            '5':'neuralNet/ni/pure/gpu',#'neuralNet/ni/pure/test', 
                             '6':'mlmc/ni/interestitials/test2nd', 
                             }['5']
     DeleteExistingFolder = True
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
