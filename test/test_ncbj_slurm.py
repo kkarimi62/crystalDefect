@@ -59,7 +59,7 @@ if __name__ == '__main__':
 #---
     additional_args      = ''
     if partition         == 'GPU_K80':
-        additional_args  = '--gres=gpu:tesla:4'
+        additional_args  = '--gres=gpu:tesla:2'
     PYFIL                = PYFILdic[ keyno ]
     if convert_to_py:
         os.system('jupyter nbconvert --to script %s --output py_script\n'%PYFIL)
