@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
-                    6:'ni/pure/test', 
+                    6:'ni/pure/test2nd', 
                     61:'ni/interestitials/test2nd', 
                     62:'ni/defects', 
                    }[6]
