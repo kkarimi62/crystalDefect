@@ -33,7 +33,7 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/pure/shape14x14x14',#'descriptors/ni/pure/test', 
+                            '4':'descriptors/ni/pure/shape20x20x20',#'descriptors/ni/pure/test', 
                             '5':'neuralNet/ni/pure/encoder',#'neuralNet/ni/pure/test', 
                             '6':'mlmc/ni/interestitials/test2nd', 
                             }['4']
