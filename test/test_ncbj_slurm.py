@@ -33,22 +33,22 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/pure/shape20x20x20',#'descriptors/ni/pure/test', 
+                            '4':'descriptors/ni/pure/shape10x10x10',#'descriptors/ni/pure/test', 
                             '5':'neuralNet/ni/pure/shape20x20x20',#'neuralNet/ni/pure/test', 
                             '6':'mlmc/ni/interestitials/test2nd', 
-                            }['5']
+                            }['4']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/ni/pure/test2nd',
                                             '5':'/descriptors/ni/pure/shape20x20x20',#'/descriptors/ni/pure/test',
                                             '6':'/neuralNet/ni/interestitials/test2nd', 
-                                        }['5'] #--- source
+                                        }['4'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 1
+    keyno                = 0
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '8gb'
