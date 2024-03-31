@@ -47,7 +47,7 @@ setenv MIN_SIG_BARRIER                 0.1    # Max height of barrier and inv. b
 
 #################################### Topology Params ##################################
 
-setenv TOPO_RADIUS                    6.0     # radius for topology cluster > CRYST_TOPO_RADIUS 
+setenv TOPO_RADIUS                    4.0     # radius for topology cluster > CRYST_TOPO_RADIUS 
 setenv MAX_TOPO_CUTOFF                3.0     # length-cutoff used by default to link two atoms
 setenv MIN_TOPO_CUTOFF                2.2     # minimal length cutoff used when looking at secondary topologies 
 setenv CRYST_TOPOID                   1079097  # topo id of the crystalline-like topologies
