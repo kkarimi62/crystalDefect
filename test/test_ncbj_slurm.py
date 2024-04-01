@@ -29,26 +29,26 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs	             = range( 1 )
+    runs	             = range( 10 )
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/pure/bulk',#'descriptors/ni/pure/test', 
+                            '4':'descriptors/ni/pure/bulk_testset',#'descriptors/ni/pure/test', 
                             '5':'neuralNet/ni/pure/bulk_testset',#shape10x10x10_overfitting_trainSize',#'neuralNet/ni/pure/test', 
                             '6':'mlmc/ni/interestitials/test2nd', 
-                            }['5']
+                            }['4']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/ni/pure/increasedCutoff', #test2nd',
                                             '5':'/descriptors/ni/pure/bulk', #'/descriptors/ni/pure/test',
                                             '6':'/neuralNet/ni/interestitials/test2nd', 
-                                        }['5'] #--- source
+                                        }['4'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 1
+    keyno                = 0
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '8gb'
