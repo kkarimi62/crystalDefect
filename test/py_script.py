@@ -6,7 +6,7 @@
 
 # # import libs
 
-# In[1]:
+# In[2]:
 
 
 import configparser
@@ -2756,7 +2756,7 @@ def main():
 
 # ## graph net
 
-# In[27]:
+# In[4]:
 
 
 class GNNModel(nn.Module):
@@ -2816,7 +2816,7 @@ class GNNModel(nn.Module):
         return x
 
 
-# In[28]:
+# In[5]:
 
 
 class GraphNet( GNNModel ):
@@ -2974,11 +2974,12 @@ class GraphNet( GNNModel ):
             augmented_input_data.extend(augmented_input)
             augmented_target_displacements.extend(augmented_target)
 
-        adj_matrices      = torch.stack(self.compute_adjacency_matrices2nd(augmented_input_data, rcut=3.0)) 
+#        adj_matrices      = torch.stack(self.compute_adjacency_matrices2nd(augmented_input_data, rcut=3.0)) 
+        adj_matrices      = torch.stack(self.compute_adjacency_matrices(augmented_input_data, rcut=3.0)) 
         
         
         #--- verify adj matrix????
-#        self.PrintOvito(adjacency = adj_matrices[0])
+        self.PrintOvito(adjacency = adj_matrices[0])
 
 
         # Concatenate input data along a new dimension to form a single tensor
@@ -2986,14 +2987,14 @@ class GraphNet( GNNModel ):
 #        print('input_data_tensor.shape:',input_data_tensor.shape)
 
         # Standardize the augmented input data
-        mean              = input_data_tensor.mean(dim=(0, 1))
-        std               = input_data_tensor.std(dim=(0, 1))
-        standardized_input_data = [GraphNet.standardize_data(data, mean, std) for data in augmented_input_data]
+#         mean              = input_data_tensor.mean(dim=(0, 1))
+#         std               = input_data_tensor.std(dim=(0, 1))
+#         standardized_input_data = [GraphNet.standardize_data(data, mean, std) for data in augmented_input_data]
 
 
         # Convert input data to tensors
         target_displacements_tensor = torch.stack(augmented_target_displacements)
-        input_data_tensor           = torch.stack(standardized_input_data)
+#        input_data_tensor           = torch.stack(standardized_input_data)
 
 
 
@@ -3164,142 +3165,142 @@ class GraphNet( GNNModel ):
                 fout.write('# LAMMPS data file written by OVITO\n%s atoms\n%s bonds\n1 atom types\n1 bond types\n%s %s xlo xhi\n%s %s ylo yhi\n%s %s zlo zhi\n\n'\
                            %(natom,nbond,0,l,0,l,0,l))
                 fout.write('Atoms # bond\n\n')
-                np.savetxt(fout,np.c_[df])
+                np.savetxt(fout,np.c_[df],'%d %d %d %e %e %e')
         
                 fout.write('\nBonds\n\n')
                 np.savetxt(fout,np.c_[np.arange(1,nbond+1), np.ones(nbond),bonds[:,0],bonds[:,1]],fmt='%d')
 
 
-# In[29]:
+# In[10]:
 
 
-# def main(): 
-#     # Check if GPU is available
-#     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-#     print(f'Using device: {device}')
+def main(): 
+    # Check if GPU is available
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'Using device: {device}')
     
-#     # Check if GPUs are available
-#     if torch.cuda.is_available():
-#         # Get the number of available GPUs
-#         num_gpus = torch.cuda.device_count()
-#         print(f"{num_gpus} GPU(s) available")
+    # Check if GPUs are available
+    if torch.cuda.is_available():
+        # Get the number of available GPUs
+        num_gpus = torch.cuda.device_count()
+        print(f"{num_gpus} GPU(s) available")
 
-#         # Assert that at least one GPU is allocated
-#         assert num_gpus > 0, "No GPUs available. Please check your CUDA installation."
+        # Assert that at least one GPU is allocated
+        assert num_gpus > 0, "No GPUs available. Please check your CUDA installation."
 
-#         # Print information about each GPU
-#         for i in range(num_gpus):
-#             gpu_name = torch.cuda.get_device_name(i)
-#             print(f"GPU {i}: {gpu_name}")
-#     else:
-#         print("No GPUs available. Please check your CUDA installation.")
+        # Print information about each GPU
+        for i in range(num_gpus):
+            gpu_name = torch.cuda.get_device_name(i)
+            print(f"GPU {i}: {gpu_name}")
+    else:
+        print("No GPUs available. Please check your CUDA installation.")
 
-#     gnn = GraphNet(
-#                      ntrain     = eval(confParser['gnn']['ntrain']),
-#                      c_in       = 1,
-#                      c_hidden   = 8,
-#                      c_out      = 2,
-#                      num_layers = 2,
-#                      num_epochs = 20000,
-#                      noise_std  = 0.0,
-#                      lr         = eval(confParser['gnn']['lr']),
-#                      verbose    = True 
-#                 ).to(device)  # Move model to GPU
+    gnn = GraphNet(
+                     ntrain     = eval(confParser['gnn']['ntrain']),
+                     c_in       = 1,
+                     c_hidden   = 64,
+                     c_out      = 2,
+                     num_layers = 2,
+                     num_epochs = 20000,
+                     noise_std  = 0.0,
+                     lr         = 0.001,
+                     verbose    = True 
+                ).to(device)  # Move model to GPU
 
-#     gnn.Parse( path  = confParser['gnn']['input_path'],
-#                  nruns = eval(confParser['gnn']['nruns']))
+    gnn.Parse( path  = confParser['gnn']['input_path'],
+                 nruns = eval(confParser['gnn']['nruns']))
     
-#     #--- build dataset based on the input catalogs
-#     gnn.DataBuilder2nd()
+    #--- build dataset based on the input catalogs
+    gnn.DataBuilder2nd()
     
-#     # Define optimizer and loss function
-#     optimizer = optim.Adam(gnn.parameters(), lr=gnn.lr)
-#     criterion = nn.MSELoss()
+    # Define optimizer and loss function
+    optimizer = optim.Adam(gnn.parameters(), lr=gnn.lr)
+    criterion = nn.MSELoss()
 
-#     # training loop
-#     training_loss_hist   = []
-#     validation_loss_hist = []
-#     best_loss = np.inf
-#     print(gnn.dataset_test.x)
-#     print(gnn.dataset_test.y)
-#     !mkdir best_model
-#     for epoch in range( gnn.num_epochs ):
-#         optimizer.zero_grad()
-#         predicted_displacements = gnn(gnn.dataset_train.x.to(device), gnn.dataset_train.edge_index.to(device))
-#         training_loss              = criterion(predicted_displacements, gnn.dataset_train.y.to(device))
-#         training_loss.backward()
-#         optimizer.step()
-#         training_loss_hist += [training_loss.detach().cpu().numpy()]  # Move loss back to CPU
+    # training loop
+    training_loss_hist   = []
+    validation_loss_hist = []
+    best_loss = np.inf
+    print(gnn.dataset_test.x)
+    print(gnn.dataset_test.y)
+    get_ipython().system('mkdir best_model')
+    for epoch in range( gnn.num_epochs ):
+        optimizer.zero_grad()
+        predicted_displacements = gnn(gnn.dataset_train.x.to(device), gnn.dataset_train.edge_index.to(device))
+        training_loss              = criterion(predicted_displacements, gnn.dataset_train.y.to(device))
+        training_loss.backward()
+        optimizer.step()
+        training_loss_hist += [training_loss.detach().cpu().numpy()]  # Move loss back to CPU
 
-#         #--- validation loss
-#         gnn.eval()
-#         with torch.no_grad():  # Disable gradient calculation
-#                 predicted_displacements = gnn(gnn.dataset_test.x.to(device), gnn.dataset_test.edge_index.to(device))
-#                 validation_loss         = criterion(predicted_displacements, gnn.dataset_test.y.to(device))
+        #--- validation loss
+        gnn.eval()
+        with torch.no_grad():  # Disable gradient calculation
+                predicted_displacements = gnn(gnn.dataset_test.x.to(device), gnn.dataset_test.edge_index.to(device))
+                validation_loss         = criterion(predicted_displacements, gnn.dataset_test.y.to(device))
 
-#                 validation_loss_hist += [validation_loss.cpu().numpy()]  # Move loss back to CPU
+                validation_loss_hist += [validation_loss.cpu().numpy()]  # Move loss back to CPU
 
-#         if epoch % 1000 == 0:
-#             print(f'Epoch {epoch}, Training Loss: {training_loss.item():4.3e}, Validation Loss: {validation_loss.item():4.3e}')
+        if epoch % 1000 == 0:
+            print(f'Epoch {epoch}, Training Loss: {training_loss.item():4.3e}, Validation Loss: {validation_loss.item():4.3e}')
 
-#             # Update best_loss if validation loss improves and save the model
+            # Update best_loss if validation loss improves and save the model
 #             best_loss = GraphNet.save_best_model(gnn, optimizer, 
 #                                         epoch, training_loss.detach().cpu().numpy(), best_loss, 
 #                                         'best_model/best_model.pth')
 
-#     #--- plot loss vs epoch
-#     !mkdir png
-#     ax = utl.PltErr(None,None,Plot=False)
-#     utl.PltErr(range(gnn.num_epochs),training_loss_hist,
-#                attrs={'fmt':'-','color':'C0'},
-#                ax=ax,Plot=False
-#           )
-#     utl.PltErr(range(gnn.num_epochs),validation_loss_hist,
-#                attrs={'fmt':'-','color':'red'},
-#               xscale='log',yscale='log',
-#                title='png/loss.png',
-#                Plot=False,
-#                ax=ax
-#           )
-#     return gnn.dataset_train, gnn.dataset_test
+    #--- plot loss vs epoch
+    get_ipython().system('mkdir png')
+    ax = utl.PltErr(None,None,Plot=False)
+    utl.PltErr(range(gnn.num_epochs),training_loss_hist,
+               attrs={'fmt':'-','color':'C0'},
+               ax=ax,Plot=False
+          )
+    utl.PltErr(range(gnn.num_epochs),validation_loss_hist,
+               attrs={'fmt':'-','color':'red'},
+              xscale='log',yscale='log',
+               title='png/loss.png',
+               Plot=False,
+               ax=ax
+          )
+    return gnn.dataset_train, gnn.dataset_test
 
 
-# data_train, data_test = main()
+#data_train, data_test = main()
 
 
 # In[30]:
 
 
-# def make_prediction(model, data, title):
-#     ax = utl.PltErr(None,None,Plot=False)
-#     u_pred = model(data.x, data.edge_index)
+def make_prediction(model, data, title):
+    ax = utl.PltErr(None,None,Plot=False)
+    u_pred = model(data.x, data.edge_index)
         
-#     u_pred = u_pred.cpu().detach().numpy()
-#     u_act  = data.y.cpu()
+    u_pred = u_pred.cpu().detach().numpy()
+    u_act  = data.y.cpu()
 
-#     colors='black red green'.split()
-#     for idime in range(2):
-#         utl.PltErr(u_act[:,idime],u_pred[:,idime],
-#                attrs={'fmt':'x','color':colors[idime]},
-#               ax=ax, Plot=False,
-#               )
+    colors='black red green'.split()
+    for idime in range(2):
+        utl.PltErr(u_act[:,idime],u_pred[:,idime],
+               attrs={'fmt':'x','color':colors[idime]},
+              ax=ax, Plot=False,
+              )
 
-#     utl.PltErr( None,None,
-#                Plot=False,
-#     ax=ax,
-#             xlim=(-2,2),ylim=(-2,2),
-#                title=title
-#               )
+    utl.PltErr( None,None,
+               Plot=False,
+    ax=ax,
+            xlim=(-2,2),ylim=(-2,2),
+               title=title
+              )
     
-# def main(data_train, data_test):
-# # Example usage
-#     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-#     print(f'Using device: {device}')
-#     model = torch.load('best_model/best_model.pth').to(device)
-#     make_prediction(model, data_train.to(device), title='png/disp_train.png')
-#     make_prediction(model, data_test.to(device), title='png/disp_test.png')
+def main(data_train, data_test):
+# Example usage
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'Using device: {device}')
+    model = torch.load('best_model/best_model.pth').to(device)
+    make_prediction(model, data_train.to(device), title='png/disp_train.png')
+    make_prediction(model, data_test.to(device), title='png/disp_test.png')
 
-# main(data_train, data_test)
+#main(data_train, data_test)
 
 
 # ### main
@@ -3364,6 +3365,12 @@ def main():
         training_loss              = criterion(predicted_displacements, gnn.dataset_train.y.to(device))
         training_loss.backward()
         optimizer.step()
+        if epoch == 0:
+            num_weights = 0
+            for item in gnn.parameters():
+                 num_weights += item.flatten().detach().cpu().numpy().shape[0]
+            print('num_weights=',num_weights)
+
         training_loss_hist += [training_loss.detach().cpu().numpy()]  # Move loss back to CPU
 
         #--- validation loss
@@ -3378,9 +3385,9 @@ def main():
             print(f'Epoch {epoch}, Training Loss: {training_loss.item():4.3e}, Validation Loss: {validation_loss.item():4.3e}')
 
             # Update best_loss if validation loss improves and save the model
-            best_loss = GraphNet.save_best_model(gnn, optimizer, 
-                                        epoch, training_loss.detach().cpu().numpy(), best_loss, 
-                                        'best_model/best_model.pth')
+    best_loss = GraphNet.save_best_model(gnn, optimizer, 
+                                epoch, training_loss.detach().cpu().numpy(), best_loss, 
+                                'best_model/best_model.pth')
 
     #--- plot loss vs epoch
     get_ipython().system('mkdir png')
@@ -3435,12 +3442,6 @@ def main(data_train, data_test):
     make_prediction(model, data_test.to(device), title='png/disp_test.png')
 
 main(data_train, data_test)
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:

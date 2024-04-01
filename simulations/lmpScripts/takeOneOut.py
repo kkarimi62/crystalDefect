@@ -167,8 +167,8 @@ def main():
     center = box.CellOrigin + np.matmul( box.CellVector, 0.5 * np.array( [ 1, 1, 1 ] ) )
     dr     = np.c_[ atoms.x, atoms.y, atoms.z ] - center
     dr_sq  = np.sum( dr * dr, axis = 1 )
-#    filtr2 = dr_sq > rdist * rdist
-    filtr2 = dr_sq <= rdist * rdist
+    filtr2 = dr_sq > rdist * rdist
+#    filtr2 = dr_sq <= rdist * rdist
     assert np.any( filtr2 ), 'decrease distance!'
     
     #--- filter
