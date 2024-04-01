@@ -34,7 +34,7 @@ if __name__ == '__main__':
     nThreads             = 1
     jobname              = {
                             '4':'descriptors/ni/pure/bulk',#'descriptors/ni/pure/test', 
-                            '5':'neuralNet/ni/pure/bulk',#shape10x10x10_overfitting_trainSize',#'neuralNet/ni/pure/test', 
+                            '5':'neuralNet/ni/pure/bulk3rd',#shape10x10x10_overfitting_trainSize',#'neuralNet/ni/pure/test', 
                             '6':'mlmc/ni/interestitials/test2nd', 
                             }['5']
     DeleteExistingFolder = True
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 #---
     additional_args      = ''
     if partition         == 'GPU_K80':
-        additional_args  = '--gres=gpu:tesla:2'
+        additional_args  = '--gres=gpu:tesla:3'
     PYFIL                = PYFILdic[ keyno ]
     if convert_to_py:
         os.system('jupyter nbconvert --to script %s --output py_script\n'%PYFIL)
