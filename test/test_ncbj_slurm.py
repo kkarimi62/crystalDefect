@@ -33,14 +33,14 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/pure/bulk_testset',#'descriptors/ni/pure/test', 
-                            '5':'neuralNet/ni/pure/edgeAttrs_overfit2nd_Dropout_lr',#shape10x10x10_overfitting_trainSize',#'neuralNet/ni/pure/test', 
+                            '4':'descriptors/ni/pure/bulk_testset_100',#'descriptors/ni/pure/test', 
+                            '5':'neuralNet/ni/pure/edgeAttrs_overfit2nd_Dropout_testset_100',#shape10x10x10_overfitting_trainSize',#'neuralNet/ni/pure/test', 
                             '6':'mlmc/ni/interestitials/test2nd', 
                             }['5']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/ni/pure/increasedCutoff', #test2nd',
-                                            '5':'/descriptors/ni/pure/bulk_testset', #'/descriptors/ni/pure/test',
+                                            '5':'/descriptors/ni/pure/bulk_testset_100', #'/descriptors/ni/pure/test',
                                             '6':'/neuralNet/ni/interestitials/test2nd', 
                                         }['5'] #--- source
     PYFILdic             = { 
