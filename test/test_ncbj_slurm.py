@@ -33,26 +33,26 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/pure/new',#'descriptors/ni/pure/test', 
-                            '5':'neuralNet/ni/pure/overfit_nodal_features_long_testset_100',#shape10x10x10_overfitting_trainSize',#'neuralNet/ni/pure/test', 
+                            '4':'descriptors/ni/pure/new',
+                            '5':'neuralNet/ni/pure/new',
                             '6':'mlmc/ni/interestitials/test2nd', 
-                            }['4']
+                            }['5']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
-                                            '4':'/../simulations/ni/pure/new', #test2nd',
-                                            '5':'/descriptors/ni/pure/bulk_testset_100_new', #'/descriptors/ni/pure/test',
+                                            '4':'/../simulations/ni/pure/new',
+                                            '5':'/descriptors/ni/pure/new',
                                             '6':'/neuralNet/ni/interestitials/test2nd', 
-                                        }['4'] #--- source
+                                        }['5'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 0
+    keyno                = 1
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 2 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
