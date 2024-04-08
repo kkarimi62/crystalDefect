@@ -54,7 +54,7 @@ if __name__ == '__main__':
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
-    partition            = ['parallel','cpu2019','bigmem','single', 'gpu-v100 --gres=gpu:1'][-1] 
+    partition            = ['parallel','cpu2019','bigmem','single', 'gpu-v100 --gres=gpu:1'][1] 
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
