@@ -18,7 +18,10 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     someFile             = open( 'oarScript.sh', 'w' )
     print('#!/bin/bash\n',file=someFile)
     print('EXEC_DIR=%s\n\n'%( EXEC_DIR ),file=someFile)
-    print('module load python/anaconda3-2019.10-tensorflowgpu\nsource activate pytorch_gpu5th',file=someFile)
+    if keyno == 0:
+        print('module load python/anaconda3-2018.12\nsource activate dscribe',file=someFile)
+    else:
+        print('module load python/anaconda3-2019.10-tensorflowgpu\nsource activate pytorch_gpu5th',file=someFile)
     if convert_to_py:
         print('time ipython3 py_script.py\n',file=someFile)
     else:
