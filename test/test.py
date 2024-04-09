@@ -50,7 +50,7 @@ if __name__ == '__main__':
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 5
+    keyno                = 1
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
