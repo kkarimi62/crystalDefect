@@ -34,14 +34,14 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/pure/new',
-                            '5':'neuralNet/ni/pure/new2nd',
+                            '4':'descriptors/ni/interestitials/new',
+                            '5':'neuralNet/ni/interestitials/new',
                             '6':'mlmc/ni/interestitials/test2nd', 
                             }['5']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
-                                            '4':'/../simulations/ni/pure/new',
-                                            '5':'/descriptors/ni/pure/new',
+                                            '4':'/../simulations/ni/interestitials/new',
+                                            '5':'/descriptors/ni/interestitials/new',
                                             '6':'/neuralNet/ni/interestitials/test2nd', 
                                         }['5'] #--- source
     PYFILdic             = { 
