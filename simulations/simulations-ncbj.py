@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
-                    6:'ni/pure/results', 
+                    6:'ni/pure/results/md', 
                     61:'ni/interestitials/test2nd', 
                     62:'ni/defects', 
                    }[6]
@@ -155,6 +155,7 @@ if __name__ == '__main__':
                     92:[12,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- minimize, add defects, minimize, kart input, kart.sh to bash shell ,invoke kart
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
+                    94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize ,invoke kart
                   }[9]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
