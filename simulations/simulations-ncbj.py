@@ -36,9 +36,8 @@ if __name__ == '__main__':
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
                     6:'ni/pure/results/kmc', 
-                    61:'ni/interestitials/test2nd', 
-                    62:'ni/defects', 
-                   }[6]
+                    7:'ni/void/results/md', 
+                   }[7]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
