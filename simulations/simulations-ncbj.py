@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 100
+        nruns	 = 4
         #
         nThreads = 4
         nNode	 = 1
@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
-                    6:'ni/pure/new', 
+                    6:'ni/pure/results', 
                     61:'ni/interestitials/test2nd', 
                     62:'ni/defects', 
                    }[6]
