@@ -14,7 +14,7 @@ include ${INC}/buffer.mod
 #--- thermalize two partial dislocations
 
 # -------------------------------------- General Variables --------------------------------------#
-variable                  t_eq      equal     100.0*${damp_t}         # Equlibration time
+variable                  t_eq      equal     1000.0*${damp_t}         # Equlibration time
 variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
 
 
