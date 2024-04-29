@@ -123,7 +123,7 @@ if __name__ == '__main__':
                     'p4':' lammps_data.dat lammps_data.dat %s 1 1 2.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
-                    'p6':' data_pure.dat data_void.dat %s 4.0 2'%(os.getcwd()+'/lmpScripts'),
+                    'p6':' lammps_data.dat lammps_data.dat %s 4.0 3'%(os.getcwd()+'/lmpScripts'),
                     'p7':' %s lammps_data.dat HCP 2'%(os.getcwd()+'/lmpScripts'),
                     'p8':' Atoms_dyn_Frank_Loop.dat lammps_data.dat %s'%(os.getcwd()+'/lmpScripts'),
                     'p9':' %s lammps_data.dat lammps_data.dat 1'%(os.getcwd()+'/lmpScripts'),
@@ -146,17 +146,20 @@ if __name__ == '__main__':
                     10:[5,'p4',7,'p3','p5',1.0], #--- minimize, add vacancy, thermalize, kart input, kart.sh to bash shell ,invoke kart
                     12:[ 'p5',1.0], #--- restart 11: set restart = True in kmc.sh
                     13:[5, 'p4', 51, 'p3','p5',1.0], #--- min.,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
-                    11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0], #--- min.,add void,add subgroup,add vacancy,min.,kmc input,kart.sh to bash ,invoke kart
                     14:['p2', 51, 'p4', 51, 'p7', 'p3','p5',1.0], #--- put disc, min, add vacancy, min, add subgroup, kmc input,kart.sh to bash ,invoke kart
                     15:['p8',51,'p3','p5',1.0], #--- irradiation: preprocess, min, kmc input,kart.sh to bash ,invoke kart
                     16:[5,11], #--- irradiation: create & min, cascade
                     17:[51,'p3','p5',1.0], #--- irradiation: min, kmc input,kart.sh to bash ,invoke kart
-                    91:[5,'p9',51,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
-                    92:[12,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
-                    93:[13,'p3','p5',1.0], #--- minimize, add defects, minimize, kart input, kart.sh to bash shell ,invoke kart
-                    94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize ,invoke kart
+                    91:[5,'p9',51,'p3','p5',1.0], #--- min., add interestitial, min., kart input, .sh to bash ,invoke kart
+                    92:[12,'p3','p5',1.0], #--- min., add interestitial, min., kart input, kart.sh to bash shell ,invoke kart
+                    93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
+
+                  11:[5,'p6', 'p7', 'p4', 51, 'p3','p5',1.0],#--- min.,void,subgroup,vac,min.,kmc input,.sh_to_bash,invoke kart
+                 111:[5,'p6', 'p4', 51, 7],#--- min.,void,vac,min.,thermalize
+
+                    94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[9]
+                  }[111]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
