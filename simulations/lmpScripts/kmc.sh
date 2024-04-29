@@ -29,8 +29,8 @@ setenv NUMBER_ATOMS                   ${natom}      # The total number of atoms
 setenv X_BOX                         ${lx}
 setenv Y_BOX                         ${ly}
 setenv Z_BOX                         ${lz}
-setenv NSPECIES                       2       # The number of different atom types (default: 2)
-setenv ATOMIC_SYMBOLS					"Ni Ni" #"Ni NiHCP:inactive" #"Ni NiVoid:inactive" #"Ni Co Cr" #'Ni Co Cr Fe Mn' #"Ni Co Cr"
+setenv NSPECIES                       1       # The number of different atom types (default: 2)
+setenv ATOMIC_SYMBOLS					"Ni" #"Ni NiHCP:inactive" #"Ni NiVoid:inactive" #"Ni Co Cr" #'Ni Co Cr Fe Mn' #"Ni Co Cr"
 #setenv NTRAVAILLEUR                     3     # The number of cores associated with forces calculations per ARTnouveau search (default:1)
 ###################################### Restart options #####################################################
 
