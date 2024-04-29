@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
-                    6:'ni/pure/results/md', 
+                    6:'ni/pure/results/kmc', 
                     61:'ni/interestitials/test2nd', 
                     62:'ni/defects', 
                    }[6]
@@ -119,7 +119,7 @@ if __name__ == '__main__':
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
-                    'p3':' lammps_data.dat init_xyz.conf %s 300.0'%(os.getcwd()+'/lmpScripts'),
+                    'p3':' lammps_data.dat init_xyz.conf %s 2000.0'%(os.getcwd()+'/lmpScripts'),
                     'p4':' lammps_data.dat lammps_data.dat %s 1 1 2.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
                     'p5':' ',
@@ -154,9 +154,9 @@ if __name__ == '__main__':
                     91:[5,'p9',51,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
                     92:[12,'p3','p5',1.0], #--- minimize, add interestitial, minimize, kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- minimize, add defects, minimize, kart input, kart.sh to bash shell ,invoke kart
-                    9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize ,invoke kart
-                  }[94]
+                    9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
+                  }[9]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
