@@ -156,7 +156,7 @@ if __name__ == '__main__':
                     93:[13,'p3','p5',1.0], #--- minimize, add defects, minimize, kart input, kart.sh to bash shell ,invoke kart
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize ,invoke kart
-                  }[9]
+                  }[94]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
