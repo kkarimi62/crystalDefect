@@ -26,7 +26,7 @@ delete_atoms region hole
 #if "${num_atoms} != 1" then &
 #	print "num_atoms=${num_atoms} Error: Boundary group does not have exactly one atom." &
 #    print "Halting simulation." &
-#    quit &
+#    quit 
 #
 #delete_atoms group boundary
 
@@ -44,7 +44,7 @@ include ${INC}/potential.mod
 #dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
 #dump_modify 1 flush yes format line "%d %d %15.14e %15.14e %15.14e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
 dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z
-dump_modify 1 flush yes append yes format line "%d %d %4.3e %4.3e %4.3e"
+dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
 include ${INC}/thermo.mod
 
 #--- minimize 
@@ -64,12 +64,28 @@ set group buffer_region type 2
 fix f2 buffer_region setforce 0.0 0.0 0.0
 velocity buffer_region set 0.0 0.0 0.0
 
-#
-#Define a region excluding the buffer layer
+# Define a region excluding the buffer layer
 group no_buffer subtract all buffer_region
 
-# Create a vacancy
-delete_atoms random count 1 no no_buffer NULL ${rnd}
+# Create a vacancy (within no_buffer)
+variable ix equal floor(random(${radius},${box_length},${rnd}))
+variable iy equal floor(random(${radius},${box_length},${rnd1}))
+variable ixx equal ${ix}
+variable iyy equal ${iy}
+variable xlo equal ${ixx}-0.25
+variable xhi equal ${ixx}+0.25
+variable ylo equal ${iyy}-0.25
+variable yhi equal ${iyy}+0.25
+region vacancy block ${xlo} ${xhi} ${ylo} ${yhi} 0.75 1.25 units lattice
+group vacancy_group region vacancy
+# Assert that group boundary has only one atom
+variable num_atoms equal count(vacancy_group)
+if "${num_atoms} != 1" then &
+	print "num_atoms=${num_atoms} Error: Boundary group does not have exactly one atom." &
+    print "Halting simulation." &
+    quit
+delete_atoms group vacancy_group
+
 
 #--- minimize 
 minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
@@ -78,7 +94,7 @@ minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in 
 write_data                ${WriteData} 
 
 # Set velocities
-variable                  t_eq      equal     10000.0*${damp_t}         # Equlibration time
+variable                  t_eq      equal     3000.0*${damp_t}         # Equlibration time
 variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
 velocity                  no_buffer       create     $T     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        no_buffer        nvt temp   $T  $T  ${damp_t}  
