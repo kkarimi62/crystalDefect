@@ -1,12 +1,5 @@
 # Initialize simulation
 include ${INC}/initSoftWall.mod
-#units metal
-#dimension 3
-#boundary p p p
-
-#atom_style atomic
-#atom_modify map array
-
 
 # Create geometry
 variable box_length equal 11.0
@@ -24,18 +17,18 @@ region hole cylinder z ${xc} ${xc} ${radius} -100.0 100.0 side in units lattice
 delete_atoms region hole
 
 # Create a vacancy near the boundary
-variable xlo equal ${box_length}-0.25
-variable xhi equal ${box_length}+0.25
-region vacancy block ${xlo} ${xhi} ${xlo} ${xhi} 0.75 1.25 units lattice
-group boundary region vacancy
+#variable xlo equal ${box_length}-0.25
+#variable xhi equal ${box_length}+0.25
+#region vacancy block ${xlo} ${xhi} ${xlo} ${xhi} 0.75 1.25 units lattice
+#group boundary region vacancy
 # Assert that group boundary has only one atom
-variable num_atoms equal count(boundary)
-if "${num_atoms} != 1" then &
-	print "num_atoms=${num_atoms} Error: Boundary group does not have exactly one atom." &
-    print "Halting simulation." &
-    quit &
+#variable num_atoms equal count(boundary)
+#if "${num_atoms} != 1" then &
+#	print "num_atoms=${num_atoms} Error: Boundary group does not have exactly one atom." &
+#    print "Halting simulation." &
+#    quit &
 #
-delete_atoms group boundary
+#delete_atoms group boundary
 
 # Define mass for Ni atoms
 mass 1 58.6934
@@ -43,8 +36,6 @@ mass 2 58.6934
 
 # Define potential
 include ${INC}/potential.mod
-#pair_style eam/alloy
-#pair_coeff * * Ni.eam.alloy Ni
 
 #-----------------------------
 #--- compute & dump variables
@@ -77,11 +68,17 @@ velocity buffer_region set 0.0 0.0 0.0
 #Define a region excluding the buffer layer
 group no_buffer subtract all buffer_region
 
+# Create a vacancy
+delete_atoms random count 1 no no_buffer NULL ${rnd}
+
+#--- minimize 
+minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
+
 #--- to be used for kmc
 write_data                ${WriteData} 
 
 # Set velocities
-variable                  t_eq      equal     10.0*${damp_t}         # Equlibration time
+variable                  t_eq      equal     10000.0*${damp_t}         # Equlibration time
 variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
 velocity                  no_buffer       create     $T     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        no_buffer        nvt temp   $T  $T  ${damp_t}  
