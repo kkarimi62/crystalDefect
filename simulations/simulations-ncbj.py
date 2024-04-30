@@ -59,7 +59,7 @@ if __name__ == '__main__':
                         8:['Atoms_dyn_Frank_Loop.dat'], 
                         9:['final.data'], 
                         7:['lammps_data.dat'], 
-                     }[7] #--- to be copied from the above directory. set it to '0' if no file
+                     }[0] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
