@@ -120,7 +120,7 @@ if __name__ == '__main__':
                     12:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     13:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     14:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var nevery 1000 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s'%np.random.randint(1001,9999),
-                    15:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var nevery 1000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s'%np.random.randint(1001,9999),
+                    15:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var nevery 1000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s'%tuple(np.random.randint(1001,9999,size=2)),
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
@@ -160,7 +160,7 @@ if __name__ == '__main__':
                     93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
 
                   11:['p3','p5',1.0],#--- kmc input,.sh_to_bash,invoke kart
-                 111:[15],#--- void
+                 111:[15],#--- void: md
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
