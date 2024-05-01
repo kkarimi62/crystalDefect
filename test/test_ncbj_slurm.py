@@ -34,13 +34,13 @@ if __name__ == '__main__':
     nNode                = 1
     nThreads             = 1
     jobname              = {
-                            '4':'descriptors/ni/void/results/kmc',
+                            '4':'descriptors/ni/pure/results/kmc',
                             '5':'neuralNet/ni/void/results/kmc',
                             '6':'mlmc/ni/interestitials/test2nd', 
                             }['4']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
-                                            '4':'/../simulations/ni/void/results/kmc',
+                                            '4':'/../simulations/ni/pure/results/kmc',
                                             '5':'/descriptors/ni/void/results/kmc',
                                             '6':'/neuralNet/ni/interestitials/test2nd', 
                                         }['4'] #--- source
