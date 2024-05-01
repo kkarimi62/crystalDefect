@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns	 = 4
+        nruns	 = 64
         #
         nThreads = 4
         nNode	 = 1
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
                     7:'ni/void/results/md', 
                    71:'ni/void/results/kmc', 
-                   }[71]
+                   }[7]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -49,7 +49,7 @@ if __name__ == '__main__':
                         8:'/../data/ni/irradiation/dpa0',
                         9:'/ni/irradiation/cascade3rd',
                         7:'/ni/void/results/md',
-                    }[7] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -61,7 +61,7 @@ if __name__ == '__main__':
                         8:['Atoms_dyn_Frank_Loop.dat'], 
                         9:['final.data'], 
                         7:['lammps_data.dat'], 
-                     }[7] #--- to be copied from the above directory. set it to '0' if no file
+                     }[0] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -161,12 +161,12 @@ if __name__ == '__main__':
                     92:[12,'p3','p5',1.0], #--- min., add interestitial, min., kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
 
-                  11:['p3','p5',1.0],#--- void: kmc input,.sh_to_bash,invoke kart
                  111:[15],#--- void: md
+                  11:['p3','p5',1.0],#--- void: kmc input,.sh_to_bash,invoke kart
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[11]
+                  }[111]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
@@ -174,7 +174,7 @@ if __name__ == '__main__':
         EXEC_lmp = ['lmp_g++_openmpi'][0]
         durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
         mem = '16gb' #'22gb'
-        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][3]
+        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
         #--
         DeleteExistingFolder = True
 

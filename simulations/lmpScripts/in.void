@@ -6,7 +6,7 @@ variable box_length equal 11.0
 lattice fcc 3.52
 
 variable xhi equal ${box_length}+0.25
-region box block 0.25 ${xhi} 0.25 ${xhi} 0.25 2.25
+region box block 0.25 ${xhi} 0.25 ${xhi} 0.25 3.25
 create_box 2 box
 create_atoms 1 box
 
@@ -94,7 +94,7 @@ minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in 
 write_data                ${WriteData} 
 
 # Set velocities
-variable                  t_eq      equal     30000.0*${damp_t}         # Equlibration time
+variable                  t_eq      equal     100.0*${damp_t}         # Equlibration time
 variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
 velocity                  no_buffer       create     $T     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        no_buffer        nvt temp   $T  $T  ${damp_t}  
