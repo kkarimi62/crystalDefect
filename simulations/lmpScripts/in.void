@@ -67,9 +67,10 @@ velocity buffer_region set 0.0 0.0 0.0
 # Define a region excluding the buffer layer
 group no_buffer subtract all buffer_region
 
-# Create a vacancy (within no_buffer)
-variable ix equal floor(random(${radius},${box_length},${rnd}))
-variable iy equal floor(random(${radius},${box_length},${rnd1}))
+# Create a vacancy (within "no_buffer")
+variable rmin equal ${radius}+1.0
+variable ix equal floor(random(${rmin},${box_length},${rnd}))
+variable iy equal floor(random(${rmin},${box_length},${rnd1}))
 variable ixx equal ${ix}
 variable iyy equal ${iy}
 variable xlo equal ${ixx}-0.25
