@@ -59,7 +59,6 @@ if __name__ == '__main__':
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
-#---
     additional_args      = ''
     if partition         == 'GPU_K80':
         additional_args  = '--gres=gpu:tesla:3'
