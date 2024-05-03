@@ -110,9 +110,6 @@ fix 1 all ave/time 1 1 1000 c_msd_all[*] file msd.dat
 # Define fix and run
 run                       ${Nstep}
 
-unfix                     f1
-reset_timestep            0
-# -------------------------------------- Write Data ----------------------------------------------#
 
   
 
