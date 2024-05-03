@@ -34,27 +34,29 @@ if __name__ == '__main__':
     runs	             = range( 1  )
     nNode                = 1
     nThreads             = 1
+    path_for_simulation  = 'ni/void/results/kmc/energy'
     jobname              = {
-                            '4':'descriptors/ni/void/results/kmc',
-                            '5':'neuralNet/ni/void/results/kmc/energy',#'neuralNet/ni/void/results/kmc',
-                            '6':'mlmc/ni/void/results/kmc', 
-                            }['5']
+                            '4':'descriptors/%s'%path_for_simulation,
+                            '5':'neuralNet/%s'%path_for_simulation,
+                            '6':'mlmc/%s'%path_for_simulation, 
+                            }['4']
     DeleteExistingFolder = True
+    path_for_simulation  = 'ni/void/results/kmc'
     readPath             = os.getcwd() + {
-                                            '4':'/../simulations/ni/void/results/kmc',
-                                            '5':'/descriptors/ni/void/results/kmc',
-                                            '6':'/neuralNet/ni/void/results/kmc', 
-                                        }['5'] #--- source
+                                            '4':'/../simulations/%s'%path_for_simulation,
+                                            '5':'/descriptors/%s'%path_for_simulation,
+                                            '6':'/neuralNet/%s'%path_for_simulation, 
+                                        }['4'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 1
+    keyno                = 0
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 1 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
