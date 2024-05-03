@@ -31,7 +31,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs                 = range( 64  )
+    runs                 = range( 64 )
     nNode                = 1
     nThreads             = 1
     path_for_simulation  = 'ni/void/results/kmc'
