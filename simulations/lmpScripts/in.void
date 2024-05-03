@@ -95,7 +95,7 @@ minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in 
 write_data                ${WriteData} 
 
 # Set velocities
-variable                  t_eq      equal     100.0*${damp_t}         # Equlibration time
+variable                  t_eq      equal     ${time}*${damp_t}         # Equlibration time
 variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
 velocity                  no_buffer       create     $T     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        no_buffer        nvt temp   $T  $T  ${damp_t}  
