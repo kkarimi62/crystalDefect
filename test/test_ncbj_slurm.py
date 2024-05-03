@@ -9,6 +9,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     confParser.set('neural net','input_path',argvv)
     confParser.set('gnn','input_path',argvv)
     confParser.set('gnn classifier','input_path',argvv)
+    confParser.set('gnn energy','input_path',argvv)
     #
 #    confParser.set('gnn','num_layers','8')
 #    confParser.set('gnn','c_hidden','16')
@@ -35,25 +36,25 @@ if __name__ == '__main__':
     nThreads             = 1
     jobname              = {
                             '4':'descriptors/ni/void/results/kmc',
-                            '5':'neuralNet/ni/void/results/kmc',
+                            '5':'neuralNet/ni/void/results/kmc/energy',#'neuralNet/ni/void/results/kmc',
                             '6':'mlmc/ni/void/results/kmc', 
-                            }['6']
+                            }['5']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/ni/void/results/kmc',
                                             '5':'/descriptors/ni/void/results/kmc',
                                             '6':'/neuralNet/ni/void/results/kmc', 
-                                        }['6'] #--- source
+                                        }['5'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 2
+    keyno                = 1
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
