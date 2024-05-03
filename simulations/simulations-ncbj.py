@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
                     7:'ni/void/results/md', 
                    71:'ni/void/results/kmc', 
-                   }[61]
+                   }[71]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -51,7 +51,7 @@ if __name__ == '__main__':
                         9:'/ni/irradiation/cascade3rd',
                         7:'/ni/void/results/md',
                         6:'/ni/pure/results/md',
-                    }[6] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[7] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -171,7 +171,7 @@ if __name__ == '__main__':
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[12]
+                  }[11]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
     #	Variables = list(map(lambda x:Variable[x], indices))
     #        print('EXEC=',EXEC)
