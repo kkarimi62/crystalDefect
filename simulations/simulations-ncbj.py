@@ -173,8 +173,6 @@ if __name__ == '__main__':
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
                   }[111]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
-    #	Variables = list(map(lambda x:Variable[x], indices))
-    #        print('EXEC=',EXEC)
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
         durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
