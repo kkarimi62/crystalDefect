@@ -39,7 +39,7 @@ if __name__ == '__main__':
                     6:'ni/pure/results/md', 
                    61:'ni/pure/results/kmc', 
 
-                    7:'ni/void/results/md/test', 
+                    7:'ni/void/results/md', 
                    71:'ni/void/results/kmc', 
                    }[7]
         sourcePath = os.getcwd() +\
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                     12:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     13:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     14:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var nevery 1000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s'%tuple(np.random.randint(1001,9999,size=2)),
-                    15:' -var buff 0.0 -var T 2400.0 -var P 0.0 -var time 10000.0 -var nevery 1000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s'%tuple(np.random.randint(1001,9999,size=2)),
+                    15:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 1000000.0 -var nevery 100000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s'%tuple(np.random.randint(1001,9999,size=2)),
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         Pipeline = list(map(lambda x:LmpScript[x],indices))
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
-        durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
+        durtn = ['23:59:59','47:59:59','167:59:59'][ 1 ]
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][2]
         #--
