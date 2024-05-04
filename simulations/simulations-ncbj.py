@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
                     7:'ni/void/results/md', 
                    71:'ni/void/results/kmc', 
-                   }[7]
+                   }[71]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -51,7 +51,7 @@ if __name__ == '__main__':
                         9:'/ni/irradiation/cascade3rd',
                         7:'/ni/void/results/md',
                         6:'/ni/pure/results/md',
-                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[7] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -63,7 +63,7 @@ if __name__ == '__main__':
                         8:['Atoms_dyn_Frank_Loop.dat'], 
                         9:['final.data'], 
                         7:['lammps_data.dat'], 
-                     }[0] #--- to be copied from the above directory. set it to '0' if no file
+                     }[7] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -171,7 +171,7 @@ if __name__ == '__main__':
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[111]
+                  }[11]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
