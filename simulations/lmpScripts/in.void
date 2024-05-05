@@ -5,13 +5,14 @@ include ${INC}/initSoftWall.mod
 variable box_length equal 11.0
 lattice fcc 3.52
 
-variable xhi equal ${box_length}+0.25
-region box block 0.25 ${xhi} 0.25 ${xhi} 0.25 3.25
+variable xhi equal 0.5*${box_length}+0.25
+variable xlo equal -0.5*${box_length}+0.25
+region box block ${xlo} ${xhi} ${xlo} ${xhi} -1.25 1.75 #0.25 3.25
 create_box 2 box
 create_atoms 1 box
 
 # Remove atoms to create a cylindrical hole
-variable xc equal 0.5*${box_length}
+variable xc equal 0.0 #0.5*${box_length}
 variable radius equal 1.0
 region hole cylinder z ${xc} ${xc} ${radius} -100.0 100.0 side in units lattice
 delete_atoms region hole
@@ -39,7 +40,7 @@ minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in 
 
 
 # Define a buffer layer around the hole
-variable xc equal 0.5*${box_length}
+variable xc equal 0.0
 variable radius equal 2.0
 region buffer cylinder z ${xc} ${xc} ${radius} -1000.0 1000.0 side in units lattice
 
@@ -55,17 +56,29 @@ velocity buffer_region set 0.0 0.0 0.0
 group no_buffer subtract all buffer_region
 
 # Create a vacancy (within "no_buffer")
-variable rmin equal ${box_length}-3.0
+variable rmin equal 0.5*${box_length}-1.0
 #variable rmin equal ${radius}+1.0
-variable ix equal floor(random(${rmin},${box_length},${rnd}))
-variable iy equal floor(random(${rmin},${box_length},${rnd1}))
-variable ixx equal ${ix}
-variable iyy equal ${iy}
+variable ix equal floor(random(${rmin},0.5*${box_length},${rnd}))
+variable iy equal floor(random(${rmin},0.5*${box_length},${rnd1}))
+variable sign_x equal random(-1.0,1.0,${rnd2})
+variable sign_xx equal ${sign_x}
+variable sign_y equal random(-1.0,1.0,${rnd3})
+variable sign_yy equal ${sign_y}
+if "${sign_xx} >= 0.0" then &
+  "variable sign_xxx equal 1.0" &
+else &
+  "variable sign_xxx equal -1.0" 
+if "${sign_yy} >= 0.0" then &
+  "variable sign_yyy equal 1.0" &
+else &
+  "variable sign_yyy equal -1.0" 
+variable ixx equal ${ix}*${sign_xxx}
+variable iyy equal ${iy}*${sign_yyy}
 variable xlo equal ${ixx}-0.25
 variable xhi equal ${ixx}+0.25
 variable ylo equal ${iyy}-0.25
 variable yhi equal ${iyy}+0.25
-region vacancy block ${xlo} ${xhi} ${ylo} ${yhi} 0.75 1.25 units lattice
+region vacancy block ${xlo} ${xhi} ${ylo} ${yhi} -0.25 0.25 units lattice
 group vacancy_group region vacancy
 # Assert that group boundary has only one atom
 variable num_atoms equal count(vacancy_group)
