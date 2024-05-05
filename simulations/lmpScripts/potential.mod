@@ -2,7 +2,7 @@
 # See in.elastic for more info.
 
 # Choose potential
-pair_style	eam/alloy
+#pair_style	eam/alloy
 #pair_coeff              * * ${PathEam}/NiCoCr.lammps.eam Ni Co Cr
 #pair_coeff              * * ${PathEam}/NiCoCr.lammps.eam Ni Ni
 #

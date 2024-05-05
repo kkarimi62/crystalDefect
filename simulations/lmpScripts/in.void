@@ -16,19 +16,6 @@ variable radius equal 1.0
 region hole cylinder z ${xc} ${xc} ${radius} -100.0 100.0 side in units lattice
 delete_atoms region hole
 
-# Create a vacancy near the boundary
-#variable xlo equal ${box_length}-0.25
-#variable xhi equal ${box_length}+0.25
-#region vacancy block ${xlo} ${xhi} ${xlo} ${xhi} 0.75 1.25 units lattice
-#group boundary region vacancy
-# Assert that group boundary has only one atom
-#variable num_atoms equal count(boundary)
-#if "${num_atoms} != 1" then &
-#	print "num_atoms=${num_atoms} Error: Boundary group does not have exactly one atom." &
-#    print "Halting simulation." &
-#    quit 
-#
-#delete_atoms group boundary
 
 # Define mass for Ni atoms
 mass 1 58.6934
@@ -68,7 +55,8 @@ velocity buffer_region set 0.0 0.0 0.0
 group no_buffer subtract all buffer_region
 
 # Create a vacancy (within "no_buffer")
-variable rmin equal ${radius}+1.0
+variable rmin equal ${box_length}-3.0
+#variable rmin equal ${radius}+1.0
 variable ix equal floor(random(${rmin},${box_length},${rnd}))
 variable iy equal floor(random(${rmin},${box_length},${rnd1}))
 variable ixx equal ${ix}
@@ -105,7 +93,7 @@ fix                      f1        no_buffer        nvt temp   $T  $T  ${damp_t}
 compute msd_all no_buffer msd
 
 # Define fix for averaging and printing MSD
-fix 1 all ave/time 1 1 1000 c_msd_all[*] file msd.dat
+fix 1 no_buffer ave/time 1 1 1000 c_msd_all[*] file msd.dat
 
 # Define fix and run
 run                       ${Nstep}
