@@ -12,9 +12,10 @@ include ${INC}/initSoftWall.mod
 variable box_length equal 11.0
 lattice fcc 3.52
 
-variable xhi equal ${box_length}+0.25
-region box block 0.25 ${xhi} 0.25 ${xhi} 0.25 3.25
-create_box 1 box
+variable xhi equal 0.5*${box_length}+0.25
+variable xlo equal -0.5*${box_length}+0.25
+region box block ${xlo} ${xhi} ${xlo} ${xhi} -1.25 1.75
+create_box 2 box
 create_atoms 1 box
 
 # create vacancy
@@ -26,47 +27,37 @@ delete_atoms group vacancy
 
 # Define mass for Ni atoms
 mass 1 58.6934
+mass 2 58.6934
 
 # Define potential
 include ${INC}/potential.mod
-#pair_style eam/alloy
-#pair_coeff * * Ni.eam.alloy Ni
-
-#-----------------------------
-#--- compute & dump variables
-#-----------------------------
-#compute     1 all stress/atom NULL pair
-#dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
-#dump_modify 1 flush yes format line "%d %d %15.14e %15.14e %15.14e %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
-dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z
-dump_modify 1 flush yes append yes format line "%d %d %4.3e %4.3e %4.3e"
-include ${INC}/thermo.mod
 
 #--- minimize 
 minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
 
 
+#--- to be used for kmc
+write_data                ${WriteData} 
 
 # Set velocities
-variable                  t_eq      equal     100.0*${damp_t}         # Equlibration time
-variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
-velocity                  all create     $T     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
-fix                      f1        all nvt temp   $T  $T  ${damp_t}  
+variable				  Tinit     equal     0.1
+velocity                  all create     ${Tinit}     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
+fix                      f1        all nvt temp   ${Tinit}  $T  ${damp_t}  
+run 30000
 
+unfix f1
+variable                  t_eq      equal     ${time}*${damp_t}         # Equlibration time
+variable 				  Nstep  	equal	  floor(${t_eq}/${dt}) #--- timesteps
+fix                      f1        all nvt temp   $T  $T  ${damp_t}  
 
 # Define fix for MSD computation
 compute msd_all all msd
+dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z
+dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
+include ${INC}/thermo.mod
 
 # Define fix for averaging and printing MSD
 fix 1 all ave/time 1 1 1000 c_msd_all[*] file msd.dat
 
 # Define fix and run
 run                       ${Nstep}
-
-unfix                     f1
-reset_timestep            0
-# -------------------------------------- Write Data ----------------------------------------------#
-
-write_data                ${WriteData} 
-  
-

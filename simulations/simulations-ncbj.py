@@ -36,12 +36,15 @@ if __name__ == '__main__':
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
             
-                    6:'ni/pure/results/md', 
+                    6:'ni/pure/results/md', #--- single vacancy 
                    61:'ni/pure/results/kmc', 
 
                     7:'ni/void/results/md', 
                    71:'ni/void/results/kmc', 
-                   }[71]
+
+                    8:'ni/ellipse/results/md', 
+                   81:'ni/ellipse/results/kmc', 
+                   }[61]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -49,9 +52,9 @@ if __name__ == '__main__':
                         2:'/NiCoCrNatom1KTemp0K',
                         8:'/../data/ni/irradiation/dpa0',
                         9:'/ni/irradiation/cascade3rd',
-                        7:'/ni/void/results/md',
                         6:'/ni/pure/results/md',
-                    }[7] #--- must be different than sourcePath. set it to 'junk' if no path
+                        7:'/ni/void/results/md',
+                    }[6] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -59,11 +62,11 @@ if __name__ == '__main__':
                         3:['data.txt'], 
                         4:['data_minimized.txt'],
                         5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
-                        6:['FeNi_2000.dat'], 
                         8:['Atoms_dyn_Frank_Loop.dat'], 
                         9:['final.data'], 
+                        6:['lammps_data.dat'], 
                         7:['lammps_data.dat'], 
-                     }[7] #--- to be copied from the above directory. set it to '0' if no file
+                     }[6] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -94,6 +97,7 @@ if __name__ == '__main__':
                          13:'in.defects',
                          14:'in.vac',
                          15:'in.void',                     
+                         16:'in.ellipse',                     
                         'p0':'partition.py', #--- python file
                         'p1':'WriteDump.py',
                         'p2':'DislocateEdge2nd.py',
@@ -123,8 +127,9 @@ if __name__ == '__main__':
                     11:' -var DataFile lammps_data.dat -var epka 5 ',
                     12:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     13:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
-                    14:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var nevery 1000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s'%tuple(np.random.randint(1001,9999,size=2)),
+                    14:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 10000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     15:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
+                    16:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
@@ -163,21 +168,24 @@ if __name__ == '__main__':
                     92:[12,'p3','p5',1.0], #--- min., add interestitial, min., kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
 
+                 222:[16],#--- void: md
+                  22:['p3','p5',1.0],#--- void: kmc input,.sh_to_bash,invoke kart
+
                  111:[15],#--- void: md
                   11:['p3','p5',1.0],#--- void: kmc input,.sh_to_bash,invoke kart
 
-                 121:[14],#--- vacancy: md
+                 121:[14],           #--- vacancy: md
                   12:['p3','p5',1.0],#--- vacancy: kmc input,.sh_to_bash,invoke kart
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[11]
+                  }[12]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
         durtn = ['23:59:59','47:59:59','167:59:59'][ 1 ]
         mem = '16gb' #'22gb'
-        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
+        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][2]
         #--
         DeleteExistingFolder = True
 
