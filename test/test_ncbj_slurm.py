@@ -31,31 +31,31 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs                 = range( 64 )
+    runs                 = range( 8 )
     nNode                = 1
     nThreads             = 1
-    path_for_simulation  = 'ni/pure/results/kmc'
+    path_for_simulation  = 'ni/ellipse/results/kmc'
     jobname              = {
                             '4':'descriptors/%s'%path_for_simulation,
                             '5':'neuralNet/%s'%path_for_simulation,
                             '6':'mlmc/%s'%path_for_simulation, 
-                            }['4']
+                            }['6']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/%s'%path_for_simulation,
                                             '5':'/descriptors/%s'%path_for_simulation,
                                             '6':'/neuralNet/%s'%path_for_simulation, 
-                                        }['4'] #--- source
+                                        }['6'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 0
+    keyno                = 2
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 1 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
