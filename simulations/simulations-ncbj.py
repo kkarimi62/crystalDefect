@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns    = 64
+        nruns    = 1 #64
         #
         nThreads = 4
         nNode	 = 1
@@ -39,12 +39,15 @@ if __name__ == '__main__':
                     6:'ni/pure/results/md', #--- single vacancy 
                    61:'ni/pure/results/kmc', 
 
-                    7:'ni/void/results/md', 
+                    7:'ni/void/results/md', #--- void 
                    71:'ni/void/results/kmc', 
 
-                    8:'ni/ellipse/results/md', 
+                    8:'ni/ellipse/results/md', #--- elliptical void
                    81:'ni/ellipse/results/kmc', 
-                   }[61]
+
+                    9:'ni/ext_dislocation/results/md', #--- elliptical void
+                   91:'ni/ext_dislocation/results/kmc', 
+                   }[9]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -54,7 +57,7 @@ if __name__ == '__main__':
                         9:'/ni/irradiation/cascade3rd',
                         6:'/ni/pure/results/md',
                         7:'/ni/void/results/md',
-                    }[6] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -66,7 +69,7 @@ if __name__ == '__main__':
                         9:['final.data'], 
                         6:['lammps_data.dat'], 
                         7:['lammps_data.dat'], 
-                     }[6] #--- to be copied from the above directory. set it to '0' if no file
+                     }[0] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -98,6 +101,7 @@ if __name__ == '__main__':
                          14:'in.vac',
                          15:'in.void',                     
                          16:'in.ellipse',                     
+                         17:'in.shockley',                     
                         'p0':'partition.py', #--- python file
                         'p1':'WriteDump.py',
                         'p2':'DislocateEdge2nd.py',
@@ -130,6 +134,7 @@ if __name__ == '__main__':
                     14:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 10000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     15:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     16:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
+                    17:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 10.0 -var nevery 100 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
                     'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
@@ -168,10 +173,13 @@ if __name__ == '__main__':
                     92:[12,'p3','p5',1.0], #--- min., add interestitial, min., kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
 
-                 222:[16],#--- void: md
-                  22:['p3','p5',1.0],#--- void: kmc input,.sh_to_bash,invoke kart
+                 333:[17],           #--- elliptical void: md
+                  33:['p3','p5',1.0],#--- elliptical void: kmc input,.sh_to_bash,invoke kart
 
-                 111:[15],#--- void: md
+                 222:[16],           #--- elliptical void: md
+                  22:['p3','p5',1.0],#--- elliptical void: kmc input,.sh_to_bash,invoke kart
+
+                 111:[15],           #--- void: md
                   11:['p3','p5',1.0],#--- void: kmc input,.sh_to_bash,invoke kart
 
                  121:[14],           #--- vacancy: md
@@ -179,11 +187,11 @@ if __name__ == '__main__':
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[12]
+                  }[333]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
-        durtn = ['23:59:59','47:59:59','167:59:59'][ 1 ]
+        durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][2]
         #--
