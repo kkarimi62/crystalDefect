@@ -29,20 +29,16 @@ delete_atoms region hole
 #--- minimize 
 minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
 
-
-
-
 #--- shear the system
-variable dl equal 2.0 #2.6
+variable dl equal 1.0
 fix d1 all deform 1 x delta -${dl} ${dl} y delta ${dl} -${dl} units box # remap x #remap v
 run 1
 #
 unfix d1
 
+
 #--- minimize 
 minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
-
-
 
 # Create a vacancy (within "no_buffer")
 variable rmin equal 0.5*${box_length}-3.0
@@ -66,10 +62,10 @@ else &
   "variable sign_yyy equal -1.0" 
 variable ixx equal ${ix}*${sign_xxx}
 variable iyy equal ${iy}*${sign_yyy}
-variable xlo equal ${ixx}-0.3
-variable xhi equal ${ixx}+0.3
-variable ylo equal ${iyy}-0.3
-variable yhi equal ${iyy}+0.3
+variable xlo equal ${ixx}-0.25
+variable xhi equal ${ixx}+0.25
+variable ylo equal ${iyy}-0.25
+variable yhi equal ${iyy}+0.25
 region vacancy block ${xlo} ${xhi} ${ylo} ${yhi} -0.4 0.4 units lattice
 group vacancy_group region vacancy
 # Assert that group boundary has only one atom
@@ -85,10 +81,9 @@ jump in.ellipse loop_start
 label break
 variable num_vacancy delete
 
+
 #--- minimize 
 minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
-
-#quit
 
 
 # Define a buffer layer around the hole
@@ -110,6 +105,7 @@ group no_buffer subtract all buffer_region
 
 #--- to be used for kmc
 write_data                ${WriteData} 
+quit
 
 # Set velocities
 variable                  t_eq      equal     ${time}*${damp_t}         # Equlibration time
@@ -117,7 +113,7 @@ variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
 velocity                  no_buffer       create     0.1     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        no_buffer        nvt temp   0.1  $T  ${damp_t}  
 
-run                       30000
+run                       1000 #30000
 unfix f1
 
 #quit 
