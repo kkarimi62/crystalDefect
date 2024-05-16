@@ -31,37 +31,37 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs                 = range( 8 )
+    runs                 = range( 1 )
     nNode                = 1
     nThreads             = 1
-    path_for_simulation  = 'ni/ellipse/results/kmc'
+    path_for_simulation  = 'ni/multipleVacs/results/kmc/vac2'
     jobname              = {
                             '4':'descriptors/%s'%path_for_simulation,
                             '5':'neuralNet/%s'%path_for_simulation,
                             '6':'mlmc/%s'%path_for_simulation, 
-                            }['6']
+                            }['5']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/%s'%path_for_simulation,
                                             '5':'/descriptors/%s'%path_for_simulation,
                                             '6':'/neuralNet/%s'%path_for_simulation, 
-                                        }['6'] #--- source
+                                        }['5'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 2
+    keyno                = 1
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '16gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 1 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
     additional_args      = ''
     if partition         == 'GPU_K80':
-        additional_args  = '--gres=gpu:tesla:3'
+        additional_args  = '--gres=gpu:tesla:2'
     PYFIL                = PYFILdic[ keyno ]
     if convert_to_py:
         os.system('jupyter nbconvert --to script %s --output py_script\n'%PYFIL)

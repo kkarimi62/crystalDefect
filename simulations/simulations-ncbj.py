@@ -24,9 +24,9 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns    = 1 #64
+        nruns    = 64
         #
-        nThreads = 4
+        nThreads = 4 #16
         nNode	 = 1
         #
         jobname  = {
@@ -36,40 +36,43 @@ if __name__ == '__main__':
                     8:'ni/irradiation/cascade3rd', 
                     9:'ni/irradiation/kmc3rd', 
             
-                    6:'ni/pure/results/md', #--- single vacancy 
+                    5:'ni/multipleVacs/results/md/vac0', #--- multiple vacancies
+                   51:'ni/multipleVacs/results/kmc/vac0', 
+            
+                    6:'ni/pure/results/md',         #--- single vacancy 
                    61:'ni/pure/results/kmc', 
 
-                    7:'ni/void/results/md', #--- void 
+                    7:'ni/void/results/md',         #--- void 
                    71:'ni/void/results/kmc', 
 
                     8:'ni/ellipse/results/md', #--- elliptical void
                    81:'ni/ellipse/results/kmc', 
 
                     9:'ni/ext_dislocation/results/md', #--- elliptical void
-                   91:'ni/ext_dislocation/results/kmc', 
-                   }[9]
+                   91:'ni/ext_dislocation/results/kmc3rd', 
+                   }[51]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
                         1:'/../postprocess/NiCoCrNatom1K',
-                        2:'/NiCoCrNatom1KTemp0K',
-                        8:'/../data/ni/irradiation/dpa0',
-                        9:'/ni/irradiation/cascade3rd',
+                        5:'/ni/multipleVacs/results/md/vac0',
                         6:'/ni/pure/results/md',
                         7:'/ni/void/results/md',
-                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
+                        8:'/ni/ellipse/results/md',
+                        9:'/ni/ext_dislocation/results/md',
+                    }[5] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
                         2:['data.txt','ScriptGroup.txt'],
                         3:['data.txt'], 
                         4:['data_minimized.txt'],
-                        5:['data_init.txt','ScriptGroup.0.txt'], #--- only one partition! for multiple ones, use 'submit.py'
-                        8:['Atoms_dyn_Frank_Loop.dat'], 
-                        9:['final.data'], 
+                        5:['lammps_data.dat'], #--- only one partition! for multiple ones, use 'submit.py'
                         6:['lammps_data.dat'], 
                         7:['lammps_data.dat'], 
-                     }[0] #--- to be copied from the above directory. set it to '0' if no file
+                        8:['lammps_data.dat'], 
+                        9:['lammps_data.dat'], 
+                     }[5] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -123,7 +126,7 @@ if __name__ == '__main__':
                     4:' -var T 600.0 -var t_sw 20.0 -var DataFile Equilibrated_600.dat -var nevery 100 -var ParseData 1 -var WriteData swapped_600.dat', 
                     5:' -var buff 0.0 -var nevery 1000 -var ParseData 0 -var lx 3 -var ly 3 -var lz 3 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     51:' -var buff 0.0 -var nevery 100 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat', 
-                    7:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var nevery 1000 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s'%np.random.randint(1001,9999),
+                    7:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var nevery 1000 -var ParseData 1 -var DataFile lammps_data.dat -var DumpFile dumpThermalized.xyz -var WriteData lammps_data_thermalized.dat -var rnd %s'%np.random.randint(1001,9999),
                     71:' -var buff 0.0 -var T 0.1 -var P 0.0 -var nevery 100 -var ParseData 1 -var DataFile swapped_600.dat -var DumpFile dumpThermalized2.xyz -var WriteData Equilibrated_0.dat',
                     8:' -var buff 0.0 -var T 0.1 -var sigm 1.0 -var sigmdt 0.0001 -var ndump 100 -var ParseData 1 -var DataFile Equilibrated_0.dat -var DumpFile dumpSheared.xyz',
                     9:' -var natoms 1000 -var cutoff 3.52 -var ParseData 1',
@@ -131,13 +134,13 @@ if __name__ == '__main__':
                     11:' -var DataFile lammps_data.dat -var epka 5 ',
                     12:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     13:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
-                    14:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 10000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
-                    15:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
-                    16:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
+                    14:' -var buff 0.0 -var nvac 1 -var T 2000.0 -var P 0.0 -var time 10000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
+                    15:' -var buff 0.0 -var nvac 1 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
+                    16:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 1000.0 -var nevery 100 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     17:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 10.0 -var nevery 100 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     'p0':' swapped_600.dat 10.0 %s'%(os.getcwd()+'/../postprocess'),
                     'p1':' swapped_600.dat ElasticConst.txt DumpFileModu.xyz %s'%(os.getcwd()+'/../postprocess'),
-                    'p2':' %s 3.52 102.0 72.0 8.0 data_min.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
+                    'p2':' %s 3.52 75.0 52.0 8.0 lammps_data.dat 4 2 1.0 0.0'%(os.getcwd()+'/lmpScripts'),
                     'p3':' lammps_data.dat init_xyz.conf %s 2000.0'%(os.getcwd()+'/lmpScripts'),
                     'p4':' lammps_data.dat lammps_data.dat %s 1 1 2.0'%(os.getcwd()+'/lmpScripts'),
 #                    'p4':' data_pure.dat dataVoidVac.dat %s 1 1 48.0'%(os.getcwd()+'/lmpScripts'),
@@ -173,8 +176,12 @@ if __name__ == '__main__':
                     92:[12,'p3','p5',1.0], #--- min., add interestitial, min., kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
 
-                 333:[17],           #--- elliptical void: md
-                  33:['p3','p5',1.0],#--- elliptical void: kmc input,.sh_to_bash,invoke kart
+                 444:[14],           #--- vacancy: md
+                  44:['p3','p5',1.0],#--- vacancy: kmc input,.sh_to_bash,invoke kart
+
+
+                 333:['p2', 51, 'p4', 51, 'p7', 7 ], #--- md: put disc, min, add vacancy, min, add subgroup, thermalize
+                  33:['p3','p5',1.0],                #--- dislocation: kmc input,.sh_to_bash,invoke kart
 
                  222:[16],           #--- elliptical void: md
                   22:['p3','p5',1.0],#--- elliptical void: kmc input,.sh_to_bash,invoke kart
@@ -187,13 +194,13 @@ if __name__ == '__main__':
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[333]
+                  }[44]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
         durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
         mem = '16gb' #'22gb'
-        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][2]
+        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][3]
         #--
         DeleteExistingFolder = True
 
@@ -214,8 +221,8 @@ if __name__ == '__main__':
                 os.system( 'ln -s %s/%s %s' % ( EXEC_DIR, EXEC_lmp, path ) ) # --- create folder & mv oar script & cp executable
             #---
             for script,indx in zip(Pipeline,range(100)):
-    #			os.system( 'cp %s/%s %s/lmpScript%s.txt' %( SCRPT_DIR, script, writPath, indx) ) #--- lammps script: periodic x, pxx, vy, load
-                os.system( 'ln -s %s/%s %s' %( SCRPT_DIR, script, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+#                os.system( 'ln -s %s/%s %s' %( SCRPT_DIR, script, writPath) ) #--- lammps script: periodic x, pxx, vy, load
+                os.system( 'cp %s/%s %s' %( SCRPT_DIR, script, writPath) ) #--- lammps script: periodic x, pxx, vy, load
             if sourceFiles: 
                 for sf in sourceFiles:
                     os.system( 'cp %s/Run%s/%s %s' %(sourcePath, irun, sf, writPath) ) #--- lammps script: periodic x, pxx, vy, load

@@ -14,38 +14,46 @@ include ${INC}/buffer.mod
 #--- thermalize two partial dislocations
 
 # -------------------------------------- General Variables --------------------------------------#
-variable                  t_eq      equal     1000.0*${damp_t}         # Equlibration time
+variable                  t_eq      equal     10.0*${damp_t}         # Equlibration time
 variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
 
 
 
  
-# ----------------------------------- NVT Equilibration -----------------------------------------#
-compute     1 all stress/atom NULL pair
-#--- initial stress
-run	0
-variable tmp equal press
-variable p0 equal ${tmp}
+#variable tmp equal press
+#variable p0 equal ${tmp}
 
 velocity                  all       create     $T     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
- 
-#fix                      f1        all        npt temp   $T  $T  ${damp_t}  iso ${p0} $P ${damp_p} drag	1.0 ##fixedpoint 0.0 0.0 0.0
 fix                      f1        all        nvt temp   $T  $T  ${damp_t}  #iso ${p0} $P ${damp_p} drag	1.0 ##fixedpoint 0.0 0.0 0.0
+
+
+
+#--- fix hcp layers
+group hcp type 2
+group fcc type 1
+velocity hcp set 0.0 0.0 0.0
+fix f_hcp hcp setforce 0.0 0.0 0.0
+
+run		10000
+
 
 #-----------------------------
 #--- compute & dump variables
 #-----------------------------
+compute msd_all fcc msd
 dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z
 dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e"
 
 #--- include thermo info
 include ${INC}/thermo.mod
 
+# Define fix for averaging and printing MSD
+fix f_msd fcc ave/time 1 1 1000 c_msd_all[*] file msd.dat
 
 run                       ${Nstep}
 
-unfix                     f1
-reset_timestep            0
+#unfix                     f1
+#reset_timestep            0
 # -------------------------------------- Write Data ----------------------------------------------#
 
 write_data                ${WriteData} 

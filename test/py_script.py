@@ -2,11 +2,11 @@
 # coding: utf-8
 
 # <h1>Table of Contents<span class="tocSkip"></span></h1>
-# <div class="toc"><ul class="toc-item"><li><span><a href="#import-libs" data-toc-modified-id="import-libs-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>import libs</a></span></li><li><span><a href="#Train-NN" data-toc-modified-id="Train-NN-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Train NN</a></span><ul class="toc-item"><li><span><a href="#main():-classifier" data-toc-modified-id="main():-classifier-2.1"><span class="toc-item-num">2.1&nbsp;&nbsp;</span>main(): classifier</a></span></li><li><span><a href="#main():-regressor" data-toc-modified-id="main():-regressor-2.2"><span class="toc-item-num">2.2&nbsp;&nbsp;</span>main(): regressor</a></span><ul class="toc-item"><li><span><a href="#Plot" data-toc-modified-id="Plot-2.2.1"><span class="toc-item-num">2.2.1&nbsp;&nbsp;</span>Plot</a></span></li></ul></li><li><span><a href="#test-example:-2d" data-toc-modified-id="test-example:-2d-2.3"><span class="toc-item-num">2.3&nbsp;&nbsp;</span>test example: 2d</a></span><ul class="toc-item"><li><span><a href="#fully-connected-in-sklearn" data-toc-modified-id="fully-connected-in-sklearn-2.3.1"><span class="toc-item-num">2.3.1&nbsp;&nbsp;</span>fully connected in sklearn</a></span></li><li><span><a href="#fully-connected-in-keras" data-toc-modified-id="fully-connected-in-keras-2.3.2"><span class="toc-item-num">2.3.2&nbsp;&nbsp;</span>fully connected in keras</a></span></li><li><span><a href="#cnn" data-toc-modified-id="cnn-2.3.3"><span class="toc-item-num">2.3.3&nbsp;&nbsp;</span>cnn</a></span></li></ul></li></ul></li></ul></div>
+# <div class="toc"><ul class="toc-item"><li><span><a href="#import-libs" data-toc-modified-id="import-libs-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>import libs</a></span></li><li><span><a href="#Train-NN" data-toc-modified-id="Train-NN-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Train NN</a></span><ul class="toc-item"><li><span><a href="#main():-classifier" data-toc-modified-id="main():-classifier-2.1"><span class="toc-item-num">2.1&nbsp;&nbsp;</span>main(): classifier</a></span></li><li><span><a href="#main():-regressor" data-toc-modified-id="main():-regressor-2.2"><span class="toc-item-num">2.2&nbsp;&nbsp;</span>main(): regressor</a></span><ul class="toc-item"><li><span><a href="#Plot" data-toc-modified-id="Plot-2.2.1"><span class="toc-item-num">2.2.1&nbsp;&nbsp;</span>Plot</a></span></li></ul></li><li><span><a href="#test-example:-2d" data-toc-modified-id="test-example:-2d-2.3"><span class="toc-item-num">2.3&nbsp;&nbsp;</span>test example: 2d</a></span><ul class="toc-item"><li><span><a href="#fully-connected-in-sklearn" data-toc-modified-id="fully-connected-in-sklearn-2.3.1"><span class="toc-item-num">2.3.1&nbsp;&nbsp;</span>fully connected in sklearn</a></span></li><li><span><a href="#fully-connected-in-keras" data-toc-modified-id="fully-connected-in-keras-2.3.2"><span class="toc-item-num">2.3.2&nbsp;&nbsp;</span>fully connected in keras</a></span></li><li><span><a href="#cnn" data-toc-modified-id="cnn-2.3.3"><span class="toc-item-num">2.3.3&nbsp;&nbsp;</span>cnn</a></span></li></ul></li></ul></li><li><span><a href="#neural-net" data-toc-modified-id="neural-net-3"><span class="toc-item-num">3&nbsp;&nbsp;</span>neural net</a></span><ul class="toc-item"><li><span><a href="#main" data-toc-modified-id="main-3.1"><span class="toc-item-num">3.1&nbsp;&nbsp;</span>main</a></span></li></ul></li><li><span><a href="#gnn" data-toc-modified-id="gnn-4"><span class="toc-item-num">4&nbsp;&nbsp;</span>gnn</a></span><ul class="toc-item"><li><span><a href="#graph-net" data-toc-modified-id="graph-net-4.1"><span class="toc-item-num">4.1&nbsp;&nbsp;</span>graph net</a></span><ul class="toc-item"><li><span><a href="#example-1d" data-toc-modified-id="example-1d-4.1.1"><span class="toc-item-num">4.1.1&nbsp;&nbsp;</span>example 1d</a></span></li><li><span><a href="#main()" data-toc-modified-id="main()-4.1.2"><span class="toc-item-num">4.1.2&nbsp;&nbsp;</span>main()</a></span><ul class="toc-item"><li><span><a href="#validation" data-toc-modified-id="validation-4.1.2.1"><span class="toc-item-num">4.1.2.1&nbsp;&nbsp;</span>validation</a></span></li></ul></li></ul></li><li><span><a href="#gnn-classifier" data-toc-modified-id="gnn-classifier-4.2"><span class="toc-item-num">4.2&nbsp;&nbsp;</span>gnn classifier</a></span><ul class="toc-item"><li><span><a href="#main()" data-toc-modified-id="main()-4.2.1"><span class="toc-item-num">4.2.1&nbsp;&nbsp;</span>main()</a></span></li></ul></li><li><span><a href="#gnn-for-energy" data-toc-modified-id="gnn-for-energy-4.3"><span class="toc-item-num">4.3&nbsp;&nbsp;</span>gnn for energy</a></span><ul class="toc-item"><li><span><a href="#main()" data-toc-modified-id="main()-4.3.1"><span class="toc-item-num">4.3.1&nbsp;&nbsp;</span>main()</a></span></li></ul></li><li><span><a href="#mpnn" data-toc-modified-id="mpnn-4.4"><span class="toc-item-num">4.4&nbsp;&nbsp;</span>mpnn</a></span></li><li><span><a href="#tf" data-toc-modified-id="tf-4.5"><span class="toc-item-num">4.5&nbsp;&nbsp;</span>tf</a></span></li><li><span><a href="#pytorch" data-toc-modified-id="pytorch-4.6"><span class="toc-item-num">4.6&nbsp;&nbsp;</span>pytorch</a></span><ul class="toc-item"><li><span><a href="#toturial" data-toc-modified-id="toturial-4.6.1"><span class="toc-item-num">4.6.1&nbsp;&nbsp;</span>toturial</a></span></li></ul></li></ul></li></ul></div>
 
 # # import libs
 
-# In[1]:
+# In[3]:
 
 
 import configparser
@@ -14,7 +14,6 @@ confParser = configparser.ConfigParser()
 
 #--- parse conf. file
 confParser.read('configuration.ini')
-print('conf. file sections:',confParser.sections())
 
 #--- system libs
 import os
@@ -67,7 +66,7 @@ import torch_geometric.data as geom_data
 import torch_geometric.nn as geom_nn
 from torch_geometric.data import Data, DataLoader
 
-
+# PyTorch Lightning
 import lightning as L
 
 # PL callbacks
@@ -145,8 +144,8 @@ def Density1d(xv,query_point,filtr):
     utl.PltErr(X,Z,title='rho.png',Plot=False,attrs={'fmt':'-'},ax=ax)
     return Z
 
-data=GenerateDate()
-data[0].shape
+# data=GenerateDate()
+# data[0].shape
 
 
 # # Train NN
@@ -1840,7 +1839,7 @@ def main():
    
    return nn
 
-#model_clf = main()
+model_clf = main()
 
 
 # ## main(): regressor
@@ -1886,7 +1885,7 @@ def main():
    
    return nn
 
-#model_regr = main()
+model_regr = main()
 
 
 # ### Plot
@@ -2824,6 +2823,10 @@ def main():
 # # gnn
 
 # ## graph net
+
+# In[28]:
+
+
 # class GNNModel(nn.Module):
 #     def __init__(
 #         self,
@@ -2895,130 +2898,8 @@ def main():
 #                 x          = layer(x)
 #         return x
     
+    
 class GNNModel(nn.Module):
-    def __init__(
-        self,
-        c_in,
-        c_hidden,
-        c_out,
-        num_layers=2,
-        layer_name="GCN",
-        dp_rate=0.1,
-        **kwargs,
-    ):
-        """GNNModel.
-
-        Args:
-            c_in: Dimension of input features
-            c_hidden: Dimension of hidden features
-            c_out: Dimension of the output features. Usually number of classes in classification
-            num_layers: Number of "hidden" graph layers
-            layer_name: String of the graph layer to use
-            dp_rate: Dropout rate to apply throughout the network
-            kwargs: Additional arguments for the graph layer (e.g. number of heads for GAT)
-        """
-        super().__init__()
-        gnn_layer_by_name = {"GCN": geom_nn.GCNConv, "GAT": geom_nn.GATConv, "GraphConv": geom_nn.GraphConv}
-        gnn_layer = gnn_layer_by_name[layer_name]
-
-        layers = []
-        in_channels, out_channels = c_in, c_hidden
-        for l_idx in range(num_layers - 1):
-            layers += [
-                gnn_layer(in_channels=in_channels, out_channels=out_channels, **kwargs),
-                nn.ReLU(inplace=True),
-                nn.Dropout(dp_rate),
-            ]
-            in_channels = c_hidden
-        layers += [gnn_layer(in_channels=in_channels, out_channels=c_out, **kwargs)]
-        self.layers = nn.ModuleList(layers)
-
-    def forward(self, x, edge_index):
-        """Forward.
-
-        Args:
-            x: Input features per node
-            edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
-        """
-        for layer in self.layers:
-            # For graph layers, we need to add the "edge_index" tensor as additional input
-            # All PyTorch Geometric graph layer inherit the class "MessagePassing", hence
-            # we can simply check the class type.
-            if isinstance(layer, geom_nn.MessagePassing):
-#                 pdb.set_trace()
-                x = layer(x, edge_index)
-            else:
-                x = layer(x)
-        return x
-    
-#class GNNModel(nn.Module):
-#    def __init__(
-#        self,
-#        c_in,
-#        c_hidden,
-#        c_out,
-#        edge_dim,
-#        num_layers=1,
-#        layer_name="GCN",
-#        dp_rate=0.1,
-#        verbose=True,
-#        **kwargs,
-#    ):
-#        """GNNModel.
-#
-#        Args:
-#            c_in: Dimension of input features
-#            c_hidden: Dimension of hidden features
-#            c_out: Dimension of the output features. Usually number of classes in classification
-#            num_layers: Number of "hidden" graph layers
-#            layer_name: String of the graph layer to use
-#            dp_rate: Dropout rate to apply throughout the network
-#            kwargs: Additional arguments for the graph layer (e.g. number of heads for GAT)
-#        """
-#        super().__init__()
-#        gnn_layer_by_name = {"linear":geom_nn.Linear,"GCN": geom_nn.GCNConv, "GAT": geom_nn.GATConv, 
-#                             "GraphConv": geom_nn.GraphConv}
-#        gnn_layer         = gnn_layer_by_name[layer_name]
-#        layers = []
-#        in_channels       = c_in
-#        for l_idx in range(num_layers-1):
-#            out_channels      = c_hidden[ l_idx ]
-#            layers       += [
-#                gnn_layer(in_channels=in_channels, 
-#                                           out_channels=out_channels, 
-#                                           **kwargs),
-#                nn.ReLU(inplace=True),
-#                 nn.Dropout(dp_rate),
-#            ]
-#            in_channels       = out_channels
-#        layers            += [gnn_layer(in_channels=in_channels, 
-#                                                         out_channels=c_out, 
-#                                                         **kwargs)]
-#        self.layers        = nn.ModuleList(layers)
-#
-#        if verbose:
-#            for indx, layer in enumerate( self.layers ):
-#                 print('layer %s'%indx, layer )
-#
-#
-#    def forward(self, x, edge_index ):
-#        """Forward.
-#
-#        Args:
-#            x: Input features per node
-#            edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
-#        """
-#        for layer in self.layers:
-#            # For graph layers, we need to add the "edge_index" tensor as additional input
-#            # All PyTorch Geometric graph layer inherit the class "MessagePassing", hence
-#            # we can simply check the class type.
-#            if isinstance(layer, geom_nn.MessagePassing):
-#                x    = layer(x, edge_index)
-#            else:
-#                x          = layer(x)
-#        return x
-    
-class GNNClassifier(nn.Module):
     def __init__(
         self,
         c_in,
@@ -3055,27 +2936,17 @@ class GNNClassifier(nn.Module):
                                            out_channels=out_channels, 
                                            **kwargs),
                 nn.ReLU(inplace=True),
-                nn.Dropout(dp_rate),
+                 nn.Dropout(dp_rate),
             ]
             in_channels       = out_channels
-        layers            += [#geom_nn.global_mean_pool(),
-							  nn.Linear(in_features=in_channels, 
-                                                         out_features=c_out, 
-                                                         bias=True)
-                             
-                             ]
-        
+        layers            += [gnn_layer(in_channels=in_channels, 
+                                                         out_channels=c_out, 
+                                                         **kwargs)]
         self.layers        = nn.ModuleList(layers)
 
         if verbose:
             for indx, layer in enumerate( self.layers ):
                  print('layer %s'%indx, layer )
-#        num_features=in_channels
-#        hidden_dim = 64
-#        num_classes = 2
-#        self.conv1 = geom_nn.GCNConv(num_features, hidden_dim)
-#        self.conv2 = geom_nn.GCNConv(hidden_dim, hidden_dim)
-#        self.fc = nn.Linear(hidden_dim, num_classes)
 
 
     def forward(self, x, edge_index ):
@@ -3093,38 +2964,60 @@ class GNNClassifier(nn.Module):
                 x    = layer(x, edge_index)
             else:
                 x          = layer(x)
-
         return x
+
+
+# In[29]:
+
 
 class GraphNet:
     def __init__(self,**kwargs):
+        '''
+        GraphNet constructor call
+        '''
         for key in kwargs:
             setattr(self, key, kwargs[key])
 
-    def GnnModel( self, model_name='gnn_regressor'):
-        model_name_dic = {'gnn_regressor':GNNModel, 'gnn_classifier':GNNClassifier}
+    def GnnModel( self, model_name='gnn_regressor',layer_name='GCN'):
+        '''
+        Create Gnn model
+        '''
+        model_name_dic = {'gnn_regressor':GNNModel} #, 'gnn_classifier':GNNClassifier}
         self.model = model_name_dic[model_name]( 
                             c_in       = self.c_in,
                             c_hidden   = self.c_hidden,
                             c_out      = self.c_out,
                             edge_dim   = self.edge_dim,
                             num_layers = self.num_layers,
-                            layer_name = "GCN",
+                            layer_name = layer_name,
                             dp_rate    = 0.1,
                         ).to(self.device)
     
     def Parse(self,path,nruns):
-        self.descriptors      = []
+        '''
+        Parse dataset
+        '''
+        
         self.Catalogs         = {}
         self.transition_paths = []
+        self.descriptors      = []
         self.dumpFiles        = []
         self.neighlists       = []
 #
         if self.verbose:
             print('parsing %s'%path)
         rwjs = utl.ReadWriteJson()
-        #--- run over ensemble of different realizations (with the same simulation box!)
+
+        #--- dirs and files to be parsed
+        file_dirs = ['saved_output/descriptorsEveryAtom.json',
+             'saved_output/transition_paths.json',
+             'neighList/neigh_list.xyz',
+             'dumpFile/dump.xyz',
+             'saved_output/catalog.txt'
+            ]
         for irun in range(nruns):
+            if not self.fileExists(path,irun,file_dirs):
+                continue            
             self.descriptors.extend( rwjs.Read('%s/Run%s/saved_output/descriptorsEveryAtom.json'%(path,irun)) )
             self.transition_paths.extend( rwjs.Read('%s/Run%s/saved_output/transition_paths.json'%(path,irun)) )
             self.neighlists.append( '%s/Run%s/neighList/neigh_list.xyz'%(path,irun))
@@ -3135,10 +3028,219 @@ class GraphNet:
         
         self.nruns     = list(self.Catalogs.keys())
         self.nruns.sort()
-                                        
-#        assert len(self.Catalogs) == len(self.dumpFiles) == len(self.neighlists)        
+                                                
+    def fileExists(self,path,irun,file_dirs):
+        '''
+        return True if passed dirs exist
+        '''
+        file_exist = []
+        for myfile in file_dirs:
+            file_exist.append( os.path.isfile('%s/Run%s/%s'%(path,irun,myfile)) )
+        return np.all(np.array(file_exist))
+
+#     def GenerateDate(self,n):
+#         assert n>2,'increase n'
+#         disp=[]
         
-    def DataBuilderForClassifier( self ):
+        
+#         X=np.linspace(0,1.0,n)
+#         dx = X[1]-X[0]
+#         vacancy = 0
+#         while vacancy == 0 or vacancy == n-1:
+#             vacancy = int(np.random.random()*n)
+#         assert 0<vacancy<n-1
+#         print('vacancy=%s'%vacancy)
+        
+#         x=list(X.copy())
+#         x.pop(vacancy)
+#         n -= 1
+        
+#         u=np.zeros(n)
+#         u[vacancy-1]=1.0
+#         disp.append(u)
+#         u=np.zeros(n)
+#         u[vacancy]=-1
+#         disp.append(u)
+
+#         adj_mat = torch.zeros((n, n), dtype=torch.float)
+#         for i in range(n):
+#             adj_mat[i,i]=1
+#             for j in range(i+1,n):
+#                 if abs(x[i]-x[j]) <= 1.1*dx:
+#                     adj_mat[i,j]=1
+#                     adj_mat[j,i]=1
+
+#         print(adj_mat)
+#         return x,disp,adj_mat
+        
+#     def DataBuilder2nd( self ):
+#         num_snapshots = 2
+        
+#         data = list(map(lambda x: self.GenerateDate(5),range(num_snapshots)))
+
+        
+#         graphs = []
+
+#         snapshots     = range(num_snapshots)
+#         input_data    = [torch.from_numpy( np.c_[data[i][0]] ).float() for i in snapshots]  
+
+#         # Example target data (displacement vectors for each snapshot and each path)
+# #        target_displacements = [torch.from_numpy( np.c_[u] ).float() for u in disp]
+#         target_displacements = [torch.from_numpy( np.c_[data[i][1]].T ).float() for i in snapshots]
+
+#         adj_matrices = [data[0][2] for i in snapshots]
+#         adj_matrices = torch.stack(adj_matrices) 
+
+
+
+#         # Concatenate input data along a new dimension to form a single tensor
+# #        print('input_data_tensor.shape:',input_data_tensor.shape)
+
+#         # Standardize the augmented input data
+# #         mean = input_data_tensor.mean(dim=(0, 1))
+# #         std = input_data_tensor.std(dim=(0, 1))
+# #         standardized_input_data = [GraphNet.standardize_data(data, mean, std) for data in augmented_input_data]
+
+
+#         # Convert input data to tensors
+#         target_displacements_tensor = torch.stack(target_displacements)
+#         input_data_tensor           = torch.stack(input_data)
+
+
+
+#         # Concatenate nodes and edges for each graph
+#         graphs = []
+#         for i in range(len(input_data)):
+#             x = input_data_tensor[i]  # Node features
+#             edge_index = adj_matrices[i].nonzero().t()  # Edge indices
+#             y = target_displacements_tensor[i]  # Target displacements
+
+#             # Create a Data object for each graph
+#             data = Data(x=x, edge_index=edge_index, y=y)
+#             graphs.append(data)
+            
+#         # Create a single large graph by concatenating Data objects
+#         large_graph = torch_geometric.data.Batch.from_data_list(graphs)
+
+#         # Define batch size and create DataLoader
+#         # Create DataLoader for training dataset
+#         loader = DataLoader(large_graph, batch_size=2, shuffle=True)
+
+#         # Accessing batches in the DataLoader
+#         self.dataset_train = loader.dataset
+#         if self.verbose:
+#             print('dataset_train:',self.dataset_train)
+#         self.dataset_test = loader.dataset
+#         if self.verbose:
+#             print('dataset_test:',self.dataset_test)
+
+
+    def DataBuilder( self, Ovito_Output = False, train_ratio = 0.8 ):
+        '''
+        Build dataloader in pytorch
+        '''
+        
+        ntrain        = 1
+        num_snapshots = len( self.transition_paths ) #--- total no. of transition paths
+        snapshots     = range(num_snapshots)
+        
+        #--- nodal cords
+        input_xyz     = [torch.from_numpy( np.c_[np.c_[self.transition_paths[ i ]['x'],\
+                                                       self.transition_paths[ i ]['y'],\
+                                                       self.transition_paths[ i ]['z']]] ).float() for i in snapshots]
+        #--- nodal descriptors
+        input_data    = [torch.from_numpy( np.c_[np.log10(np.array(self.transition_paths[ i ]['descriptors'])),\
+                                                 self.transition_paths[ i ]['center_atom_index']] ).float() for i in      snapshots]
+        #--- atom indices
+        input_atom_indx  = [torch.from_numpy( np.c_[self.transition_paths[ i ]['atom_indx']] ).int() for i in      snapshots]
+        
+        # Example target data (displacement vectors for each path)
+        target_displacements = [torch.from_numpy(np.array(self.transition_paths[ i ]['diffusion_paths'])[:,:self.c_out]).float() for i in snapshots]
+        
+        #--- add gaussian noise
+        augmented_input_data           = []
+        augmented_input_xyz            = []
+        augmented_target_displacements = []
+        n_repeat                       = 1 #np.max([1,int(ntrain/ntrain_initial)])
+        #
+        for _ in range(n_repeat):  # Repeat the augmentation process 10 times
+            augmented_input  = GraphNet.augment_data( input_data,           self.noise_std )
+            augmented_target = GraphNet.augment_data( target_displacements, self.noise_std )
+            augmented_xyz    = GraphNet.augment_data( input_xyz,            self.noise_std )
+            #
+            augmented_input_data.extend(augmented_input)
+            augmented_input_xyz.extend(augmented_xyz)
+            augmented_target_displacements.extend(augmented_target)
+
+        #--- adjacency matrix
+        adj_matrices      = self.compute_adjacency_matrices(augmented_input_xyz, rcut=self.cutoff)
+        
+        #--- verify adj matrix????
+        if Ovito_Output:
+            self.PrintOvito(adjacency = adj_matrices, input_data=input_data)
+
+        #--- Concatenate input data along a new dimension to form a single tensor
+        input_data = np.vstack(augmented_input_data) 
+
+        #--- Standardize the augmented input data
+        mean              = input_data.mean(axis=0)
+        std               = input_data.std(axis=0)
+        assert np.all( std > 0 ), 'std == 0!'
+        standardized_input_data = [GraphNet.standardize_data(data, mean, std) for data in augmented_input_data]
+        
+        #--- Standardize edge attributes
+#         mean              = edge_attrs.mean(dim=(0, 1))
+#         std               = edge_attrs.std(dim=(0, 1))
+#         standardized_edge_attrs = [GraphNet.standardize_data(data, mean, std) for data in edge_attrs]
+
+
+        #--- Convert input data to tensors
+        target_displacements_tensor = augmented_target_displacements
+        input_data_tensor           = standardized_input_data
+        input_xyz_tensor            = augmented_input_xyz
+#         edge_attrs_tensor           = torch.stack(standardized_edge_attrs)
+
+        #--- Concatenate nodes and edges for each graph
+        graphs = []
+        for i in range(len(input_data_tensor)):
+            x             = input_data_tensor[i]  # Node features
+            cords         = input_xyz_tensor[i]  # Node features
+            edge_index    = adj_matrices[i].nonzero().t()  # Edge indices
+#             edge_features = edge_attrs_tensor[ i ][ :, : self.edge_dim ]
+            atom_indx     = input_atom_indx[ i ]
+            y             = target_displacements_tensor[i]  # Target displacements
+
+            # Create a Data object for each graph
+            data = Data(x=x, edge_index=edge_index, y=y, pos=cords, atom_indx=atom_indx) #edge_attr = edge_features)
+            graphs.append(data)
+        
+        #--- Create a single large graph by concatenating Data objects
+        self.large_graph = torch_geometric.data.Batch.from_data_list(graphs)
+
+        #--- Define batch size and create DataLoader
+        batch_size = len(input_data_tensor)
+#        loader = DataLoader(large_graph, batch_size=batch_size, shuffle=True)
+        
+        # Define the split ratio (e.g., 80% for training, 20% for testing)
+#        train_ratio = 0.8
+
+        # Define batch sizes for  training and test dataloaders
+        train_batch_size = int( np.max([1,int(batch_size * train_ratio)]) )
+        test_batch_size  =  batch_size - train_batch_size
+        # Create DataLoader for training dataset
+        loader           = DataLoader(self.large_graph, batch_size=train_batch_size, shuffle=False)
+
+        # Accessing batches in the DataLoader
+        loader_iter      = iter(loader)
+        self.dataset_train = next(loader_iter)
+        if self.verbose:
+            print('dataset_train:',self.dataset_train)
+        if test_batch_size > 0:
+            self.dataset_test = next(loader_iter)
+            if self.verbose:
+                print('dataset_test:',self.dataset_test)
+
+    def DataBuilderForClassifier( self, Ovito_Output = False ):
         
         ntrain        = 1 #self.ntrain
         num_snapshots = len( self.descriptors )
@@ -3148,51 +3250,55 @@ class GraphNet:
                                                        self.descriptors[ i ]['y'],\
                                                        self.descriptors[ i ]['z']]] ).float() for i in snapshots]
 
-        input_data    = [torch.from_numpy( np.c_[np.log10(np.array(self.descriptors[ i ]['descriptors'])),\
-                                                 ] ).float() for i in      snapshots]
+#         input_data   = [torch.from_numpy( np.c_[np.log10(np.array(self.descriptors[ i ]['descriptors'])),\
+#                                                  ] ).float() for i in      snapshots]
+        input_data    = [torch.from_numpy( np.c_[self.descriptors[ i ]['x'],\
+                                         self.descriptors[ i ]['y'],\
+                                         self.descriptors[ i ]['z'],\
+                                         np.array(self.descriptors[ i ]['descriptors_acsf'])]).float() for i in snapshots]
 
         # Example target data (displacement vectors for each snapshot and each path)
-        labels        = [torch.from_numpy(np.array(self.descriptors[ i ]['isNonCrystalline'])).float() for i in snapshots]
+        labels        = [torch.from_numpy(np.array(self.descriptors[ i ]['isNonCrystalline']).flatten()).long() for i in snapshots]
 
         
         # Augment the dataset to have order 100 single graphs
         augmented_input_data           = []
         augmented_input_xyz            = []
         augmented_labels               = []
-        input_data_tensor              = torch.stack(input_data)
-        ntrain_initial                 = input_data_tensor.shape[0]*input_data_tensor.shape[1]
-        n_repeat                       = np.max([1,int(ntrain/ntrain_initial)])
+#        input_data_tensor              = torch.stack(input_data)
+#        ntrain_initial                 = input_data_tensor.shape[0]*input_data_tensor.shape[1]
+        n_repeat                       = 1 #np.max([1,int(ntrain/ntrain_initial)])
 
         for _ in range(n_repeat):  # Repeat the augmentation process 10 times
-            augmented_input = GraphNet.augment_data(input_data, self.noise_std)
-            augmented_target = labels #GraphNet.augment_data(input_data, labels, 0)
-            augmented_xyz = GraphNet.augment_data(input_xyz, self.noise_std)
+            augmented_input  = GraphNet.augment_data(input_data, self.noise_std)
+            augmented_target = labels #GraphNet.augment_data(labels, 0)
+            augmented_xyz    = GraphNet.augment_data(input_xyz, self.noise_std)
             #
             augmented_input_data.extend(augmented_input)
             augmented_input_xyz.extend(augmented_xyz)
             augmented_labels.extend(augmented_target)
 
-#         adj_matrices_attrs      = self.compute_adjacency_matrices2nd(augmented_input_data, rcut=self.cutoff)
-#         adj_matrices            = torch.stack(adj_matrices_attrs[ 0 ])
-#         edge_attrs              = torch.stack(adj_matrices_attrs[ 1 ])
-#        adj_matrices      = torch.stack(self.compute_adjacency_matrices2nd(augmented_input_data, rcut=self.cutoff)) 
-#        adj_matrices      = torch.stack(self.compute_adjacency_matrices2nd(self.descriptors, rcut=self.cutoff)) 
+#        t0=time.time()
         adj_matrices_attrs      = self.compute_adjacency_matrices2nd(self.descriptors, rcut=self.cutoff)
-        adj_matrices            = torch.stack(adj_matrices_attrs[ 0 ])
-        edge_attrs              = torch.stack(adj_matrices_attrs[ 1 ])        
+#        print('elapsed time for compute_adjacency_matrices2nd:',time.time()-t0)
+        adj_matrices            = adj_matrices_attrs[ 0 ]
+        edge_attrs              = adj_matrices_attrs[ 1 ]
+#        adj_matrices      = torch.stack(self.compute_adjacency_matrices2nd(self.descriptors, rcut=self.cutoff)) 
+        
         
         #--- verify adj matrix????
-        self.PrintOvito(adjacency = adj_matrices, input_data=input_data)
+        if Ovito_Output:
+            self.PrintOvito(adjacency = adj_matrices, input_data=input_data)
 
 
         # Concatenate input data along a new dimension to form a single tensor
-        input_data_tensor = torch.stack(augmented_input_data)
+        input_data_tensor = np.vstack(augmented_input_data)
 #        print('input_data_tensor.shape:',input_data_tensor.shape)
 
         # Standardize the augmented input data
-        mean              = input_data_tensor.mean(dim=(0, 1))
-        std               = input_data_tensor.std(dim=(0, 1))
-        assert torch.all( std > 0 ), 'std == 0!'
+        mean              = input_data_tensor.mean(axis=0)#dim=(0, 1))
+        std               = input_data_tensor.std(axis=0)#dim=(0, 1))
+        assert np.all( std > 0 ), 'std == 0!'
         standardized_input_data = [GraphNet.standardize_data(data, mean, std) for data in augmented_input_data]
         
         # Standardize edge attributes
@@ -3202,16 +3308,16 @@ class GraphNet:
 
 
         # Convert input data to tensors
-        labels_tensor = torch.stack(augmented_labels)
-        input_data_tensor           = torch.stack(standardized_input_data)
-        input_xyz_tensor            = torch.stack(augmented_input_xyz)
+        labels_tensor               = augmented_labels
+        input_data_tensor           = standardized_input_data
+        input_xyz_tensor            = augmented_input_xyz
 #         edge_attrs_tensor           = torch.stack(standardized_edge_attrs)
 
 
 
         # Concatenate nodes and edges for each graph
         graphs = []
-        for i in range(len(input_data)):
+        for i in range(len(input_data_tensor)):
             x             = input_data_tensor[i]  # Node features
             cords         = input_xyz_tensor[i]  # Node features
             edge_index    = adj_matrices[i].nonzero().t()  # Edge indices
@@ -3221,12 +3327,12 @@ class GraphNet:
             # Create a Data object for each graph
             data = Data(x=x, edge_index=edge_index, y=y, pos=cords) #edge_attr = edge_features)
             graphs.append(data)
+        np.random.shuffle(graphs)
         
         # Create a single large graph by concatenating Data objects
-        large_graph = torch_geometric.data.Batch.from_data_list(graphs)
 
         # Define batch size and create DataLoader
-        batch_size = len(input_data)
+        batch_size  = len(input_data)
 #        loader = DataLoader(large_graph, batch_size=batch_size, shuffle=True)
         
         # Define the split ratio (e.g., 80% for training, 20% for testing)
@@ -3234,143 +3340,67 @@ class GraphNet:
 
         # Define batch sizes for training and test dataloaders
         train_batch_size = int( np.max([1,int(batch_size * train_ratio)]) )
+        test_batch_size  = batch_size - train_batch_size
+        assert test_batch_size > 0, 'test_batch_size = %s'%test_batch_size
 
+        large_graph_train = torch_geometric.data.Batch.from_data_list(graphs[:train_batch_size])
+        large_graph_test  = torch_geometric.data.Batch.from_data_list(graphs[train_batch_size:])
+
+        
         # Create DataLoader for training dataset
-        self.loader = DataLoader(large_graph, batch_size=train_batch_size, shuffle=False)
+        self.train_dataloaders = DataLoader(large_graph_train, batch_size=train_batch_size, shuffle=False)
+        self.test_dataloaders  = DataLoader(large_graph_test, batch_size=test_batch_size, shuffle=False)
 
         # Accessing batches in the DataLoader
-#        loader_iter=iter(loader)
- #       self.dataset_train = next(loader_iter)
-  #      if self.verbose:
-   #         print('dataset_train:',self.dataset_train)
-    #    self.dataset_test = self.dataset_train #next(loader_iter)
-     #   if self.verbose:
-      #      print('dataset_test:',self.dataset_test) 
-    def GenerateDate(self,n):
-        assert n>2,'increase n'
-        disp=[]
+#         loader_iter = iter(loader)
+#         self.dataset_train = next(loader_iter)
+#         if self.verbose:
+#             print('dataset_train:',self.dataset_train)
+#         self.dataset_test = next(loader_iter)
+#         if self.verbose:
+#             print('dataset_test:',self.dataset_test)
+
+    def DataBuilderForEnergy( self, Ovito_Output = False ):
         
-        
-        X=np.linspace(0,1.0,n)
-        dx = X[1]-X[0]
-        vacancy = 0
-        while vacancy == 0 or vacancy == n-1:
-            vacancy = int(np.random.random()*n)
-        assert 0<vacancy<n-1
-        print('vacancy=%s'%vacancy)
-        
-        x=list(X.copy())
-        x.pop(vacancy)
-        n -= 1
-        
-        u=np.zeros(n)
-        u[vacancy-1]=1.0
-        disp.append(u)
-        u=np.zeros(n)
-        u[vacancy]=-1
-        disp.append(u)
-
-        adj_mat = torch.zeros((n, n), dtype=torch.float)
-        for i in range(n):
-            adj_mat[i,i]=1
-            for j in range(i+1,n):
-                if abs(x[i]-x[j]) <= 1.1*dx:
-                    adj_mat[i,j]=1
-                    adj_mat[j,i]=1
-
-        print(adj_mat)
-        return x,disp,adj_mat
-        
-    def DataBuilder2nd( self ):
-        num_snapshots = 2
-        
-        data = list(map(lambda x: self.GenerateDate(5),range(num_snapshots)))
-
-        
-        graphs = []
-
-        snapshots     = range(num_snapshots)
-        input_data    = [torch.from_numpy( np.c_[data[i][0]] ).float() for i in snapshots]  
-
-        # Example target data (displacement vectors for each snapshot and each path)
-#        target_displacements = [torch.from_numpy( np.c_[u] ).float() for u in disp]
-        target_displacements = [torch.from_numpy( np.c_[data[i][1]].T ).float() for i in snapshots]
-
-        adj_matrices = [data[0][2] for i in snapshots]
-        adj_matrices = torch.stack(adj_matrices) 
-
-
-
-        # Concatenate input data along a new dimension to form a single tensor
-#        print('input_data_tensor.shape:',input_data_tensor.shape)
-
-        # Standardize the augmented input data
-#         mean = input_data_tensor.mean(dim=(0, 1))
-#         std = input_data_tensor.std(dim=(0, 1))
-#         standardized_input_data = [GraphNet.standardize_data(data, mean, std) for data in augmented_input_data]
-
-
-        # Convert input data to tensors
-        target_displacements_tensor = torch.stack(target_displacements)
-        input_data_tensor           = torch.stack(input_data)
-
-
-
-        # Concatenate nodes and edges for each graph
-        graphs = []
-        for i in range(len(input_data)):
-            x = input_data_tensor[i]  # Node features
-            edge_index = adj_matrices[i].nonzero().t()  # Edge indices
-            y = target_displacements_tensor[i]  # Target displacements
-
-            # Create a Data object for each graph
-            data = Data(x=x, edge_index=edge_index, y=y)
-            graphs.append(data)
-            
-        # Create a single large graph by concatenating Data objects
-        large_graph = torch_geometric.data.Batch.from_data_list(graphs)
-
-        # Define batch size and create DataLoader
-        # Create DataLoader for training dataset
-        loader = DataLoader(large_graph, batch_size=2, shuffle=True)
-
-        # Accessing batches in the DataLoader
-        self.dataset_train = loader.dataset
-        if self.verbose:
-            print('dataset_train:',self.dataset_train)
-        self.dataset_test = loader.dataset
-        if self.verbose:
-            print('dataset_test:',self.dataset_test)
-
-
-    def DataBuilder( self ):
-        
-        ntrain        = 1 #self.ntrain
+        ntrain        = 1
         num_snapshots = len( self.transition_paths )
         snapshots     = range(num_snapshots)
+        #--- only include center atoms within clusters
+#        filtrs        = list(map(lambda x: np.array(np.ones(len(self.transition_paths[x]['center_atom_index']))).flatten().astype(bool), snapshots))
+        filtrs = list(map(lambda x: np.array(self.transition_paths[x]['center_atom_index']).flatten().astype(bool), snapshots))
         #
         input_xyz     = [torch.from_numpy( np.c_[np.c_[self.transition_paths[ i ]['x'],\
                                                        self.transition_paths[ i ]['y'],\
-                                                       self.transition_paths[ i ]['z']]] ).float() for i in snapshots]
+                                                       self.transition_paths[ i ]['z']][filtrs[i]]] ).float() for i in snapshots]
 
-        input_data    = [torch.from_numpy( np.c_[np.log10(np.array(self.transition_paths[ i ]['descriptors'])),\
-                                                 self.transition_paths[ i ]['center_atom_index']] ).float() for i in      snapshots]
+        input_data    = [torch.from_numpy( np.c_[#self.transition_paths[ i ]['x'],\
+                                         #self.transition_paths[ i ]['y'],\
+                                         #self.transition_paths[ i ]['z'],\
+#                                         np.log10(np.array(self.transition_paths[ i ]['descriptors_acsf'])),\
+                                         np.array(self.transition_paths[ i ]['descriptors_acsf']),\
+                                         #self.transition_paths[ i ]['center_atom_index']\
+                                            ][filtrs[i]] ).float() for i in      snapshots]
+#        input_data    =  [torch.from_numpy( np.c_[np.log10(np.array(self.transition_paths[ i ]['descriptors']))] ).float() for i in      snapshots]
 
+        input_atom_indx  = [torch.from_numpy( np.c_[self.transition_paths[ i ]['atom_indx']][filtrs[i]] ).int() for i in      snapshots]
+
+        
         # Example target data (displacement vectors for each snapshot and each path)
-        target_displacements = [torch.from_numpy(np.array(self.transition_paths[ i ]['diffusion_paths'])[:,:self.c_out]).float() for i in snapshots]
+        target_displacements = [torch.from_numpy(np.array(self.transition_paths[ i ]['energy_barrier'])).float() for i in snapshots]
 
         
         # Augment the dataset to have order 100 single graphs
         augmented_input_data           = []
         augmented_input_xyz            = []
         augmented_target_displacements = []
-        input_data_tensor              = torch.stack(input_data)
-        ntrain_initial                 = input_data_tensor.shape[0]*input_data_tensor.shape[1]
-        n_repeat                       = np.max([1,int(ntrain/ntrain_initial)])
+#        input_data_tensor              = torch.stack(input_data)
+#        ntrain_initial                 = input_data_tensor.shape[0]*input_data_tensor.shape[1]
+        n_repeat                       = 1 #np.max([1,int(ntrain/ntrain_initial)])
 
         for _ in range(n_repeat):  # Repeat the augmentation process 10 times
-            augmented_input, augmented_target = GraphNet.augment_data(input_data, target_displacements, self.noise_std)
-            augmented_xyz, _ = GraphNet.augment_data(input_xyz, input_xyz, self.noise_std)
+            augmented_input  = GraphNet.augment_data( input_data,           self.noise_std )
+            augmented_target = GraphNet.augment_data( target_displacements, self.noise_std )
+            augmented_xyz    = GraphNet.augment_data( input_xyz,            self.noise_std )
             #
             augmented_input_data.extend(augmented_input)
             augmented_input_xyz.extend(augmented_xyz)
@@ -3380,21 +3410,23 @@ class GraphNet:
 #         adj_matrices            = torch.stack(adj_matrices_attrs[ 0 ])
 #         edge_attrs              = torch.stack(adj_matrices_attrs[ 1 ])
 #        adj_matrices      = torch.stack(self.compute_adjacency_matrices2nd(augmented_input_data, rcut=self.cutoff)) 
-        adj_matrices      = torch.stack(self.compute_adjacency_matrices(augmented_input_xyz, rcut=self.cutoff)) 
+        adj_matrices      = self.compute_adjacency_matrices(augmented_input_xyz, rcut=self.cutoff)
         
         
         #--- verify adj matrix????
-        self.PrintOvito(adjacency = adj_matrices, input_data=input_data)
+        if Ovito_Output:
+            self.PrintOvito(adjacency = adj_matrices, input_data=input_data)
 
 
         # Concatenate input data along a new dimension to form a single tensor
-        input_data_tensor = torch.stack(augmented_input_data)
+#        input_data_tensor = torch.stack(augmented_input_data)
+        input_data = np.vstack(augmented_input_data) 
 #        print('input_data_tensor.shape:',input_data_tensor.shape)
 
         # Standardize the augmented input data
-        mean              = input_data_tensor.mean(dim=(0, 1))
-        std               = input_data_tensor.std(dim=(0, 1))
-        assert torch.all( std > 0 ), 'std == 0!'
+        mean              = input_data.mean(axis=0) #input_data_tensor.mean(dim=(0, 1))
+        std               = input_data.std(axis=0) #input_data_tensor.std(dim=(0, 1))
+        assert np.all( std > 0 ), 'std == 0!'
         standardized_input_data = [GraphNet.standardize_data(data, mean, std) for data in augmented_input_data]
         
         # Standardize edge attributes
@@ -3404,31 +3436,32 @@ class GraphNet:
 
 
         # Convert input data to tensors
-        target_displacements_tensor = torch.stack(augmented_target_displacements)
-        input_data_tensor           = torch.stack(standardized_input_data)
-        input_xyz_tensor            = torch.stack(augmented_input_xyz)
+        target_displacements_tensor = augmented_target_displacements #torch.stack(augmented_target_displacements)
+        input_data_tensor           = standardized_input_data #torch.stack(standardized_input_data)
+        input_xyz_tensor            = augmented_input_xyz #torch.stack(augmented_input_xyz)
 #         edge_attrs_tensor           = torch.stack(standardized_edge_attrs)
 
 
 
         # Concatenate nodes and edges for each graph
         graphs = []
-        for i in range(len(input_data)):
+        for i in range(len(input_data_tensor)):
             x             = input_data_tensor[i]  # Node features
             cords         = input_xyz_tensor[i]  # Node features
             edge_index    = adj_matrices[i].nonzero().t()  # Edge indices
 #             edge_features = edge_attrs_tensor[ i ][ :, : self.edge_dim ]
+            atom_indx     = input_atom_indx[ i ]
             y             = target_displacements_tensor[i]  # Target displacements
 
             # Create a Data object for each graph
-            data = Data(x=x, edge_index=edge_index, y=y, pos=cords) #edge_attr = edge_features)
+            data = Data(x=x, edge_index=edge_index, y=y, pos=cords, atom_indx=atom_indx) #edge_attr = edge_features)
             graphs.append(data)
-        
+        np.random.shuffle(graphs)
+        self.graphs = graphs
         # Create a single large graph by concatenating Data objects
-        large_graph = torch_geometric.data.Batch.from_data_list(graphs)
 
         # Define batch size and create DataLoader
-        batch_size = len(input_data)
+        batch_size  = len(input_data_tensor)
 #        loader = DataLoader(large_graph, batch_size=batch_size, shuffle=True)
         
         # Define the split ratio (e.g., 80% for training, 20% for testing)
@@ -3436,28 +3469,19 @@ class GraphNet:
 
         # Define batch sizes for training and test dataloaders
         train_batch_size = int( np.max([1,int(batch_size * train_ratio)]) )
+        test_batch_size  = batch_size - train_batch_size
+        assert test_batch_size > 0, 'test_batch_size = %s'%test_batch_size
 
+        large_graph_train = torch_geometric.data.Batch.from_data_list(graphs[:train_batch_size])
+        large_graph_test  = torch_geometric.data.Batch.from_data_list(graphs[train_batch_size:])
+
+        
         # Create DataLoader for training dataset
-        loader = DataLoader(large_graph, batch_size=train_batch_size, shuffle=False)
-
-        # Accessing batches in the DataLoader
-        loader_iter=iter(loader)
-        self.dataset_train = next(loader_iter)
-        if self.verbose:
-            print('dataset_train:',self.dataset_train)
-        self.dataset_test = next(loader_iter)
-        if self.verbose:
-            print('dataset_test:',self.dataset_test)
-
-    
+        self.train_dataloaders = DataLoader(large_graph_train, batch_size=train_batch_size, shuffle=False)
+        self.test_dataloaders  = DataLoader(large_graph_test, batch_size=test_batch_size, shuffle=False)
+            
     def compute_adjacency_matrices(self,input_data, rcut):
         adj_matrices = []
-        #--- simulation box: same for all!!!
-#         rd         = lp.ReadDumpFile(self.dumpFiles[indx])
-#         rd.GetCords()
-#         box        = lp.Box(BoxBounds=rd.BoxBounds[0],AddMissing=np.array([0,0,0]))
-#         lx,ly,lz   = np.diag(box.CellVector)
-
         for indx, positions in enumerate(input_data):
             #
             num_atoms = positions.shape[0]
@@ -3510,45 +3534,49 @@ class GraphNet:
             #--- add "index" columns
             nl['index_i']  = self.GetIndxById( df, np.c_[nl.id].flatten() )
             nl['index_j']  = self.GetIndxById( df, np.c_[nl.J].flatten() )
-            groups         = nl.groupby(by='id').groups
-            atom_i_ids     = list(groups.keys())
-            atom_i_indices = self.GetIndxById( df, atom_i_ids )
-            for i, atom_id in zip(atom_i_indices,atom_i_ids):
-#                adj_matrix[i, i] = 1
-                atom_j_ids       = nl.iloc[groups[ atom_id ]].J
-                atom_j_indices   = self.GetIndxById( df, atom_j_ids )
-                for j, jatom_id in zip(atom_j_indices, atom_j_ids ): #[ atom_j_indices > i ]:
-                    if j <= i :
-                        continue
-                    filtr = np.all([nl.id==atom_id,nl.J==jatom_id],axis=0)
-                    edge_features = nl.iloc[ filtr ][ ''.split() ]
-                    adj_matrix[i, j] = 1
-                    adj_matrix[j, i] = 1
-                assert adj_matrix[i,:].sum() > 0, 'dangling node : increase the cutoff!'
+#             groups         = nl.groupby(by='id').groups
+#             atom_i_ids     = list(groups.keys())
+#             atom_i_indices = self.GetIndxById( df, atom_i_ids )
+#             for i, atom_id in zip(atom_i_indices,atom_i_ids):
+# #                adj_matrix[i, i] = 1
+#                 atom_j_ids       = nl.iloc[groups[ atom_id ]].J
+#                 atom_j_indices   = self.GetIndxById( df, atom_j_ids )
+#                 for j, jatom_id in zip(atom_j_indices, atom_j_ids ): #[ atom_j_indices > i ]:
+#                     if j <= i :
+#                         continue
+# #                    filtr = np.all([nl.id==atom_id,nl.J==jatom_id],axis=0)
+# #                    edge_features = nl.iloc[ filtr ][ ''.split() ]
+#                     adj_matrix[i, j] = 1
+#                     adj_matrix[j, i] = 1
+#                 assert adj_matrix[i,:].sum() > 0, 'dangling node : increase the cutoff!'
 #            pdb.set_trace()
+            adj_matrix[nl['index_i'],nl['index_j']] = 1
             #--- edge attributes
-            keys = 'DX  DY  DZ  PBC_SHIFT_X PBC_SHIFT_Y PBC_SHIFT_Z'.split()
-            indices = adj_matrix.nonzero().numpy()
-            nl_reindexed = nl.set_index(['index_i','index_j'],drop=False)
-            edge_attr = list(map(lambda x: list(nl_reindexed[keys].loc[tuple(x)]),indices))
+#             keys = 'DX  DY  DZ  PBC_SHIFT_X PBC_SHIFT_Y PBC_SHIFT_Z'.split()
+#             indices = adj_matrix.nonzero().numpy()
+#             nl_reindexed = nl.set_index(['index_i','index_j'],drop=False)
+#             edge_attr = list(map(lambda x: list(nl_reindexed[keys].loc[tuple(x)]),indices))
 
-#            pdb.set_trace()
-            edge_attrs.append( torch.Tensor( edge_attr ) )
+# #            pdb.set_trace()
+#             edge_attrs.append( torch.Tensor( edge_attr ) )
             adj_matrices.append( adj_matrix )
+
         #--- assert no 
         return adj_matrices, edge_attrs
+
     
     @staticmethod
     def augment_data(input_data, noise_std):
         augmented_input_data = []
-
+        
         for data in input_data:
             # Add Gaussian noise to input data
             noisy_data = data + torch.randn_like(data) * noise_std
             augmented_input_data.append(noisy_data)
-
-
+            
+            
         return augmented_input_data
+
 
     @staticmethod
     def standardize_data(data, mean, std):
@@ -3596,7 +3624,6 @@ class GraphNet:
         
     def PrintOvito(self, **kwargs ):
         os.system('rm clusters.xyz density.xyz')
-
         ndime = 3
         for indx, item in enumerate( self.transition_paths ):
             cordc           = pd.DataFrame(np.c_[item['id'],item['x'],item['y'],item['z']],columns='id x y z'.split())
@@ -3642,11 +3669,160 @@ class GraphNet:
                 np.savetxt(fout,np.c_[np.arange(1,nbond+1), np.ones(nbond),bonds[:,0],bonds[:,1]],fmt='%d')
 
 
+# ### example 1d
+
+# In[30]:
+
+
 def main(): 
+    # Check if GPU is available
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'Using device: {device}')
     
-    device = isGpuAvailable()
+    # Check if GPUs are available
+    if torch.cuda.is_available():
+        # Get the number of available GPUs
+        num_gpus = torch.cuda.device_count()
+        print(f"{num_gpus} GPU(s) available")
+
+        # Assert that at least one GPU is allocated
+        assert num_gpus > 0, "No GPUs available. Please check your CUDA installation."
+
+        # Print information about each GPU
+        for i in range(num_gpus):
+            gpu_name = torch.cuda.get_device_name(i)
+            print(f"GPU {i}: {gpu_name}")
+    else:
+        print("No GPUs available. Please check your CUDA installation.")
 
     gnn = GraphNet(
+                     c_in       = 1,
+                     c_hidden   = [64,64],
+                     c_out      = 2,
+                     num_layers = 3,
+                     num_epochs = 1000,
+                     noise_std  = 0.0,
+                     lr         = 0.001,
+        edge_dim=1,
+        layer_name = "GCN",
+                     verbose    = True 
+                ).to(device)  # Move model to GPU
+
+#     gnn.Parse( path  = confParser['gnn']['input_path'],
+#                  nruns = eval(confParser['gnn']['nruns']))
+    
+    #--- build dataset based on the input catalogs
+    gnn.DataBuilder2nd()
+    
+    # Define optimizer and loss function
+    optimizer = optim.Adam(gnn.parameters(), lr=gnn.lr)
+    criterion = nn.MSELoss()
+
+    epoch0 = 0
+    best_loss = np.inf
+    restart = eval(confParser['gnn']['restart'])
+    if restart == True:
+        PATH='checkpoint.pth'
+        checkpoint = torch.load(PATH)
+        gnn.load_state_dict(checkpoint['model_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        epoch0 = checkpoint['epoch']
+    
+    # training loop
+    training_loss_hist   = []
+    validation_loss_hist = []
+    get_ipython().system('mkdir best_model')
+    for epoch in range( epoch0, epoch0+gnn.num_epochs ):
+        optimizer.zero_grad()
+        predicted_displacements = gnn(gnn.dataset_train.x.to(device), 
+                                      gnn.dataset_train.edge_index.to(device))
+        training_loss              = criterion(predicted_displacements, gnn.dataset_train.y.to(device))
+        training_loss.backward()
+        optimizer.step()
+        training_loss_hist += [training_loss.detach().cpu().numpy()]  # Move loss back to CPU
+
+        #--- validation loss
+        gnn.eval()
+        with torch.no_grad():  # Disable gradient calculation
+                predicted_displacements = gnn(gnn.dataset_test.x.to(device), gnn.dataset_test.edge_index.to(device))
+                validation_loss         = criterion(predicted_displacements, gnn.dataset_test.y.to(device))
+
+                validation_loss_hist += [validation_loss.cpu().numpy()]  # Move loss back to CPU
+
+        if epoch % 1000 == 0:
+            print(f'Epoch {epoch}, Training Loss: {training_loss.item():4.3e}, Validation Loss: {validation_loss.item():4.3e}')
+
+            # Update best_loss if validation loss improves and save the model
+#             best_loss = GraphNet.save_best_model(gnn, optimizer, 
+#                                         epoch, training_loss.detach().cpu().numpy(), best_loss, 
+#                                         'best_model/best_model.pth')
+
+    #--- plot loss vs epoch
+    get_ipython().system('mkdir png')
+    ax = utl.PltErr(None,None,Plot=False)
+    utl.PltErr(range(gnn.num_epochs),training_loss_hist,
+               attrs={'fmt':'-','color':'C0'},
+               ax=ax,Plot=False
+          )
+    utl.PltErr(range(gnn.num_epochs),validation_loss_hist,
+               attrs={'fmt':'-','color':'red'},
+              xscale='log',yscale='log',
+               title='png/loss.png',
+               Plot=False,
+               ax=ax
+          )
+    return gnn.dataset_train, gnn.dataset_test
+
+
+#data_train, data_test = main()
+# 
+
+
+# In[ ]:
+
+
+def make_prediction(model, data, title):
+    ax = utl.PltErr(None,None,Plot=False)
+    u_pred = model(data.x, data.edge_index)
+        
+    u_pred = u_pred.cpu().detach().numpy()
+    u_act  = data.y.cpu()
+
+    colors='black red green'.split()
+    for idime in range(2):
+        utl.PltErr(u_act[:,idime],u_pred[:,idime],
+               attrs={'fmt':'x','color':colors[idime]},
+              ax=ax, Plot=False,
+              )
+
+    utl.PltErr( None,None,
+               Plot=False,
+    ax=ax,
+            xlim=(-2,2),ylim=(-2,2),
+               title=title
+              )
+    
+def main(data_train, data_test):
+# Example usage
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'Using device: {device}')
+    model = torch.load('best_model/best_model.pth').to(device)
+    make_prediction(model, data_train.to(device), title='png/disp_train.png')
+    make_prediction(model, data_test.to(device), title='png/disp_test.png')
+
+#main(data_train, data_test)
+
+
+# ### main()
+
+# In[30]:
+
+
+def main(): 
+    if not eval(confParser['gnn']['regression']):
+        return None, None
+    device = isGpuAvailable()
+    gnn    = GraphNet(
                      c_in       = eval(confParser['gnn']['c_in']),
                      c_hidden   = eval(confParser['gnn']['c_hidden']),
                      c_out      = eval(confParser['gnn']['c_out']),
@@ -3658,26 +3834,27 @@ def main():
                      lr         = eval(confParser['gnn']['lr']),
                      device     = device,
                      verbose    = True 
-                )  # Move model to GPU
+                )
 
-    gnn.Parse( path  = confParser['gnn']['input_path'],
+    gnn.Parse(   path  = confParser['gnn']['input_path'],
                  nruns = eval(confParser['gnn']['nruns']))
         
     #--- build dataset based on the input catalogs
     gnn.DataBuilder()
     
     # Define optimizer and loss function
-    gnn.GnnModel(model_name='gnn_regressor')
+    gnn.GnnModel(model_name = 'gnn_regressor',
+                 layer_name = 'linear')
     optimizer = optim.Adam(gnn.model.parameters(), lr=gnn.lr)
     criterion = nn.MSELoss()
 
-    epoch0 = 0
+    epoch0    = 0
     best_loss = np.inf
-    restart = eval(confParser['gnn']['restart'])
+    restart   = eval(confParser['gnn']['restart'])
     if restart == True:
-        PATH='checkpoint.pth'
+        PATH   ='checkpoint.pth'
         checkpoint = torch.load(PATH)
-        gnn.load_state_dict(checkpoint['model_state_dict'])
+        gnn.model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         epoch0 = checkpoint['epoch']
         
@@ -3713,12 +3890,12 @@ def main():
 
                 validation_loss_hist += [validation_loss.cpu().numpy()]  # Move loss back to CPU
 
-        if epoch % 1000 == 0:
+        if epoch % 100 == 0:
             print(f'Epoch {epoch}, Training Loss: {training_loss.item():4.3e}, Validation Loss: {validation_loss.item():4.3e}')
 
             # Update best_loss if validation loss improves and save the model
             best_loss = GraphNet.save_best_model(gnn.model, optimizer, 
-                                epoch, training_loss.detach().cpu().numpy(), best_loss, 
+                                epoch, validation_loss.detach().cpu().numpy(), best_loss, 
                                 'best_model/best_model.pth')
 
     #--- save 
@@ -3763,8 +3940,188 @@ def isGpuAvailable():
         print("No GPUs available. Please check your CUDA installation.")
     return device 
 
-#if __name__ == '__main__':
-#     data_train, data_test = main()
+if __name__ == '__main__':
+     data_train, data_test = main()
+
+
+# #### validation
+
+# In[ ]:
+
+
+def make_prediction(model, data, title):
+    u_pred = model(data.x, data.edge_index)#, data.edge_attr)        
+    u_pred = u_pred.cpu().detach().numpy()
+    u_act  = data.y.cpu()
+    ndime  = u_act.shape[ 1 ]
+
+    #--- plot prediction vs. actual
+    ax = utl.PltErr(None,None,Plot=False)
+    for idime in range(ndime):
+        utl.PltErr(u_act[:,idime],u_pred[:,idime],
+               attrs={'fmt':'x'},
+              ax=ax, Plot=False,
+              )
+
+    utl.PltErr( None,None,
+               Plot=False,
+    ax=ax,
+            xlim=(-2,2),ylim=(-2,2),
+               title='%s/disp.png'%title
+              )
+    
+    PrintOvito(data,u_pred,'%s/u_pred.xyz'%title)
+    PrintOvito(data,u_act, '%s/u_act.xyz'%title)
+    
+def PrintOvito( data, disps, fout ):
+    get_ipython().system('rm $fout')
+    ndime = 3
+    box        = lp.Box(BoxBounds=np.array([[0,10.62],[0,10.62],[0,10.62]]),\
+                        AddMissing=np.array([0,0,0]))
+
+    atom_indx_init = data.ptr[ 0 ]
+    for indx, _ in enumerate( data.ptr ):
+        if indx == 0:
+            continue
+        atom_indx_fin = data.ptr[ indx ]
+        atom_ids      = np.arange(atom_indx_init.cpu(),atom_indx_fin.cpu())+1
+        types         = np.ones(atom_ids.shape[0])
+        xyz           = data.pos[ atom_indx_init : atom_indx_fin] 
+        tmp           = xyz.cpu()# * std + mean
+        cordc         = pd.DataFrame( tmp[:,:ndime], columns='x y z'.split())
+        disp          = disps[ atom_indx_init : atom_indx_fin, : ]
+        
+        nmode         = int( disp.shape[ 1 ] / ndime )
+        for imode in range(nmode):
+            diffusion_path = disp[:,imode*ndime:(imode+1)*ndime]
+            df             = pd.DataFrame(np.c_[atom_ids,types,cordc,diffusion_path],\
+                              columns = 'id type x y z DisplacementX DisplacementY DisplacementZ'.split())
+            atom           = lp.Atoms(**df.to_dict(orient='series'))
+#             with open(fout,'a') as fp:
+#                 utl.PrintOvito(df, fp, 'irun=%s,imode=%s'%(indx-1,imode), 
+#                                attr_list='x y z ux uy uz'.split())
+            wd             = lp.WriteDumpFile(atom, box)
+            with open(fout,'a') as fp:
+                wd.Write(fp, itime=0, 
+                         attrs='id type x y z DisplacementX DisplacementY DisplacementZ'.split(), 
+                         fmt='%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e')
+
+        atom_indx_init = atom_indx_fin
+
+
+
+        
+            
+            
+            #--- save dump files
+                
+
+    
+def main(data_train, data_test):
+    if not eval(confParser['gnn']['regression']):
+        return
+    # Example usage
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'Using device: {device}')
+    model = torch.load('best_model/best_model.pth').to(device)
+    get_ipython().system('mkdir -p png/train')
+    get_ipython().system('mkdir -p png/test')
+    make_prediction(model, data_train.to(device), title='png/train')
+    make_prediction(model, data_test.to(device), title='png/test')
+
+if __name__ == '__main__':
+     main(data_train, data_test)
+
+
+# ## gnn classifier
+
+# In[ ]:
+
+
+class GNNModel2nd(nn.Module):
+    def __init__(
+        self,
+        c_in,
+        c_hidden,
+        c_out,
+        num_layers=2,
+        layer_name="GCN",
+        dp_rate=0.1,
+        **kwargs,
+    ):
+        """GNNModel.
+
+        Args:
+            c_in: Dimension of input features
+            c_hidden: Dimension of hidden features
+            c_out: Dimension of the output features. Usually number of classes in classification
+            num_layers: Number of "hidden" graph layers
+            layer_name: String of the graph layer to use
+            dp_rate: Dropout rate to apply throughout the network
+            kwargs: Additional arguments for the graph layer (e.g. number of heads for GAT)
+        """
+        super().__init__()
+        gnn_layer_by_name = {"linear":geom_nn.Linear,
+                             "GCN": geom_nn.GCNConv, "GAT": geom_nn.GATConv, "GraphConv": geom_nn.GraphConv}
+        gnn_layer = gnn_layer_by_name[layer_name]
+
+        layers = []
+        in_channels, out_channels = c_in, c_hidden
+        for l_idx in range(num_layers - 1):
+            layers += [
+                gnn_layer(in_channels=in_channels, out_channels=out_channels, **kwargs),
+                nn.ReLU(inplace=True),
+                nn.Dropout(dp_rate),
+            ]
+            in_channels = c_hidden
+        layers += [gnn_layer(in_channels=in_channels, out_channels=c_out, **kwargs)]
+        self.layers = nn.ModuleList(layers)
+
+    def forward(self, x, edge_index):
+        """Forward.
+
+        Args:
+            x: Input features per node
+            edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
+        """
+        for layer in self.layers:
+            # For graph layers, we need to add the "edge_index" tensor as additional input
+            # All PyTorch Geometric graph layer inherit the class "MessagePassing", hence
+            # we can simply check the class type.
+            if isinstance(layer, geom_nn.MessagePassing):
+#                 pdb.set_trace()
+                x = layer(x, edge_index)
+            else:
+                x = layer(x)
+        return x
+    
+class GraphGNNModel(nn.Module):
+    def __init__(self, c_in, c_hidden, c_out, dp_rate_linear=0.5, **kwargs):
+        """GraphGNNModel.
+
+        Args:
+            c_in: Dimension of input features
+            c_hidden: Dimension of hidden features
+            c_out: Dimension of output features (usually number of classes)
+            dp_rate_linear: Dropout rate before the linear layer (usually much higher than inside the GNN)
+            kwargs: Additional arguments for the GNNModel object
+        """
+        super().__init__()
+        self.GNN = GNNModel2nd(c_in=c_in, c_hidden=c_hidden, c_out=c_hidden, **kwargs)  # Not our prediction output yet!
+        self.head = nn.Sequential(nn.Dropout(dp_rate_linear), nn.Linear(c_hidden, c_out))
+
+    def forward(self, x, edge_index, batch_idx):
+        """Forward.
+
+        Args:
+            x: Input features per node
+            edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
+            batch_idx: Index of batch element for each node
+        """
+        x = self.GNN(x, edge_index)
+        x = self.head(x)
+        return x
+
 class GraphLevelGNN(L.LightningModule):
     def __init__(self, **model_kwargs):
         super().__init__()
@@ -3785,13 +4142,13 @@ class GraphLevelGNN(L.LightningModule):
         else:
             preds = x.argmax(dim=-1)
         #pdb.set_trace()
-        loss = self.loss_module(x, data.y.flatten())
+        loss = self.loss_module(x, data.y)
         acc = (preds == data.y).sum().float() / preds.shape[0]
         return loss, acc
 
     def configure_optimizers(self):
         # High lr because of small dataset and small model
-        optimizer = optim.AdamW(self.parameters(), lr=1e-2, weight_decay=0.0)
+        optimizer = optim.AdamW(self.parameters(), lr=1e-4, weight_decay=0.0)
         return optimizer
 
     def training_step(self, batch, batch_idx):
@@ -3801,14 +4158,16 @@ class GraphLevelGNN(L.LightningModule):
         return loss
 
     def validation_step(self, batch, batch_idx):
-        _, acc = self.forward(batch, mode="val")
+        loss, acc = self.forward(batch, mode="val")
         self.log("val_acc", acc)
+        self.log("val_loss", loss)
 
     def test_step(self, batch, batch_idx):
-        _, acc = self.forward(batch, mode="test")
+        loss, acc = self.forward(batch, mode="test")
         self.log("test_acc", acc)
+        self.log("test_loss", loss)
 
-    def predict(self, data):
+    def predict(self, data, **kwargs):
         x, edge_index, batch_idx = data.x, data.edge_index, data.batch
         x = self.model(x, edge_index, batch_idx)
         x = x.squeeze(dim=-1)
@@ -3818,80 +4177,111 @@ class GraphLevelGNN(L.LightningModule):
             data.y = data.y.float()
         else:
             preds = x.argmax(dim=-1)
+        #--- visuaize predictions
+        if 'PrintOvito' in kwargs and kwargs['PrintOvito']:
+            save_dir = kwargs['ovito_dir']
+            os.system('mkdir -p %s'%save_dir)
+            self.PrintOvito( data, preds, '%s/pred.xyz'%save_dir)
+            self.PrintOvito( data, data.y , '%s/act.xyz'%save_dir)
         return preds
+    
+    def ConfusionMatrix(self, data):
+        return confusion_matrix(data.y,self.predict(data))
 
-class GraphGNNModel(nn.Module):
-    def __init__(self, c_in, c_hidden, c_out, dp_rate_linear=0.5, **kwargs):
-        """GraphGNNModel.
+    
+    def PrintOvito( self, data, disps, fout ):
+        os.system('rm %s'%fout)
+        ndime = 3
+        box        = lp.Box(BoxBounds=np.array([[0,10.62],[0,10.62],[0,10.62]]),\
+                            AddMissing=np.array([0,0,0]))
 
-        Args:
-            c_in: Dimension of input features
-            c_hidden: Dimension of hidden features
-            c_out: Dimension of output features (usually number of classes)
-            dp_rate_linear: Dropout rate before the linear layer (usually much higher than inside the GNN)
-            kwargs: Additional arguments for the GNNModel object
-        """
-        super().__init__()
-        self.GNN = GNNModel(c_in=c_in, c_hidden=c_hidden, c_out=c_hidden, **kwargs)  # Not our prediction output yet!
-        self.head = nn.Sequential(nn.Dropout(dp_rate_linear), nn.Linear(c_hidden, c_out))
+        atom_indx_init = data.ptr[ 0 ]
+        for indx, _ in enumerate( data.ptr ):
+            if indx == 0:
+                continue
+            atom_indx_fin = data.ptr[ indx ]
+            atom_ids      = np.arange(atom_indx_init.cpu(),atom_indx_fin.cpu())+1
+            types         = np.ones(atom_ids.shape[0])
+            xyz           = data.pos[ atom_indx_init : atom_indx_fin] 
+            tmp           = xyz.cpu()# * std + mean
+            cordc         = pd.DataFrame( tmp[:,:ndime], columns='x y z'.split())
+            disp          = disps[ atom_indx_init : atom_indx_fin ]
 
-    def forward(self, x, edge_index, batch_idx):
-        """Forward.
+            df            = pd.DataFrame(np.c_[atom_ids,types,cordc,disp],\
+                                  columns = 'id type x y z Mass'.split())
+            atom          = lp.Atoms(**df.to_dict(orient='series'))
+            wd            = lp.WriteDumpFile(atom, box)
+            with open(fout,'a') as fp:
+                wd.Write(fp, itime=0, 
+                         attrs='id type x y z Mass'.split(), 
+                         fmt='%d %d %4.3e %4.3e %4.3e %4.3e')
+            atom_indx_init = atom_indx_fin
 
-        Args:
-            x: Input features per node
-            edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
-            batch_idx: Index of batch element for each node
-        """
-        #pdb.set_trace()
-        x = self.GNN(x, edge_index)
-#        pdb.set_trace()
-#        x = geom_nn.global_mean_pool(x, batch_idx)  #--- Average pooling
-        x = self.head(x)
-        return x
-
-def train_graph_classifier(model_name, loader, **model_kwargs):
+def train_graph_classifier(model_name, data_loader, **model_kwargs):
+    
+    #--- initialize
     L.seed_everything(42)
-
-    # Create a PyTorch Lightning trainer with the generation callback
-#    root_dir = os.path.join(CHECKPOINT_PATH, "GraphLevel" + model_name)
-#    os.makedirs(root_dir, exist_ok=True)
+    CHECKPOINT_PATH = '.'
+    #--- Create a PyTorch Lightning trainer with the generation callback
+    root_dir = os.path.join( CHECKPOINT_PATH, "GraphLevel" + model_name )
+    os.system( 'mkdir %s'%root_dir )
     trainer = L.Trainer(
-#        default_root_dir=root_dir,
-        callbacks=[ModelCheckpoint(save_weights_only=True, mode="max", monitor="val_acc")],
-#        accelerator="cuda",
-#        devices=AVAIL_GPUS,
-        max_epochs=1000,
-        enable_progress_bar=True,
-    )
-#    pdb.set_trace()
+                        default_root_dir=root_dir,
+                        callbacks=[ModelCheckpoint(save_weights_only=True, verbose = True, mode="min", monitor="val_loss")],
+                #        accelerator="cuda",
+                #        devices=AVAIL_GPUS,
+                        max_epochs = data_loader.num_epochs,
+                        enable_progress_bar = False,
+                    )
     trainer.logger._default_hp_metric = None
 
-    # Check whether pretrained model exists. If yes, load it and skip training
+    #--- Check whether pretrained model exists. If yes, load it and skip training
 #    pretrained_filename = os.path.join(CHECKPOINT_PATH, "GraphLevel%s.ckpt" % model_name)
 #     if os.path.isfile(pretrained_filename):
 #         print("Found pretrained model, loading...")
 #         model = GraphLevelGNN.load_from_checkpoint(pretrained_filename)
 #     else:
-    L.seed_everything(42)
 
     model = GraphLevelGNN(
-        c_in=1000,#tu_dataset.num_node_features,
-        c_out=1, #if tu_dataset.num_classes == 2 else tu_dataset.num_classes,
-        **model_kwargs,
-    )
-    trainer.fit(model, loader, loader)
-#    model = GraphLevelGNN.load_from_checkpoint(trainer.checkpoint_callback.best_model_path)
-#    print('training')
-    # Test best model on validation and test set
-    print(confusion_matrix(loader.dataset.y.flatten(),model.predict(loader.dataset)))
-    train_result = trainer.test(model, dataloaders=loader, verbose=True)
-#    test_result = trainer.test(model, dataloaders=graph_test_loader, verbose=False)
-    result = {"test": train_result[0]["test_acc"], "train": train_result[0]["test_acc"]}
+                            c_in  = data_loader.c_in,
+                            c_out = data_loader.c_out,
+                            **model_kwargs,
+                        )
+    trainer.fit( model, data_loader.train_dataloaders, data_loader.test_dataloaders )
+    
+    #--- load best model
+    # save trainer.checkpoint_callback.best_model_path
+    model = GraphLevelGNN.load_from_checkpoint(trainer.checkpoint_callback.best_model_path)
+
+    #--- Test best model on validation and test set
+    train_result = trainer.test( model, dataloaders = data_loader.train_dataloaders, verbose=True)
+    test_result  = trainer.test( model, dataloaders = data_loader.test_dataloaders,  verbose=True)
+    
+    #--- conf. matrix for training and test data
+    cm_train = model.ConfusionMatrix( data_loader.train_dataloaders.dataset )
+    cm_test  = model.ConfusionMatrix( data_loader.test_dataloaders.dataset )
+    
+    #--- save predictions in ovito
+    model.predict( data_loader.train_dataloaders.dataset, PrintOvito = True, ovito_dir = 'ovito_dir/train')
+    model.predict( data_loader.test_dataloaders.dataset,  PrintOvito = True, ovito_dir = 'ovito_dir/test')
+
+    result       = {"test":  test_result[0]["test_acc"], 
+                    "train": train_result[0]["test_acc"],
+                    "train_cm": cm_train,
+                    "test_cm": cm_test,
+                   }
     return model, result
 
+
+# ### main()
+
+# In[3]:
+
+
 def main(): 
-    
+    if not eval(confParser['gnn classifier']['classification']):
+        return
+
     device = isGpuAvailable()
 
     gnn = GraphNet(
@@ -3909,45 +4299,1243 @@ def main():
                 )  # Move model to GPU
 
     gnn.Parse( path  = confParser['gnn classifier']['input_path'],
-                 nruns = eval(confParser['gnn classifier']['nruns']))
+               nruns = eval(confParser['gnn classifier']['nruns']))
         
     #--- build dataset based on the input catalogs
-
     gnn.DataBuilderForClassifier()
-
-    model, result = train_graph_classifier(
-    model_name="GraphConv", 
-    loader = gnn.loader,
-    c_hidden=256, layer_name="GraphConv", num_layers=3, dp_rate_linear=0.5, dp_rate=0.0
-)
-
     
-    # Define optimizer and loss function
-
-def isGpuAvailable():
-    # Check if GPU is available
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f'Using device: {device}')
+    #--- training loop
+    model, result = train_graph_classifier( model_name = "GraphConv", 
+                                        data_loader    = gnn,
+                                            c_hidden   = gnn.c_hidden, 
+                                           layer_name  = "GraphConv", 
+                                           num_layers  = gnn.num_layers, 
+                                        dp_rate_linear = 0.5, 
+                                           dp_rate     = 0.0
+                                           )
     
-    # Check if GPUs are available
-    if torch.cuda.is_available():
-        # Get the number of available GPUs
-        num_gpus = torch.cuda.device_count()
-        print(f"{num_gpus} GPU(s) available")
-
-        # Assert that at least one GPU is allocated
-        assert num_gpus > 0, "No GPUs available. Please check your CUDA installation."
-
-        # Print information about each GPU
-        for i in range(num_gpus):
-            gpu_name = torch.cuda.get_device_name(i)
-            print(f"GPU {i}: {gpu_name}")
-    else:
-        print("No GPUs available. Please check your CUDA installation.")
-    return device 
+    #--- save results
+    os.system('mkdir confusion_matrix')
+    np.savetxt('confusion_matrix/cm_train.txt', np.c_[result['train_cm']],header='confusion matrix')
+    np.savetxt('confusion_matrix/cm_test.txt', np.c_[result['test_cm']],header='confusion matrix')
 
 
 
 if __name__ == '__main__':
     main()
+
+
+# ## gnn for energy
+
+# In[ ]:
+
+
+class GNNModel3rd(nn.Module):
+    def __init__(
+        self,
+        c_in,
+        c_hidden,
+        c_out,
+        num_layers=2,
+        layer_name="GCN",
+        dp_rate=0.1,
+        **kwargs,
+    ):
+        """GNNModel.
+
+        Args:
+            c_in: Dimension of input features
+            c_hidden: Dimension of hidden features
+            c_out: Dimension of the output features. Usually number of classes in classification
+            num_layers: Number of "hidden" graph layers
+            layer_name: String of the graph layer to use
+            dp_rate: Dropout rate to apply throughout the network
+            kwargs: Additional arguments for the graph layer (e.g. number of heads for GAT)
+        """
+        super().__init__()
+        gnn_layer_by_name = {"linear":geom_nn.Linear,
+                             "GCN": geom_nn.GCNConv, "GAT": geom_nn.GATConv, "GraphConv": geom_nn.GraphConv}
+        gnn_layer = gnn_layer_by_name[layer_name]
+
+        layers = []
+        in_channels, out_channels = c_in, c_hidden
+        for l_idx in range(num_layers - 1):
+            layers += [
+                gnn_layer(in_channels=in_channels, out_channels=out_channels, **kwargs),
+                nn.ReLU(inplace=True),
+                nn.Dropout(dp_rate),
+            ]
+            in_channels = c_hidden
+        layers += [gnn_layer(in_channels=in_channels, out_channels=c_out, **kwargs)]
+        self.layers = nn.ModuleList(layers)
+
+    def forward(self, x, edge_index,batch_idx):
+        """Forward.
+
+        Args:
+            x: Input features per node
+            edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
+        """
+        for layer in self.layers:
+            # For graph layers, we need to add the "edge_index" tensor as additional input
+            # All PyTorch Geometric graph layer inherit the class "MessagePassing", hence
+            # we can simply check the class type.
+            if isinstance(layer, geom_nn.MessagePassing):
+#                 pdb.set_trace()
+                x = layer(x, edge_index)
+            else:
+                x = layer(x)
+        x = geom_nn.global_mean_pool(x, batch_idx)  #--- Average pooling
+        return x
+
+
+class GraphGNNModel_energy(nn.Module):
+    def __init__(self, c_in, c_hidden, c_out, dp_rate_linear=0.5, **kwargs):
+        """GraphGNNModel.
+
+        Args:
+            c_in: Dimension of input features
+            c_hidden: Dimension of hidden features
+            c_out: Dimension of output features (usually number of classes)
+            dp_rate_linear: Dropout rate before the linear layer (usually much higher than inside the GNN)
+            kwargs: Additional arguments for the GNNModel object
+        """
+        super().__init__()
+        self.GNN = GNNModel2nd(c_in=c_in, c_hidden=c_hidden, c_out=c_hidden, **kwargs)  # Not our prediction output yet!
+        self.head = nn.Sequential(nn.Dropout(dp_rate_linear), nn.Linear(c_hidden, c_out))
+
+    def forward(self, x, edge_index, batch_idx):
+        """Forward.
+
+        Args:
+            x: Input features per node
+            edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
+            batch_idx: Index of batch element for each node
+        """
+        x = self.GNN(x, edge_index)
+#        pdb.set_trace()
+        x = geom_nn.global_mean_pool(x, batch_idx)  #--- Average pooling
+        x = self.head(x)
+        return x
+
+class GraphLevelGNN_energy(L.LightningModule):
+    def __init__(self, **model_kwargs):
+        super().__init__()
+        # Saving hyperparameters
+        self.save_hyperparameters()
+
+        self.model = GraphGNNModel_energy(**model_kwargs)
+        self.loss_module = nn.MSELoss() #nn.BCEWithLogitsLoss() if self.hparams.c_out == 1 else nn.CrossEntropyLoss()
+
+    def forward(self, data, mode="train"):
+        x, edge_index, batch_idx = data.x, data.edge_index, data.batch
+        x = self.model(x, edge_index, batch_idx)
+        x = x.squeeze(dim=-1)
+
+        preds = x.float()
+        data.y = data.y.float()
+        loss = self.loss_module(x, data.y)
+        return loss, loss
+
+    def configure_optimizers(self):
+        # High lr because of small dataset and small model
+        optimizer = optim.AdamW(self.parameters(), lr=1e-4, weight_decay=0.0)
+        return optimizer
+
+    def training_step(self, batch, batch_idx):
+        loss, _ = self.forward(batch, mode="train")
+        self.log("train_loss", loss)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        loss, _ = self.forward(batch, mode="val")
+        self.log("val_loss", loss)
+
+    def test_step(self, batch, batch_idx):
+        loss, _ = self.forward(batch, mode="test")
+        self.log("test_loss", loss)
+
+    def predict(self, data, **kwargs):
+        x, edge_index, batch_idx = data.x, data.edge_index, data.batch
+        x = self.model(x, edge_index, batch_idx)
+        x = x.squeeze(dim=-1)
+        #
+        data.y = data.y.float()
+        #--- visuaize predictions
+        if 'PrintOvito' in kwargs and kwargs['PrintOvito']:
+            save_dir = kwargs['ovito_dir']
+            os.system('mkdir -p %s'%save_dir)
+            utl.PltErr(data.y.detach().numpy(),x.detach().numpy(),
+                      attrs={'fmt':'x'},
+                      xlim=(-2,2),ylim=(-2,2),
+                      xstr='E_act',ystr='E_pred',
+                      title='%s/energy.png'%save_dir
+                      )
+        return x.detach().numpy()
+    
+def train_graph_energy(model_name, data_loader, lr, **model_kwargs):
+    
+    #--- initialize
+#     L.seed_everything(42)
+#     CHECKPOINT_PATH = '.'
+#     #--- Create a PyTorch Lightning trainer with the generation callback
+#     root_dir = os.path.join( CHECKPOINT_PATH, "Energy" + model_name )
+#     os.system( 'mkdir %s'%root_dir )
+#     trainer = L.Trainer(
+#                         default_root_dir=root_dir,
+#                         callbacks=[ModelCheckpoint(save_weights_only=True, verbose=False, mode="min", monitor="val_loss")],
+#                 #        accelerator="cuda",
+#                 #        devices=AVAIL_GPUS,
+#                         max_epochs = data_loader.num_epochs,
+#                         enable_progress_bar = False,
+#                     )
+#     trainer.logger._default_hp_metric = None
+
+
+#     model = GraphLevelGNN_energy(
+#                             c_in  = data_loader.c_in,
+#                             c_out = data_loader.c_out,
+#                             **model_kwargs,
+#                         )
+#     trainer.fit( model, data_loader.train_dataloaders, data_loader.test_dataloaders )
+    
+    #--- load best model
+    # save trainer.checkpoint_callback.best_model_path
+#     model = GraphLevelGNN_energy.load_from_checkpoint(trainer.checkpoint_callback.best_model_path)
+
+#     #--- Test best model on validation and test set
+#     train_result = trainer.test( model, dataloaders = data_loader.train_dataloaders, verbose=True)
+#     test_result  = trainer.test( model, dataloaders = data_loader.test_dataloaders, verbose=True)
+    
+    
+#     #--- save predictions in ovito
+#     model.predict( data_loader.train_dataloaders.dataset, PrintOvito = True, ovito_dir = 'energy_dir/train')
+#     model.predict( data_loader.test_dataloaders.dataset,  PrintOvito = True, ovito_dir = 'energy_dir/test')
+
+#     result       = {"test":  test_result[0]["test_loss"], 
+#                     "train": train_result[0]["test_loss"],
+#                    }
+#     return model, result
+
+    model=GNNModel3rd(data_loader.c_in, data_loader.c_hidden, data_loader.c_out, **model_kwargs) 
+
+    print('model:',model)    
+
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+    criterion = nn.MSELoss()
+
+    best_loss = np.inf
+    training_loss_hist   = []
+    validation_loss_hist = []
+    os.system('mkdir best_model_energy')
+
+    for epoch in range( data_loader.num_epochs ):
+        optimizer.zero_grad()
+
+        #      predicted_displacements=model(data_loader.train_dataloaders.dataset) #.x,data_loader.train_dataloaders.dataset.edge_index)
+        predicted_displacements=model(data_loader.train_dataloaders.dataset.x,
+                                      data_loader.train_dataloaders.dataset.edge_index,
+                                   data_loader.train_dataloaders.dataset.batch)
+
+        training_loss              = criterion(predicted_displacements, data_loader.train_dataloaders.dataset.y)
+        training_loss.backward()
+        optimizer.step()
+
+        training_loss_hist += [training_loss.detach().cpu().numpy()]  # Move loss back to CPU
+
+        model.eval()
+        with torch.no_grad():  # Disable gradient calculation
+                predicted_displacements=model(data_loader.test_dataloaders.dataset.x,
+                                              data_loader.test_dataloaders.dataset.edge_index,
+                                   data_loader.test_dataloaders.dataset.batch)
+        #                predicted_displacements = model(data_loader.test_dataloaders.dataset)
+                validation_loss         = criterion(predicted_displacements, 
+                                                    data_loader.test_dataloaders.dataset.y)
+
+                validation_loss_hist += [validation_loss.cpu().numpy()]  # Move loss back to CPU
+
+        if epoch % 100 == 0:
+            print(f'Epoch {epoch}, Training Loss: {training_loss.item():4.3e}, Validation Loss: {validation_loss.item():4.3e}')
+
+            # Update best_loss if validation loss improves and save the model
+            best_loss = GraphNet.save_best_model(model, optimizer, 
+                                epoch, validation_loss.detach().cpu().numpy(), best_loss, 
+                                'best_model_energy/best_model.pth')
+
+#    trainer.fit( model, data_loader.train_dataloaders, data_loader.test_dataloaders )
+ 
+    #--- load best model
+    # save trainer.checkpoint_callback.best_model_path
+#    model = GraphLevelGNN_energy.load_from_checkpoint(trainer.checkpoint_callback.best_model_path)
+
+    #--- Test best model on validation and test set
+#    train_result = trainer.test( model, dataloaders = data_loader.train_dataloaders, verbose=True)
+#    test_result  = trainer.test( model, dataloaders = data_loader.test_dataloaders, verbose=True)
+    
+    
+    #--- save predictions in ovito
+#    model.predict( data_loader.train_dataloaders.dataset, PrintOvito = True, ovito_dir = 'energy_dir/train')
+#    model.predict( data_loader.test_dataloaders.dataset,  PrintOvito = True, ovito_dir = 'energy_dir/test')
+
+#    result       = {"test":  test_result[0]["test_loss"], 
+#                    "train": train_result[0]["test_loss"],
+#                   }
+    utl.PltErr(data_loader.test_dataloaders.dataset.y, predicted_displacements,
+               xlim=(0,2),ylim=(0,2),
+               attrs={'color':'C0','fmt':'x'},
+               title='en.png',
+          )
+
+#     print('pred vs actual:\n',np.c_[predicted_displacements,data_loader.test_dataloaders.dataset.y]) 
+    return model
+
+
+
+# ### main()
+
+# In[ ]:
+
+
+def main(): 
+    if not eval(confParser['gnn energy']['regression']):
+        return
+
+    device = isGpuAvailable()
+
+    gnn = GraphNet(
+                     c_in       = eval(confParser['gnn energy']['c_in']),
+                     c_hidden   = eval(confParser['gnn energy']['c_hidden']),
+                     c_out      = eval(confParser['gnn energy']['c_out']),
+                     edge_dim   = eval(confParser['gnn energy']['edge_dim']),
+                     num_layers = eval(confParser['gnn energy']['num_layers']),
+                     num_epochs = eval(confParser['gnn energy']['num_epochs']),
+                     cutoff     = eval(confParser['gnn energy']['cutoff']),
+                     noise_std  = eval(confParser['gnn energy']['noise_std']),
+                     lr         = eval(confParser['gnn energy']['lr']),
+                     dp_rate    = eval(confParser['gnn energy']['dp_rate']),
+                     device     = device,
+                     verbose    = True 
+                )  # Move model to GPU
+
+    gnn.Parse( path  = confParser['gnn energy']['input_path'],
+               nruns = eval(confParser['gnn energy']['nruns']))
+        
+    #---   build dataset based on the input catalogs
+    gnn.DataBuilderForEnergy()
+    
+    #--- training loop
+    model = train_graph_energy( model_name = "GraphConv", 
+                                        data_loader    = gnn,
+                               lr  = eval(confParser['gnn energy']['lr']),
+                                           layer_name  = "linear", 
+                                           num_layers  = gnn.num_layers, 
+                                           dp_rate     = gnn.dp_rate
+                                           )
+
+if __name__ == '__main__':
+     main()
+
+
+# In[ ]:
+
+
+# class GraphNeuralNet(nn.Module):
+#     def __init__(self, input_dim, hidden_dims, output_dims, activation):
+#         super(GraphNeuralNet, self).__init__()
+#         self.output_dims = output_dims
+#         self.fc1 = nn.Linear(input_dim, hidden_dims[0])
+#         self.hidden_layers = nn.ModuleList()
+#         for i in range(len(hidden_dims) - 1):
+#             self.hidden_layers.append(nn.Linear(hidden_dims[i], hidden_dims[i+1]))
+#         self.fc_out = nn.ModuleList([nn.Linear(hidden_dims[-1], dim) for dim in output_dims])
+#         self.activation = activation
+
+#     def forward(self, x, adj_matrices):
+#         x = self.activation(self.fc1(x))
+#         for hidden_layer in self.hidden_layers:
+#             x = self.activation(hidden_layer(x))
+#         outputs = []
+#         for adj_matrix in adj_matrices:
+#             hidden = torch.matmul(adj_matrix, x)
+#             for fc_out in self.fc_out:
+#                 outputs.append(fc_out(hidden))
+#         return outputs
+
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+
+# In[ ]:
+
+
+# def main(): # Example usage
+#     input_dim = eval(confParser['gnn']['input_dim']) #3  # Dimensionality of atom positions (e.g., x, y, z coordinates)
+#     hidden_dim = eval(confParser['gnn']['hidden_dim']) #[64]  # Dimensionality of hidden layers
+#     output_dims = eval(confParser['gnn']['output_dims']) #[3]  # Dimensionality of displacement vectors for each snapshot
+#     activation = eval(confParser['gnn']['activation']) #nn.ReLU() #nn.Identity()) #F.relu)
+#     lr = eval(confParser['gnn']['lr'])# 1.0e-4
+#     ntrain = eval(confParser['gnn']['ntrain'])#100
+#     num_epochs = eval(confParser['gnn']['num_epochs'])#20000
+#     noise_std   = eval(confParser['gnn']['noise_std'])#0.1
+
+#     num_snapshots = len( transition_paths )
+#     snapshots     = range(num_snapshots)
+
+#     model = GraphNeuralNet(input_dim, hidden_dim, output_dims,activation) #
+
+
+#     # Define optimizer and loss function
+#     optimizer = optim.Adam(model.parameters(), lr=lr)
+#     criterion = nn.MSELoss()
+
+#     # Example training data
+#     num_atoms = [ len(transition_paths[ i ]['id']) for i in snapshots ]
+#     input_data = [torch.from_numpy( np.c_[pd.DataFrame(transition_paths[ i ])['x y z'.split()]] ).float() for i in snapshots]  
+
+
+
+#     # Example target data (displacement vectors for each snapshot and each path)
+#     target_displacements = [torch.from_numpy( np.c_[pd.DataFrame(transition_paths[ i ])['ux_fin uy_fin uz_fin'.split()]] ).float() for i in snapshots for dim in output_dims]
+
+
+#     # Augment the dataset to have order 100 snapshots
+#     augmented_input_data = []
+#     augmented_target_displacements = []
+#     input_data_tensor = torch.stack(input_data)
+#     ntrain_initial = input_data_tensor.shape[0]*input_data_tensor.shape[1]
+#     n_repeat = np.max([1,int(ntrain/ntrain_initial)])
+
+#     for _ in range(n_repeat):  # Repeat the augmentation process 10 times
+#         augmented_input, augmented_target = augment_data(input_data, target_displacements, noise_std)
+#         augmented_input_data.extend(augmented_input)
+#         augmented_target_displacements.extend(augmented_target)
+
+#     adj_matrices = compute_adjacency_matrices(augmented_input_data, rcut=3.0) #[torch.randint(0, 2, (num_atoms[i], num_atoms[i])).float() for i in range(num_snapshots)]  # Random adjacency matrices for each snapshot
+
+
+
+#     # Concatenate input data along a new dimension to form a single tensor
+#     input_data_tensor = torch.stack(augmented_input_data)
+#     print('input_data_tensor.shape:',input_data_tensor.shape)
+
+#     # Standardize the augmented input data
+#     mean = input_data_tensor.mean(dim=(0, 1))
+#     std = input_data_tensor.std(dim=(0, 1))
+#     standardized_input_data = [standardize_data(data, mean, std) for data in augmented_input_data]
+
+
+#     # Convert input data to tensors
+#     #input_data_tensor = torch.stack(augmented_input_data)
+#     target_displacements_tensor = torch.stack(augmented_target_displacements)
+
+#     total_loss_hist = []
+#     for epoch in range(num_epochs):
+#         optimizer.zero_grad()
+#         predicted_displacements = model(input_data_tensor, adj_matrices)
+#     #    predicted_displacements_tensor = torch.stack( predicted_displacements )
+#         losses = []
+#         for indx, i in enumerate(snapshots):
+#             pred = predicted_displacements[ indx ][ indx ]
+#             snapshot_losses = criterion(pred, augmented_target_displacements[indx])
+#     #        snapshot_losses = [criterion(pred, augmented_target_displacements[indx]) for pred in predicted_displacements[indx]]
+#     #        pdb.set_trace()
+#             losses.append(snapshot_losses)
+#     #        losses.extend(snapshot_losses)
+#     #    loss = criterion(predicted_displacements_tensor, target_displacements_tensor)
+#         total_loss = sum(losses)
+#         total_loss.backward()
+#     #    loss.backward()
+#         optimizer.step()
+#         total_loss_hist += [total_loss.detach().numpy()]
+#         if epoch % 100 == 0:
+#             print(f'Epoch {epoch}, Total Loss: {total_loss.item()}')
+
+# #main()
+
+
+# In[ ]:
+
+
+# data
+
+
+# In[ ]:
+
+
+# ax = plt.figure(figsize=(10,10)).add_subplot(projection='3d',)
+
+# batch_indx = 0
+# filtr = data.batch == batch_indx
+
+# xyz = data.x 
+# adj_mat = data.edge_index.T
+
+
+# ax.plot(xyz[filtr][:,0],xyz[filtr][:,1],xyz[filtr][:,2],
+#         '.', ms=20,
+#         )
+
+# min_node_indx = data.ptr[ batch_indx ]
+# max_node_indx = data.ptr[ batch_indx + 1 ]
+# for nodes in (adj_mat):
+#     i = nodes[0]
+#     j = nodes[1]
+#     if i < min_node_indx or i >= max_node_indx: 
+#         continue
+#     if j < min_node_indx or j >= max_node_indx: 
+#         continue
+#     ax.plot([xyz[i,0],xyz[j,0]],[xyz[i,1],xyz[j,1]],[xyz[i,2],xyz[j,2]],
+#             '-', color='black',
+#             )
+
+#     u = data.y
+
+# ax.plot(([xyz[filtr][17,0],xyz[filtr][17,0]+u[filtr][17,0]]),
+#         ([xyz[filtr][17,1],xyz[filtr][17,1]+u[filtr][17,1]]),
+#         ([xyz[filtr][17,2],xyz[filtr][17,2]+u[filtr][17,2]]),
+#         '-', color='red',
+#         )
+
+
+# ## mpnn
+
+# In[ ]:
+
+
+# import torch
+# import torch.nn as nn
+# import torch.optim as optim
+# import torch.nn.functional as F
+# import numpy as np
+# import pandas as pd
+
+# class MPNN(nn.Module):
+#     def __init__(self, input_dim, hidden_dim, output_dim):
+#         super(MPNN, self).__init__()
+#         self.fc1 = nn.Linear(input_dim, hidden_dim)
+#         self.fc2 = nn.Linear(hidden_dim, output_dim)
+
+#     def message_passing_layer(self, x, adj_matrices):
+#         # Ensure adj_matrices is a list of tensors
+#         adj_matrices = [adj.unsqueeze(0) for adj in adj_matrices]
+
+#         # Expand node features to include neighboring node features
+# #        expanded_x = [torch.matmul(adj.unsqueeze(0), x.unsqueeze(0)).squeeze(0) for adj in adj_matrices]
+#         expanded_x = [torch.matmul(adj,yy) for adj, yy in zip(adj_matrices,x)]
+# #        expanded_x = [torch.matmul(adj.unsqueeze(0), adj).squeeze(0) for adj in adj_matrices]
+
+#         # Concatenate node features with neighboring node features
+#         pdb.set_trace()
+#         concatenated_x = [torch.cat((x, exp_x), dim=1) for exp_x in expanded_x]
+
+#         # Apply linear transformation
+#         transformed_x = [self.fc1(cat_x) for cat_x in concatenated_x]
+
+#         # Apply activation function
+#         x = [F.relu(trans_x) for trans_x in transformed_x]
+
+#         return x
+
+
+#     def readout_layer(self, x):
+#         # Concatenate tensors in the list along the batch dimension
+#         concatenated_x = torch.stack(x, dim=0)
+
+#         # Apply global pooling operation (e.g., mean or sum) along the batch dimension
+#         return torch.mean(concatenated_x, dim=0)
+
+#     def forward(self, x, adj_matrices):
+#         x = self.message_passing_layer(x, adj_matrices)
+#         output = self.readout_layer(x)
+#         return output
+
+# # Example usage
+# input_dim = 3  # Dimensionality of atom positions (e.g., x, y, z coordinates)
+# hidden_dim = 64  # Dimensionality of hidden layers
+# output_dim = 3  # Dimensionality of displacement vectors for each snapshot
+
+# # Create model instance
+# model = MPNN(input_dim, hidden_dim, output_dim)
+
+# # Define optimizer and loss function
+# optimizer = optim.Adam(model.parameters(), lr=1.0e-4)
+# criterion = nn.MSELoss()
+
+# # Example training data
+# # Assuming input_data is a list of tensors containing initial positions for each snapshot
+# # Assuming adj_matrices is a list of adjacency matrices for each snapshot
+# # Assuming target_displacements is a list of tensors containing displacement vectors for each snapshot
+# # You need to replace these with your actual data
+# input_data = [torch.randn(10, input_dim).float() for _ in range(10)]  # Example random initial positions
+# adj_matrices = [torch.randint(0, 2, (10, 10)).float() for _ in range(10)]  # Example random adjacency matrices
+# target_displacements = [torch.randn(10, output_dim) for _ in range(10)]  # Example random target displacements
+
+# # Training loop
+# num_epochs = 1000
+# for epoch in range(num_epochs):
+#     optimizer.zero_grad()
+#     predicted_displacements = model(input_data, adj_matrices)
+#     loss = criterion(predicted_displacements, target_displacements)
+#     loss.backward()
+#     optimizer.step()
+#     if epoch % 100 == 0:
+#         print(f'Epoch {epoch}, Loss: {loss.item()}')
+
+
+# ## tf
+
+# In[ ]:
+
+
+# import tensorflow as tf
+
+# class GraphNeuralNetwork(tf.keras.Model):
+#     def __init__(self, hidden_dim, output_dim):
+#         super(GraphNeuralNetwork, self).__init__()
+#         self.hidden_dim = hidden_dim
+#         self.output_dim = output_dim
+        
+#         # Define layers
+#         self.fc1 = tf.keras.layers.Dense(hidden_dim, activation='relu')
+#         self.fc2 = tf.keras.layers.Dense(hidden_dim, activation='relu')
+#         self.fc_out = tf.keras.layers.Dense(output_dim)
+
+#     def call(self, x, adj_matrices):
+#         # x: Node features (batch_size, num_nodes, input_dim)
+#         # adj_matrices: Adjacency matrices (batch_size, num_nodes, num_nodes)
+        
+#         # Apply first fully connected layer
+#         x = self.fc1(x)
+        
+#         # Iterate over adjacency matrices and update node features
+#         for adj_matrix in adj_matrices:
+#             x = tf.matmul(adj_matrix, x)
+#             x = self.fc2(x)
+        
+#         # Apply output fully connected layer
+#         output = self.fc_out(x)
+        
+#         return output
+
+# def compute_adjacency_matrices_tf(input_data, rcut):
+#     adj_matrices = []
+    
+#     for positions in input_data:
+#         num_atoms = positions.shape[0]
+#         adj_matrix = np.zeros(num_atoms*num_atoms).reshape((num_atoms, num_atoms))
+        
+#         for i in range(num_atoms):
+#             for j in range(i + 1, num_atoms):
+#                 distance = torch.norm(positions[i] - positions[j])
+#                 if distance <= rcut:
+#                     adj_matrix[i, j] = 1
+#                     adj_matrix[j, i] = 1
+#             assert adj_matrix[i,:].sum() > 0, 'dangling node : increase the cutoff!'
+#         adj_matrices.append(adj_matrix)
+    
+#     #--- assert no 
+#     return np.c_[adj_matrices]
+
+
+
+# def main():
+#     # Example usage
+#     hidden_dim = 32  # Dimensionality of hidden layers
+#     output_dim = 3  # Dimensionality of output vectors
+#     snapshots = [0] #range(len(transition_paths))
+
+#     model = GraphNeuralNetwork(hidden_dim, output_dim)
+
+#     # Define optimizer and loss function
+#     optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
+#     loss_fn = tf.keras.losses.MeanSquaredError()
+
+#     # Generate dummy input data and adjacency matrices
+# #     batch_size = 2
+# #     num_nodes = 10
+#     input_dim = 3
+
+#     #x = tf.random.normal((batch_size, num_nodes, input_dim))
+#     x = np.c_[[np.c_[pd.DataFrame(transition_paths[ i ])['x y z'.split()]] for i in snapshots]]
+#     x = tf.convert_to_tensor(x,dtype=tf.float32)
+
+#     #adj_matrices = tf.random.uniform((batch_size, num_nodes, num_nodes)) # for _ in range(2)]  # Example with 2 adjacency matrices
+#     input_data = [torch.from_numpy( np.c_[pd.DataFrame(transition_paths[ i ])['x y z'.split()]] ).float() for i in snapshots]  
+#     adj_matrices = compute_adjacency_matrices_tf(torch.stack(input_data), rcut=3.0)
+#     adj_matrices = tf.convert_to_tensor(adj_matrices,dtype=tf.float32)
+
+#     # Example target data
+#     #target = tf.random.normal((batch_size, num_nodes, output_dim))
+#     target = np.c_[[np.c_[pd.DataFrame(transition_paths[ i ])['ux_fin uy_fin uz_fin'.split()]] for i in snapshots]]
+#     target = tf.convert_to_tensor(target,dtype=tf.float32)
+
+
+#     # Training loop
+#     total_loss_hist = []
+#     num_epochs = 5000 #100000
+#     for epoch in range(num_epochs):
+#         with tf.GradientTape() as tape:
+#             predictions = model(x, adj_matrices)
+#     #         pdb.set_trace()
+#             loss = loss_fn(target, predictions)
+
+#         gradients = tape.gradient(loss, model.trainable_variables)
+#         optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+        
+#         if epoch == 0:
+#             loss_min = loss.numpy()
+#             best_model = model
+#         total_loss_hist.append(loss.numpy())
+#         if epoch % 100 == 0: 
+#             print('Epoch %s, Loss: %e'%(epoch,loss.numpy()))
+#             if loss.numpy() < loss_min:
+#                 loss_min = loss.numpy()
+#                 best_model = model     
+#     print('min loss:%e'%loss_min)
+#     return best_model, num_epochs, total_loss_hist
+
+# #model, num_epochs, total_loss_hist = main()
+
+
+# ## pytorch
+
+# In[2]:
+
+
+# # # Standard libraries
+# # import os
+
+# # # For downloading pre-trained models
+# import urllib.request
+# from urllib.error import HTTPError
+
+# # # PyTorch Lightning
+# import lightning as L
+
+# # # PyTorch
+# import torch
+# import torch.nn as nn
+# import torch.nn.functional as F
+# import torch.optim as optim
+
+# # # PyTorch geometric
+# import torch_geometric
+# import torch_geometric.data as geom_data
+# import torch_geometric.nn as geom_nn
+
+# # # PL callbacks
+# from lightning.pytorch.callbacks import ModelCheckpoint
+# from torch import Tensor
+
+# AVAIL_GPUS = min(1, torch.cuda.device_count())
+# BATCH_SIZE = 256 if AVAIL_GPUS else 64
+# # Path to the folder where the datasets are/should be downloaded
+# DATASET_PATH = os.environ.get("PATH_DATASETS", "data/")
+# # Path to the folder where the pretrained models are saved
+# CHECKPOINT_PATH = os.environ.get("PATH_CHECKPOINT", "saved_models/GNNs/")
+
+# # # Setting the seed
+# L.seed_everything(42)
+
+# # # Ensure that all operations are deterministic on GPU (if used) for reproducibility
+# torch.backends.cudnn.deterministic = True
+# torch.backends.cudnn.benchmark = False
+
+
+# In[3]:
+
+
+# # Github URL where saved models are stored for this tutorial
+# base_url = "https://raw.githubusercontent.com/phlippe/saved_models/main/tutorial7/"
+# # Files to download
+# pretrained_files = ["NodeLevelMLP.ckpt", "NodeLevelGNN.ckpt", "GraphLevelGraphConv.ckpt"]
+
+# # Create checkpoint path if it doesn't exist yet
+# os.makedirs(CHECKPOINT_PATH, exist_ok=True)
+
+# # For each file, check whether it already exists. If not, try downloading it.
+# for file_name in pretrained_files:
+#     file_path = os.path.join(CHECKPOINT_PATH, file_name)
+#     if "/" in file_name:
+#         os.makedirs(file_path.rsplit("/", 1)[0], exist_ok=True)
+#     if not os.path.isfile(file_path):
+#         file_url = base_url + file_name
+#         print("Downloading %s..." % file_url)
+#         try:
+#             urllib.request.urlretrieve(file_url, file_path)
+#         except HTTPError as e:
+#             print(
+#                 "Something went wrong. Please try to download the file from the GDrive folder,"
+#                 " or contact the author with the full output including the following error:\n",
+#                 e,
+#             )
+
+
+# In[4]:
+
+
+# class GCNLayer(nn.Module):
+#     def __init__(self, c_in, c_out):
+#         super().__init__()
+#         self.projection = nn.Linear(c_in, c_out)
+
+#     def forward(self, node_feats, adj_matrix):
+#         """Forward.
+
+#         Args:
+#             node_feats: Tensor with node features of shape [batch_size, num_nodes, c_in]
+#             adj_matrix: Batch of adjacency matrices of the graph. If there is an edge from i to j,
+#                          adj_matrix[b,i,j]=1 else 0. Supports directed edges by non-symmetric matrices.
+#                          Assumes to already have added the identity connections.
+#                          Shape: [batch_size, num_nodes, num_nodes]
+#         """
+#         # Num neighbours = number of incoming edges
+#         num_neighbours = adj_matrix.sum(dim=-1, keepdims=True)
+#         node_feats = self.projection(node_feats)
+#         node_feats = torch.bmm(adj_matrix, node_feats)
+#         node_feats = node_feats / num_neighbours
+#         return node_feats
+
+
+# In[5]:
+
+
+# node_feats = torch.arange(8, dtype=torch.float32).view(1, 4, 2)
+# adj_matrix = Tensor([[[1, 1, 0, 0], [1, 1, 1, 1], [0, 1, 1, 1], [0, 1, 1, 1]]])
+
+# print("Node features:\n", node_feats)
+# print("\nAdjacency matrix:\n", adj_matrix)
+
+
+# In[6]:
+
+
+# layer = GCNLayer(c_in=2, c_out=2)
+# layer.projection.weight.data = Tensor([[1.0, 0.0], [0.0, 1.0]])
+# layer.projection.bias.data = Tensor([0.0, 0.0])
+
+# with torch.no_grad():
+#     out_feats = layer(node_feats, adj_matrix)
+
+# print("Adjacency matrix", adj_matrix)
+# print("Input features", node_feats)
+# print("Output features", out_feats)
+
+
+# In[7]:
+
+
+# cora_dataset = torch_geometric.datasets.Planetoid(root=DATASET_PATH, name="Cora")
+
+
+# In[8]:
+
+
+# cora_dataset[0].y
+
+
+# In[9]:
+
+
+# # Small function for printing the test scores
+# def print_results(result_dict):
+#     if "train" in result_dict:
+#         print("Train accuracy: %4.2f%%" % (100.0 * result_dict["train"]))
+#     if "val" in result_dict:
+#         print("Val accuracy:   %4.2f%%" % (100.0 * result_dict["val"]))
+#     print("Test accuracy:  %4.2f%%" % (100.0 * result_dict["test"]))
+
+
+# In[10]:
+
+
+# tu_dataset = torch_geometric.datasets.TUDataset(root=DATASET_PATH, name="MUTAG")
+
+
+# In[11]:
+
+
+# print("Data object:", tu_dataset.data)
+# print("Length:", len(tu_dataset))
+# print("Average label: %4.2f" % (tu_dataset.data.y.float().mean().item()))
+
+
+# In[12]:
+
+
+# torch.manual_seed(42)
+# tu_dataset.shuffle()
+# train_dataset = tu_dataset[:150]
+# test_dataset = tu_dataset[150:]
+
+
+# In[25]:
+
+
+# BATCH_SIZE
+# train_dataset
+
+
+# In[13]:
+
+
+# graph_train_loader = geom_data.DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+# graph_val_loader = geom_data.DataLoader(test_dataset, batch_size=BATCH_SIZE)  # Additional loader for a larger datasets
+# graph_test_loader = geom_data.DataLoader(test_dataset, batch_size=BATCH_SIZE)
+
+
+# In[23]:
+
+
+# batch = next(iter(graph_test_loader))
+# print("Batch:", batch)
+# print("Labels:", batch.y[:10])
+# print("Batch indices:", batch.batch[:40])
+
+
+# In[26]:
+
+
+# batch.y
+
+
+# In[15]:
+
+
+# class GNNModel(nn.Module):
+#     def __init__(
+#         self,
+#         c_in,
+#         c_hidden,
+#         c_out,
+#         num_layers=2,
+#         layer_name="GCN",
+#         dp_rate=0.1,
+#         **kwargs,
+#     ):
+#         """GNNModel.
+
+#         Args:
+#             c_in: Dimension of input features
+#             c_hidden: Dimension of hidden features
+#             c_out: Dimension of the output features. Usually number of classes in classification
+#             num_layers: Number of "hidden" graph layers
+#             layer_name: String of the graph layer to use
+#             dp_rate: Dropout rate to apply throughout the network
+#             kwargs: Additional arguments for the graph layer (e.g. number of heads for GAT)
+#         """
+#         super().__init__()
+#         gnn_layer_by_name = {"GCN": geom_nn.GCNConv, "GAT": geom_nn.GATConv, "GraphConv": geom_nn.GraphConv}
+#         gnn_layer = gnn_layer_by_name[layer_name]
+
+#         layers = []
+#         in_channels, out_channels = c_in, c_hidden
+#         for l_idx in range(num_layers - 1):
+#             layers += [
+#                 gnn_layer(in_channels=in_channels, out_channels=out_channels, **kwargs),
+#                 nn.ReLU(inplace=True),
+#                 nn.Dropout(dp_rate),
+#             ]
+#             in_channels = c_hidden
+#         layers += [gnn_layer(in_channels=in_channels, out_channels=c_out, **kwargs)]
+#         self.layers = nn.ModuleList(layers)
+
+#     def forward(self, x, edge_index):
+#         """Forward.
+
+#         Args:
+#             x: Input features per node
+#             edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
+#         """
+#         for layer in self.layers:
+#             # For graph layers, we need to add the "edge_index" tensor as additional input
+#             # All PyTorch Geometric graph layer inherit the class "MessagePassing", hence
+#             # we can simply check the class type.
+#             if isinstance(layer, geom_nn.MessagePassing):
+# #                 pdb.set_trace()
+#                 x = layer(x, edge_index)
+#             else:
+#                 x = layer(x)
+#         return x
+
+
+# ### toturial
+
+# In[16]:
+
+
+# def main(): # Example usage
+
+    
+#     c_in=input_dim=3
+#     c_hidden = 16
+#     hidden_dim = [c_hidden]
+#     c_out  = 3
+#     output_dims=[c_out]
+#     num_layers = 2
+#     ntrain = 100
+#     num_epochs=100
+#     noise_std=0.001
+#     lr=1e-4
+#     batch_size = 12  # or any desired batch size
+
+
+#     num_snapshots = len( transition_paths )
+#     print('num_snapshots=',num_snapshots)
+#     snapshots     = range(num_snapshots)
+
+# #     model = GraphNeuralNet(input_dim, hidden_dim, output_dims,activation) #
+#     model = GNNModel(c_in,
+#         c_hidden,
+#         c_out,
+#         num_layers=num_layers,
+# )
+
+
+#     # Define optimizer and loss function
+#     optimizer = optim.Adam(model.parameters(), lr=lr)
+#     criterion = nn.MSELoss()
+
+#     # Example training data
+#     input_data = [torch.from_numpy( np.c_[pd.DataFrame(transition_paths[ i ])['x y z'.split()]] ).float() for i in snapshots]  
+
+
+
+
+    
+
+
+
+#     # Example target data (displacement vectors for each snapshot and each path)
+#     target_displacements = [torch.from_numpy( np.c_[pd.DataFrame(transition_paths[ i ])['ux_fin uy_fin uz_fin'.split()]] ).float() for i in snapshots for dim in output_dims]
+
+
+#     # Augment the dataset to have order 100 snapshots
+#     augmented_input_data = []
+#     augmented_target_displacements = []
+#     input_data_tensor = torch.stack(input_data)
+#     ntrain_initial = input_data_tensor.shape[0]*input_data_tensor.shape[1]
+#     n_repeat = np.max([1,int(ntrain/ntrain_initial)])
+
+#     for _ in range(n_repeat):  # Repeat the augmentation process 10 times
+#         augmented_input, augmented_target = augment_data(input_data, target_displacements, noise_std)
+#         augmented_input_data.extend(augmented_input)
+#         augmented_target_displacements.extend(augmented_target)
+
+#     adj_matrices = torch.stack(compute_adjacency_matrices(augmented_input_data, rcut=3.0)) 
+    
+
+
+#     # Concatenate input data along a new dimension to form a single tensor
+#     input_data_tensor = torch.stack(augmented_input_data)
+#     print('input_data_tensor.shape:',input_data_tensor.shape)
+
+#     # Standardize the augmented input data
+#     mean = input_data_tensor.mean(dim=(0, 1))
+#     std = input_data_tensor.std(dim=(0, 1))
+#     standardized_input_data = [standardize_data(data, mean, std) for data in augmented_input_data]
+
+
+#     # Convert input data to tensors
+#     target_displacements_tensor = torch.stack(augmented_target_displacements)
+    
+    
+    
+    
+#     # Concatenate nodes and edges for each graph
+#     graphs = []
+#     for i in range(len(input_data)):
+#         x = input_data_tensor[i]  # Node features
+#         edge_index = adj_matrices[i].nonzero().t()  # Edge indices
+#         y = target_displacements_tensor[i]  # Target displacements
+
+#         # Create a Data object for each graph
+#         data = Data(x=x, edge_index=edge_index, y=y)
+#         graphs.append(data)
+#     # Create a single large graph by concatenating Data objects
+#     large_graph = torch_geometric.data.Batch.from_data_list(graphs)
+
+#     # Define batch size and create DataLoader
+#     loader = DataLoader(large_graph, batch_size=batch_size, shuffle=True)
+
+# #     # Accessing batches in the DataLoader
+#     data=loader.dataset #next(iter(loader))
+# #     pdb.set_trace()
+# #    for data in loader:
+# #    print(data)
+
+
+#     total_loss_hist = []
+#     for epoch in range(num_epochs):
+#         optimizer.zero_grad()
+#         predicted_displacements = model(data.x, data.edge_index)
+#         total_loss = criterion(predicted_displacements,data.y )
+#         total_loss.backward()
+#     #    loss.backward()
+#         optimizer.step()
+#         total_loss_hist += [total_loss.detach().numpy()]
+#         if epoch % 100 == 0:
+#             print(f'Epoch {epoch}, Total Loss: {total_loss.item()}')
+
+#     return model, num_epochs, total_loss_hist, data
+
+
+
+# gnn_layer_by_name = {"GCN": geom_nn.GCNConv, "GAT": geom_nn.GATConv, "GraphConv": geom_nn.GraphConv}
+
+# model, num_epochs, total_loss_hist, data = main()
+
+
+
+
+# In[17]:
+
+
+# class GraphGNNModel(nn.Module):
+#     def __init__(self, c_in, c_hidden, c_out, dp_rate_linear=0.5, **kwargs):
+#         """GraphGNNModel.
+
+#         Args:
+#             c_in: Dimension of input features
+#             c_hidden: Dimension of hidden features
+#             c_out: Dimension of output features (usually number of classes)
+#             dp_rate_linear: Dropout rate before the linear layer (usually much higher than inside the GNN)
+#             kwargs: Additional arguments for the GNNModel object
+#         """
+#         super().__init__()
+#         self.GNN = GNNModel(c_in=c_in, c_hidden=c_hidden, c_out=c_hidden, **kwargs)  # Not our prediction output yet!
+#         self.head = nn.Sequential(nn.Dropout(dp_rate_linear), nn.Linear(c_hidden, c_out))
+
+#     def forward(self, x, edge_index, batch_idx):
+#         """Forward.
+
+#         Args:
+#             x: Input features per node
+#             edge_index: List of vertex index pairs representing the edges in the graph (PyTorch geometric notation)
+#             batch_idx: Index of batch element for each node
+#         """
+#         pdb.set_trace()
+#         x = self.GNN(x, edge_index)
+# #        pdb.set_trace()
+#         x = geom_nn.global_mean_pool(x, batch_idx)  #--- Average pooling
+#         x = self.head(x)
+#         return x
+
+
+# In[18]:
+
+
+# class GraphLevelGNN(L.LightningModule):
+#     def __init__(self, **model_kwargs):
+#         super().__init__()
+#         # Saving hyperparameters
+#         self.save_hyperparameters()
+
+#         self.model = GraphGNNModel(**model_kwargs)
+#         self.loss_module = nn.BCEWithLogitsLoss() if self.hparams.c_out == 1 else nn.CrossEntropyLoss()
+
+#     def forward(self, data, mode="train"):
+#         x, edge_index, batch_idx = data.x, data.edge_index, data.batch
+#         x = self.model(x, edge_index, batch_idx)
+#         x = x.squeeze(dim=-1)
+
+#         if self.hparams.c_out == 1:
+#             preds = (x > 0).float()
+#             data.y = data.y.float()
+#         else:
+#             preds = x.argmax(dim=-1)
+#         loss = self.loss_module(x, data.y)
+#         acc = (preds == data.y).sum().float() / preds.shape[0]
+#         return loss, acc
+
+#     def configure_optimizers(self):
+#         # High lr because of small dataset and small model
+#         optimizer = optim.AdamW(self.parameters(), lr=1e-2, weight_decay=0.0)
+#         return optimizer
+
+#     def training_step(self, batch, batch_idx):
+#         loss, acc = self.forward(batch, mode="train")
+#         self.log("train_loss", loss)
+#         self.log("train_acc", acc)
+#         return loss
+
+#     def validation_step(self, batch, batch_idx):
+#         _, acc = self.forward(batch, mode="val")
+#         self.log("val_acc", acc)
+
+#     def test_step(self, batch, batch_idx):
+#         _, acc = self.forward(batch, mode="test")
+#         self.log("test_acc", acc)
+        
+#     def predict(self, data):
+#         x, edge_index, batch_idx = data.x, data.edge_index, data.batch
+#         x = self.model(x, edge_index, batch_idx)
+#         x = x.squeeze(dim=-1)
+
+#         if self.hparams.c_out == 1:
+#             preds = (x > 0).float()
+#             data.y = data.y.float()
+#         else:
+#             preds = x.argmax(dim=-1)
+#         return preds
+
+
+# In[19]:
+
+
+# def train_graph_classifier(model_name, **model_kwargs):
+#     L.seed_everything(42)
+
+#     # Create a PyTorch Lightning trainer with the generation callback
+#     root_dir = os.path.join(CHECKPOINT_PATH, "GraphLevel" + model_name)
+#     os.makedirs(root_dir, exist_ok=True)
+#     trainer = L.Trainer(
+#         default_root_dir=root_dir,
+#         callbacks=[ModelCheckpoint(save_weights_only=True, mode="max", monitor="val_acc")],
+# #        accelerator="cuda",
+# #        devices=AVAIL_GPUS,
+#         max_epochs=500,
+#         enable_progress_bar=False,
+#     )
+#     trainer.logger._default_hp_metric = None
+
+#     # Check whether pretrained model exists. If yes, load it and skip training
+#     pretrained_filename = os.path.join(CHECKPOINT_PATH, "GraphLevel%s.ckpt" % model_name)
+# #     if os.path.isfile(pretrained_filename):
+# #         print("Found pretrained model, loading...")
+# #         model = GraphLevelGNN.load_from_checkpoint(pretrained_filename)
+# #     else:
+#     L.seed_everything(42)
+
+#     model = GraphLevelGNN(
+#         c_in=tu_dataset.num_node_features,
+#         c_out=1 if tu_dataset.num_classes == 2 else tu_dataset.num_classes,
+#         **model_kwargs,
+#     )
+#     trainer.fit(model, graph_train_loader, graph_val_loader)
+#     model = GraphLevelGNN.load_from_checkpoint(trainer.checkpoint_callback.best_model_path)
+
+#     # Test best model on validation and test set
+#     train_result = trainer.test(model, dataloaders=graph_train_loader, verbose=False)
+#     test_result = trainer.test(model, dataloaders=graph_test_loader, verbose=False)
+#     result = {"test": test_result[0]["test_acc"], "train": train_result[0]["test_acc"]}
+#     return model, result
+
+
+# In[ ]:
+
+
+# model, result = train_graph_classifier(
+#     model_name="GraphConv", c_hidden=256, layer_name="GraphConv", num_layers=3, dp_rate_linear=0.5, dp_rate=0.0
+# )
 

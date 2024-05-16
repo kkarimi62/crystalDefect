@@ -4,11 +4,21 @@ include ${INC}/initSoftWall.mod
 
 # Create geometry
 variable box_length equal 11.0
-lattice fcc 3.52
+variable box_length_z equal 3.0
+lattice fcc 3.52 &
+        orient x -1 1 0 & 
+        orient y -1 -1 2 & 
+        orient z 1 1 1 
 
-variable xhi equal 0.5*${box_length}+0.25
-variable xlo equal -0.5*${box_length}+0.25
-region box block ${xlo} ${xhi} ${xlo} ${xhi} -1.25 1.75 #0.25 3.25
+
+
+variable xhi equal 0.5*${box_length}+0.125
+variable xlo equal -0.5*${box_length}+0.125
+variable yhi equal 0.5*${box_length}+0.0625
+variable ylo equal -0.5*${box_length}+0.0625
+variable yhi equal 0.5*${box_length}+0.0625
+variable ylo equal -0.5*${box_length}+0.0625
+region box block ${xlo} ${xhi} ${ylo} ${yhi} -1.125 1.875 #0.25 3.25
 create_box 2 box
 create_atoms 1 box
 
@@ -19,120 +29,151 @@ mass 2 58.6934
 # Define potential
 include ${INC}/potential.mod
 
-# Remove atoms to create a cylindrical hole
-variable xc equal 0.0
-variable radius equal 1.0
-region hole cylinder z ${xc} ${xc} ${radius} -100.0 100.0 side in units lattice
-delete_atoms region hole
-
-
-#--- minimize 
-minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
-
-
-
-
-#--- shear the system
-variable dl equal 2.0 #2.6
-fix d1 all deform 1 x delta -${dl} ${dl} y delta ${dl} -${dl} units box # remap x #remap v
-run 1
-#
-unfix d1
-
-#--- minimize 
-minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
-
-
-
-# Create a vacancy (within "no_buffer")
-variable rmin equal 0.5*${box_length}-3.0
-# Loop over variable N
-label loop_start
-variable num_vacancy loop 1
-#variable rmin equal ${radius}+1.0
-variable ix equal floor(random(${rmin},0.5*${box_length},${rnd}))
-variable iy equal floor(random(${rmin},0.5*${box_length},${rnd1}))
-variable sign_x equal random(-1.0,1.0,${rnd2})
-variable sign_xx equal ${sign_x}
-variable sign_y equal random(-1.0,1.0,${rnd3})
-variable sign_yy equal ${sign_y}
-if "${sign_xx} >= 0.0" then &
-  "variable sign_xxx equal 1.0" &
-else &
-  "variable sign_xxx equal -1.0" 
-if "${sign_yy} >= 0.0" then &
-  "variable sign_yyy equal 1.0" &
-else &
-  "variable sign_yyy equal -1.0" 
-variable ixx equal ${ix}*${sign_xxx}
-variable iyy equal ${iy}*${sign_yyy}
-variable xlo equal ${ixx}-0.3
-variable xhi equal ${ixx}+0.3
-variable ylo equal ${iyy}-0.3
-variable yhi equal ${iyy}+0.3
-region vacancy block ${xlo} ${xhi} ${ylo} ${yhi} -0.4 0.4 units lattice
-group vacancy_group region vacancy
-# Assert that group boundary has only one atom
-variable num_atoms equal count(vacancy_group)
-if "${num_atoms} != 1" then &
-	print "num_atoms=${num_atoms} Error: Boundary group does not have exactly one atom." &
-    print "Halting simulation." &
-    quit
-delete_atoms group vacancy_group
-region vacancy delete
-next num_vacancy
-jump in.ellipse loop_start
-label break
-variable num_vacancy delete
-
-#--- minimize 
-minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
-
-#quit
-
-
-# Define a buffer layer around the hole
-variable xc equal 0.0
-variable radius equal 2.0
-region buffer cylinder z ${xc} ${xc} ${radius} -1000.0 1000.0 side in units lattice
-
-# Create a group for the buffer layer
-group buffer_region region buffer
-set group buffer_region type 2
-
-# Fix atoms inside the buffer layer
-fix f2 buffer_region setforce 0.0 0.0 0.0
-velocity buffer_region set 0.0 0.0 0.0
-
-# Define a region excluding the buffer layer
-group no_buffer subtract all buffer_region
+# Define region to create the dislocation
+region dislocation block 0 2 ${ylo} ${yhi} -1.125 1.875 units box
+group  dislocationGroup region dislocation
 #
 
-#--- to be used for kmc
-write_data                ${WriteData} 
-
-# Set velocities
-variable                  t_eq      equal     ${time}*${damp_t}         # Equlibration time
-variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
-velocity                  no_buffer       create     0.1     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
-fix                      f1        no_buffer        nvt temp   0.1  $T  ${damp_t}  
-
-run                       30000
-unfix f1
-
-#quit 
-
-# Define fix for MSD computation
-compute msd_all no_buffer msd
 compute     displacements all displace/atom
 dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z c_displacements[1] c_displacements[2] c_displacements[3]
 dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
 include ${INC}/thermo.mod
 
 
-# Define fix for averaging and printing MSD
-fix                      f1        no_buffer        nvt temp   $T  $T  ${damp_t}  
-fix 1 all ave/time 1 1 1000 c_msd_all[*] file msd.dat
 
-# Define fix and run
-run                       ${Nstep}
+# Displace atoms to create a Shockley partial dislocation
+# Shockley partial dislocation in FCC corresponds to a Burgers vector of a/6<112>
+displace_atoms dislocationGroup move -0.333 0.166 0.166 units lattice
+#
+
+# Define groups for boundary conditions
+region upper block INF INF INF INF 9 10 units lattice
+region lower block INF INF INF INF 0 1 units lattice
+group upper region upper
+group lower region lower
+group mobile subtract all upper lower
+#
+
+# Define groups for the different parts of the system
+group top region upper
+group bottom region lower
+group mobile subtract all upper lower
+#
+# Set the velocity to zero for atoms in the upper and lower regions
+velocity upper set 0.0 0.0 0.0
+velocity lower set 0.0 0.0 0.0
+fix 1 upper setforce 0.0 0.0 0.0
+fix 2 lower setforce 0.0 0.0 0.0
+#
+
+
+#--- minimize 
+minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
+
+
+
+
+##--- shear the system
+#variable dl equal 2.0 #2.6
+#fix d1 all deform 1 x delta -${dl} ${dl} y delta ${dl} -${dl} units box # remap x #remap v
+#run 1
+##
+#unfix d1
+#
+##--- minimize 
+#minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
+#
+#
+#
+## Create a vacancy (within "no_buffer")
+#variable rmin equal 0.5*${box_length}-3.0
+## Loop over variable N
+#label loop_start
+#variable num_vacancy loop 1
+##variable rmin equal ${radius}+1.0
+#variable ix equal floor(random(${rmin},0.5*${box_length},${rnd}))
+#variable iy equal floor(random(${rmin},0.5*${box_length},${rnd1}))
+#variable sign_x equal random(-1.0,1.0,${rnd2})
+#variable sign_xx equal ${sign_x}
+#variable sign_y equal random(-1.0,1.0,${rnd3})
+#variable sign_yy equal ${sign_y}
+#if "${sign_xx} >= 0.0" then &
+#  "variable sign_xxx equal 1.0" &
+#else &
+#  "variable sign_xxx equal -1.0" 
+#if "${sign_yy} >= 0.0" then &
+#  "variable sign_yyy equal 1.0" &
+#else &
+#  "variable sign_yyy equal -1.0" 
+#variable ixx equal ${ix}*${sign_xxx}
+#variable iyy equal ${iy}*${sign_yyy}
+#variable xlo equal ${ixx}-0.3
+#variable xhi equal ${ixx}+0.3
+#variable ylo equal ${iyy}-0.3
+#variable yhi equal ${iyy}+0.3
+#region vacancy block ${xlo} ${xhi} ${ylo} ${yhi} -0.4 0.4 units lattice
+#group vacancy_group region vacancy
+## Assert that group boundary has only one atom
+#variable num_atoms equal count(vacancy_group)
+#if "${num_atoms} != 1" then &
+#	print "num_atoms=${num_atoms} Error: Boundary group does not have exactly one atom." &
+#    print "Halting simulation." &
+#    quit
+#delete_atoms group vacancy_group
+#region vacancy delete
+#next num_vacancy
+#jump in.ellipse loop_start
+#label break
+#variable num_vacancy delete
+#
+##--- minimize 
+#minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
+#
+##quit
+#
+#
+## Define a buffer layer around the hole
+#variable xc equal 0.0
+#variable radius equal 2.0
+#region buffer cylinder z ${xc} ${xc} ${radius} -1000.0 1000.0 side in units lattice
+#
+## Create a group for the buffer layer
+#group buffer_region region buffer
+#set group buffer_region type 2
+#
+## Fix atoms inside the buffer layer
+#fix f2 buffer_region setforce 0.0 0.0 0.0
+#velocity buffer_region set 0.0 0.0 0.0
+#
+## Define a region excluding the buffer layer
+#group no_buffer subtract all buffer_region
+##
+#
+##--- to be used for kmc
+#write_data                ${WriteData} 
+#
+## Set velocities
+#variable                  t_eq      equal     ${time}*${damp_t}         # Equlibration time
+#variable 				  Nstep  	equal	floor(${t_eq}/${dt}) #--- timesteps
+#velocity                  no_buffer       create     0.1     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
+#fix                      f1        no_buffer        nvt temp   0.1  $T  ${damp_t}  
+#
+#run                       30000
+#unfix f1
+#
+##quit 
+#
+## Define fix for MSD computation
+#compute msd_all no_buffer msd
+#compute     displacements all displace/atom
+#dump        1 all custom ${nevery} ${OUT_PATH}/${DumpFile} id type x y z c_displacements[1] c_displacements[2] c_displacements[3]
+#dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e"
+#include ${INC}/thermo.mod
+#
+#
+## Define fix for averaging and printing MSD
+#fix                      f1        no_buffer        nvt temp   $T  $T  ${damp_t}  
+#fix 1 all ave/time 1 1 1000 c_msd_all[*] file msd.dat
+#
+## Define fix and run
+#run                       ${Nstep}

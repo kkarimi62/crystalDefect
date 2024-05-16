@@ -3,10 +3,9 @@ if __name__ == '__main__':
     import os
     import numpy as np
     #---
-    lnums = [ 37, 12,13 ]
+    lnums = [ 37 ]
     script = 'postproc.py test_ncbj_slurm.py'.split()[1]
-    number_hidden_layers  = dict(zip(range(4),[4]))
-    hidden_layer_size     = dict(zip(range(4),[32]))
+    number_hidden_layers  = dict(zip(range(3),[1,2,4]))
 
     string=open(script).readlines() #--- python script
     #---
@@ -15,21 +14,19 @@ if __name__ == '__main__':
     #---
     count = 0
     for key_n in number_hidden_layers:
-        number_hidden_layer = number_hidden_layers[key_n]
-        for key_h in hidden_layer_size:
-            nsize = hidden_layer_size[key_h]
+            number_hidden_layer = number_hidden_layers[key_n]
 
 #---	
             inums = lnums[ 0 ] - 1
-            string[ inums ] = "\t\'5\':\'neuralNet/ni/pure/test2nd/layer%s/layer_size%s\',\n" % (key_n,key_h) #--- change job name
+            string[ inums ] = "    path_for_simulation=\'ni/multipleVacs/results/kmc/vac%s\',\n" % (key_n) #--- change job name
     #---	densities
             #
-            inums = lnums[ 1 ] - 1
-            string[ inums ] = "    confParser.set(\'gnn\',\'num_layers\',\'%s\')\n"%(number_hidden_layer)
+#            inums = lnums[ 1 ] - 1
+#            string[ inums ] = "    confParser.set(\'gnn\',\'num_layers\',\'%s\')\n"%(number_hidden_layer)
             #
             #
-            inums = lnums[ 2 ] - 1
-            string[ inums ] = "    confParser.set(\'gnn\',\'c_hidden\',\'%s\')\n"%(nsize)
+#            inums = lnums[ 2 ] - 1
+#            string[ inums ] = "    confParser.set(\'gnn\',\'c_hidden\',\'%s\')\n"%(nsize)
             #
             sfile=open('junk%s.py'%count,'w');sfile.writelines(string);sfile.close()
             os.system( 'python junk%s.py'%count )
