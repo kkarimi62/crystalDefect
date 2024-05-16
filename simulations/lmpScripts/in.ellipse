@@ -105,7 +105,6 @@ group no_buffer subtract all buffer_region
 
 #--- to be used for kmc
 write_data                ${WriteData} 
-quit
 
 # Set velocities
 variable                  t_eq      equal     ${time}*${damp_t}         # Equlibration time
