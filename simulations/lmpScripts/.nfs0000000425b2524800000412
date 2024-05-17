@@ -79,7 +79,7 @@ minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in 
 #--- to be used for kmc
 write_data                ${WriteData} 
 
-#quit #--- uncomment!!!
+quit #--- uncomment!!!
 
 # Set velocities
 variable				  Tinit     equal     0.1
