@@ -60,7 +60,7 @@ if "${num_atoms} != 1" then &
 delete_atoms group vacancy_group
 region vacancy delete
 next num_vacancy
-jump in.vac loop_start
+jump ${INC}/in.vac loop_start
 label break
 variable num_vacancy delete
 
