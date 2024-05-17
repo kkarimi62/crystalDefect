@@ -24,7 +24,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 #    print('source /mnt/opt/spack-0.17/share/spack/setup-env.sh\n\nspack load python@3.8.12%%gcc@8.3.0\n\n',file=someFile)
     print('source activate pytorch_gpu4th',file=someFile)
     if convert_to_py:
-        print('time ipython3 py_script.py\n',file=someFile)
+        print("/usr/bin/time -f \'%e\' ipython3 py_script.py\n",file=someFile)
     else:
         print('jupyter nbconvert --execute $EXEC_DIR/%s --to html --ExecutePreprocessor.timeout=-1 --ExecutePreprocessor.allow_errors=True;ls output.html'%(PYFIL), file=someFile)
     someFile.close()										  
@@ -40,29 +40,29 @@ if __name__ == '__main__':
                             '4':'descriptors/%s'%path_for_simulation,
                             '5':'neuralNet/%s'%path_for_simulation,
                             '6':'mlmc/%s'%path_for_simulation, 
-                            }['5']
+                            }['6']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/%s'%path_for_simulation,
                                             '5':'/descriptors/%s'%path_for_simulation,
                                             '6':'/neuralNet/%s'%path_for_simulation, 
-                                        }['5'] #--- source
+                                        }['6'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 1
+    keyno                = 2
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
-    mem                  = '16gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
+    mem                  = '32gb'
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 3 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
     additional_args      = ''
     if partition         == 'GPU_K80':
-        additional_args  = '--gres=gpu:tesla:2'
+        additional_args  = '--gres=gpu:tesla:1'
     PYFIL                = PYFILdic[ keyno ]
     if convert_to_py:
         os.system('jupyter nbconvert --to script %s --output py_script\n'%PYFIL)
