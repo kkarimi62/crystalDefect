@@ -3366,19 +3366,19 @@ class GraphNet:
         num_snapshots = len( self.transition_paths )
         snapshots     = range(num_snapshots)
         #--- only include center atoms within clusters
-#        filtrs        = list(map(lambda x: np.array(np.ones(len(self.transition_paths[x]['center_atom_index']))).flatten().astype(bool), snapshots))
-        filtrs = list(map(lambda x: np.array(self.transition_paths[x]['center_atom_index']).flatten().astype(bool), snapshots))
+        filtrs        = list(map(lambda x: np.array(np.ones(len(self.transition_paths[x]['center_atom_index']))).flatten().astype(bool), snapshots))
+#        filtrs = list(map(lambda x: np.array(self.transition_paths[x]['center_atom_index']).flatten().astype(bool), snapshots))
         #
         input_xyz     = [torch.from_numpy( np.c_[np.c_[self.transition_paths[ i ]['x'],\
                                                        self.transition_paths[ i ]['y'],\
                                                        self.transition_paths[ i ]['z']][filtrs[i]]] ).float() for i in snapshots]
 
-        input_data    = [torch.from_numpy( np.c_[#self.transition_paths[ i ]['x'],\
-                                         #self.transition_paths[ i ]['y'],\
-                                         #self.transition_paths[ i ]['z'],\
+        input_data    = [torch.from_numpy( np.c_[self.transition_paths[ i ]['x'],\
+                                         self.transition_paths[ i ]['y'],\
+                                         self.transition_paths[ i ]['z'],\
 #                                         np.log10(np.array(self.transition_paths[ i ]['descriptors_acsf'])),\
                                          np.array(self.transition_paths[ i ]['descriptors_acsf']),\
-                                         #self.transition_paths[ i ]['center_atom_index']\
+                                         self.transition_paths[ i ]['center_atom_index']\
                                             ][filtrs[i]] ).float() for i in      snapshots]
 #        input_data    =  [torch.from_numpy( np.c_[np.log10(np.array(self.transition_paths[ i ]['descriptors']))] ).float() for i in      snapshots]
 

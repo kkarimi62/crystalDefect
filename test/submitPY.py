@@ -3,7 +3,7 @@ if __name__ == '__main__':
     import os
     import numpy as np
     #---
-    lnums = [ 37 ]
+    lnums = [ 38, 13 ]
     script = 'postproc.py test_ncbj_slurm.py'.split()[1]
     number_hidden_layers  = dict(zip(range(3),[1,2,4]))
 
@@ -21,8 +21,8 @@ if __name__ == '__main__':
             string[ inums ] = "    path_for_simulation=\'ni/multipleVacs/results/kmc/vac%s\',\n" % (key_n) #--- change job name
     #---	densities
             #
-#            inums = lnums[ 1 ] - 1
-#            string[ inums ] = "    confParser.set(\'gnn\',\'num_layers\',\'%s\')\n"%(number_hidden_layer)
+            inums = lnums[ 1 ] - 1
+            string[ inums ] = "    confParser.set(\'ml mc\',\'lammps_script\',\'in.vac -var nvac %s\')\n"%(number_hidden_layer)
             #
             #
 #            inums = lnums[ 2 ] - 1
