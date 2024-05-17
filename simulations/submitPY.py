@@ -8,7 +8,7 @@ if __name__ == '__main__':
     #
     string=open('simulations-ncbj.py').readlines() #--- python script
     #---
-    PHI = dict(zip(range(3),[1,2,4,8]))
+    PHI = dict(zip(range(3),[1,2,4]))
     nphi = len(PHI)
     #---
     #---

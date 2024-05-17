@@ -84,7 +84,7 @@ write_data                ${WriteData}
 variable				  Tinit     equal     0.1
 velocity                  all create     ${Tinit}     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        all nvt temp   ${Tinit}  $T  ${damp_t}  
-run 30000
+run 10000
 
 unfix f1
 variable                  t_eq      equal     ${time}*${damp_t}         # Equlibration time

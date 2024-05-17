@@ -15,7 +15,7 @@ def makeOAR( EXEC_DIR, node, core, time ):
             elif execc == 'kmc':
                 print >> someFile, "export PathEam=${MEAM_library_DIR}\nexport INC=%s\nexport %s\n"%(SCRPT_DIR,var)
                 print >> someFile, "source %s \n"%('kmc_bash.sh')
-                print >> someFile, "time srun %s\n"%(kmc_exec)
+                print >> someFile, "/usr/bin/time -f \'%%e\' srun %s\n"%(kmc_exec)
 
         someFile.close()										  
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns    = 64
+        nruns    = 3 #16 #64
         #
         nThreads = 4 #16
         nNode	 = 1
@@ -200,7 +200,7 @@ if __name__ == '__main__':
         EXEC_lmp = ['lmp_g++_openmpi'][0]
         durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
         mem = '16gb' #'22gb'
-        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][3]
+        partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
         #--
         DeleteExistingFolder = True
 
