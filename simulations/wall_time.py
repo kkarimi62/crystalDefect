@@ -3,17 +3,17 @@ import numpy as np
 import traceback
 import os
 
-number_hidden_layers  = dict(zip(range(3),[1,2,4]))
+number_hidden_layers  = dict(zip(range(10),[1,2,4,8]))
 nrun                  = 3
-num_kmc_steps         = 100
+num_kmc_steps         = 1000
 
 os.system('rm wall_times.txt')
 elapsed_times         = []
 nvacs                 = []
 for (key, val) in number_hidden_layers.items():
 	for irun in range( nrun ):  
-		path = 'ni/multipleVacs/results/kmc/vac%s/Run%s'%(key,irun)
-		file_title = 'ni_multipleVacs_results_kmc_vac%s.%s.err'%(key,irun)
+		path = 'ni/multipleVacs/benchmark/kmc/vac%s/Run%s'%(key,irun)
+		file_title = 'ni_multipleVacs_benchmark_kmc_vac%s.%s.err'%(key,irun)
 		#print('%s/%s'%(path,file_title))
 		try:
 			with open('%s/Diffusion.dat'%path,'r') as fpp:

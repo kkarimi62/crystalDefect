@@ -3,8 +3,8 @@ import numpy as np
 import traceback
 import os
 
-number_hidden_layers  = dict(zip(range(3),[1,2,4]))
-num_kmc_steps         = 100
+number_hidden_layers  = dict(zip(range(10),[1,2,4,8]))
+num_kmc_steps         = 1000
 nrun                  = 1
 elapsed_times         = []
 nvacs                 = []
