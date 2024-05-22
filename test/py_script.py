@@ -1,868 +1,551 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# <h1>Table of Contents<span class="tocSkip"></span></h1>
-# <div class="toc"><ul class="toc-item"><li><span><a href="#MachineLeranedMC" data-toc-modified-id="MachineLeranedMC-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>MachineLeranedMC</a></span><ul class="toc-item"><li><span><a href="#main()" data-toc-modified-id="main()-1.1"><span class="toc-item-num">1.1&nbsp;&nbsp;</span>main()</a></span></li></ul></li></ul></div>
-
-# In[1]:
 
 
-#--- import sys. libs
-import pickle
-import import_ipynb
-import configparser
-import numpy as np
-import sys
-import time
-import pandas as pd
-import os
-import pdb
-import imp
 
-#--- tensor flow
-import tensorflow as tf
-from tensorflow import keras
+class DataSet:
 
-#--- sklearn
-from sklearn.preprocessing import StandardScaler
+    def __init__(self,confParser,verbose=True):
+        self.noise_std            = eval(confParser['NeuralNets']['noise_std'])
+        self.verbose              = verbose
+        self.cutoff               = 3.0
 
-#--- pytorch
-import torch
-import torch_geometric
-from torch_geometric.data import Data, DataLoader
-
-#--- user modules
-confParser = configparser.ConfigParser() #--- parse conf. file
-confParser.read('configuration.ini')
-list(map(lambda x:sys.path.append(x), confParser['input files']['lib_path'].split()))
-import LammpsPostProcess as lp
-import utility as utl
-import buildDescriptors as bd
-from neuralNetwork import GraphNet, GraphLevelGNN, GNNModel, GNNModel3rd #GraphLevelGNN_energy
-imp.reload(utl)
-imp.reload(lp)
-imp.reload(bd)
-
-#--- add graphnet class as attribute of main  
-import __main__
-setattr(__main__, "GraphNet", GraphNet)
-setattr(__main__, "GraphLevelGNN", GraphLevelGNN)
-setattr(__main__, "GNNModel", GNNModel)
-setattr(__main__, "GNNModel3rd", GNNModel3rd)
-
-#--- lammps
-if eval(confParser['flags']['RemoteMachine']):
-    import lammps
-
-#--- increase width
-from IPython.display import display, HTML
-display(HTML("<style>.container { width:100% !important; }</style>"))
-
-
-# In[ ]:
-
-
-class MachineLeranedMC( bd.ParseConfiguration,
-                        bd.EnergyBarrier,
-                      ):
-    '''
-    Performs Machine Learned Monte Carlo Swaps
-    '''
-    
-    def __init__(self,
-                 confParser, 
-                 verbose = False
-                ):
-        
-        self.verbose     =  verbose 
-        self.confParser  =  confParser
-        
-        self.save_output = 'saved_output'
-        if os.path.isdir( self.save_output ):
-            get_ipython().system('rm -r $self.save_output; mkdir $self.save_output')
-        else: 
-            get_ipython().system('mkdir $self.save_output')
-        
-        #--- assign units
-        temperature                  = eval(self.confParser[ 'ml mc' ][ 'temperature' ] ) #--- kelvin
-        self.rate_constant_prefactor = 1.0e+13 #s^-1
-        self.kbt                     = 8.617e-05 #eV K-1
-        self.kbt                    *= temperature
-        
-        #--- 
-        self.model_energy_loaded_true  = False
-        self.model_defects_loaded_true = False
-        self.model_disps_loaded_true   = False
-        
-#     def Parse(self,fp):
-#         '''
-#         Parse lammps dump file
-#         '''
-#         t0           = time.time()
-#         self.lmpData = lp.ReadDumpFile( '%s'%(fp) ) 
-#         self.lmpData.GetCords( ncount = sys.maxsize)
-#         if self.verbose:
-#             print('Parse %s ...'%fp)
-
-    
-    def Initialize( self ):
+    def Parse(self,path,nruns, **kwargs):
         '''
-        Initialize variables
+        Parse dataset
         '''
-        self.lmpData0 = self.lmpData.coord_atoms_broken[0].copy()
-        
-        natom         = len( self.lmpData.coord_atoms_broken[0] )
-        ndime         = 3
-        self.disp     = np.zeros( natom * ndime ).reshape((natom,ndime))
-        self.tdisp    = np.zeros( natom * ndime ).reshape((natom,ndime))
- 
-        self.mc_time  = 0.0
-                
-        self.box      = lp.Box(BoxBounds=self.lmpData.BoxBounds[0],AddMissing=np.array([0,0,0]))
-
-    def GetDescriptors( self ):
-        '''
-        Compute microstructural descriptors  
-        '''
-        
+        #
+        self.Catalogs         = {}
+        self.transition_paths = []
+        self.descriptors      = []
+        self.dumpFiles        = []
+        self.neighlists       = []
+        #
         if self.verbose:
-            print('Compute nodal features ...')
-        bd.EnergyBarrier.__init__( self,
-                                  None,
-                                  None,
-                                  self.lmpData,
-                                  None,
-                                   verbose    = False,#self.verbose,
-                                   nconf      = 2, #--- only two events
-                                   confParser = self.confParser,
-                                   species    = confParser['input files']['species'].split(),
-                                   r_cut      = eval(self.confParser['descriptors']['r_cut']),
-                                   dr         = eval(self.confParser['descriptors']['dr']),
-                                   dr_acsf    = eval(confParser['descriptors']['dr_acsf']),
-                                   scale      = eval(self.confParser['descriptors']['scale']),
-                                   n_max      = 8,
-                                   l_max      = 6,
-                      )
-        
-        self.perAtomData = self.lmpDataa
-        
-        #--- parinello: to be used for energy predictions
-        self.SetDescriptors(
-                      soap = True,   
-                     )
-        self.descriptors_acsf =  self.descriptors.copy()
-        #--- smooth density
-        self.SetDescriptors(
-                      gr = True,
-                     )
+            print('parsing %s'%path)
+        rwjs = utl.ReadWriteJson()
 
-    def BuildDataForClassifier( self, df, descriptors ):
-        gn                   = GraphNet()
-        gn.noise_std         = float(self.confParser['gnn classifier']['noise_std'])
-        gn.cutoff            = self.r_cut
-        natom                = df.shape[0]
-        tmp                  = {'id':np.c_[df.id].flatten(),'atom_indx':np.c_[df.index].flatten(),
-                                 'x':np.c_[df.x].flatten(),'y':np.c_[df.y].flatten(),'z':np.c_[df.z].flatten(),
-                                 'isNonCrystalline':np.c_[np.zeros(natom)].tolist(),'descriptors_acsf':descriptors.tolist()}
-        gn.descriptors       = [tmp, tmp]
-        
-        #--- build neighbor list:
-#         fp                   = 'dump_file_nl'
-#         fout                 = 'neighbor_list_xxx.xyz'
-#         if os.path.isfile( fout ):
-#             os.system('rm %s'%fout)
-#         if os.path.isfile( '%s/%s.xyz'%(self.save_output,fp) ):
-#             os.system('rm %s/%s.xyz'%(self.save_output,fp))
-            
-#         #
-#         self.Print( fp, 0, lammps_xyz = True ) #--- save as xyz file        
-#         atom_indices         = ' '.join(map(str,df.index))
-#         lib_path             = confParser['input files']['lib_path'].split()[0]
-#         #
-#         os.system('mv %s/%s.xyz .'%(self.save_output,fp))
-#         os.system('ovitos %s/OvitosCna.py %s.xyz %s 1 6 %s %s'%(lib_path,fp,fout,self.r_cut,atom_indices))
-        fout                 = self.dir_neighList
-        gn.neighlists        = [ fout, fout ] #--- to be used for computing the adj. matrix
+        #--- dirs and files to be parsed
+        file_dirs = ['saved_output/descriptorsEveryAtom.json',
+             'saved_output/transition_paths.json',
+             'neighList/neigh_list.xyz',
+             'dumpFile/dump.xyz',
+             'saved_output/catalog.txt'
+            ]
+        for irun in range(nruns):
+            if not self.fileExists(path,irun,file_dirs):
+                continue            
+            self.descriptors.extend( rwjs.Read('%s/Run%s/saved_output/descriptorsEveryAtom.json'%(path,irun)) )
+            self.transition_paths.extend( rwjs.Read('%s/Run%s/saved_output/transition_paths.json'%(path,irun)) )
+            self.neighlists.append( '%s/Run%s/neighList/neigh_list.xyz'%(path,irun))
+            self.dumpFiles.append(  '%s/Run%s/dumpFile/dump.xyz'%(path,irun))
+            os.system('ln -s %s/Run%s/dumpFile/dump.xyz ./dump.%s.xyz'%(path,irun,irun))
+            self.Catalogs[irun]     = pd.read_csv('%s/Run%s/saved_output/catalog.txt'%(path,irun))
+        #        
+        self.nruns     = list(self.Catalogs.keys())
+        self.nruns.sort()
 
-        #--- func. call
-        gn.DataBuilderForClassifier()
-        
-        #--- rm xyz files!!!
-#        os.system( 'rm %s.xyz %s'%(fp,fout))
-        
-        return gn.train_dataloaders.dataset
-        
-    def GetDefects( self, fp):
+    def fileExists(self,path,irun,file_dirs):
         '''
-        Classify Defects
+        return True if passed dirs exist
         '''
-        if self.verbose:
-            print('identify defects ...')
-        
-        #--- load ml model
-        if not self.model_defects_loaded_true:
-            version_xxx        = os.listdir(fp)[0]
-            model              = os.listdir('%s/%s/checkpoints'%(fp,version_xxx))[0]
-            self.model_defects = GraphLevelGNN.load_from_checkpoint( '%s/%s/checkpoints/%s'%(fp,version_xxx,model ) ) 
-            self.model_defects_loaded_true = True
-            
-        #--- build data for classifier: 
-        self.predict_classes     = self.BuildDataForClassifier(self.lmpData.coord_atoms_broken[ 0 ], #--- nodal xyz
-                                                               self.descriptors_acsf, #--- nodal features
-                                                              )
-        
-        self.predict_classes.y   = self.model_defects.predict( self.predict_classes ).int()
-        assert torch.any(self.predict_classes.y), 'Detect no defect!'
-    
-#     def DiscretizeTransitionPath( self ):
-#          #--- hard-coded values
-#         umax = float( self.confParser[ 'neural net regression' ][ 'umax' ] ) 
-#         du   = float( self.confParser[ 'neural net regression' ][ 'du' ] ) 
-#         xlin = np.arange(-umax,umax+du,du)
-#         ylin = np.arange(-umax,umax+du,du)
-#         zlin = np.arange(-umax,umax+du,du)
-#         self.nbinx = len(xlin)-1
-#         self.nbiny = len(ylin)-1
-#         self.nbinz = len(zlin)-1
-#         self.bins = (xlin, ylin, zlin)
-#         self.ux, self.uy, self.uz = np.meshgrid( self.bins[1][:-1], self.bins[0][:-1], self.bins[2][:-1] )
+        file_exist = []
+        for myfile in file_dirs:
+            file_exist.append( os.path.isfile('%s/Run%s/%s'%(path,irun,myfile)) )
+        return np.all(np.array(file_exist))
 
-        
-#     def GetDispsFromBinaryMaps( self, atomIndex, binaryMap ):
-#         binaryMapReshaped = binaryMap.reshape((self.nbinx, self.nbiny, self.nbinz ))
-#         filtr = binaryMapReshaped == 1
-#         disps = np.c_[self.uy[filtr],self.ux[filtr],self.uz[filtr]]
-#         nrows = disps.shape[ 0 ]
-#         assert nrows > 0, 'no diffusion path!'
-#         return np.c_[np.ones(nrows)*atomIndex,disps]
-    
-#     def GetDisp( self, fp, scaler ):
-#         '''
-#         Predict Displacements
-#         '''
-        
-#         #--- load ml model
-#         model               = keras.models.load_model(fp)
-        
-#         #---------------
-#         #--- zscore X
-#         #---------------        
-#         loaded_scaler       = pickle.load( open( scaler, 'rb' ) )
-#         filtr               = self.predict_classes > 0
-#         X                   = loaded_scaler.transform( np.c_[self.descriptors[ filtr ] ] )
-
-
-#         #--- reshape X
-#         shape               =  (self.shape[0],self.shape[1],self.shape[2],1) #--- rows, cols, thickness, channels
-#         n                   =  X.shape[ 0 ]
-#         X_reshaped          =  X.reshape((n,shape[0],shape[1],shape[2],1))
-        
-#         prediction          =  model.predict( X_reshaped )
-#         threshold           = 0.5 #--- hard-coded threshold
-#         binary_predictions  = (prediction > threshold).astype(int)
-
-#         #---
-#         atomIndices         = self.lmpDataa[ filtr ].index
-#         self.predict_disp     = np.concatenate([list(map(lambda x: self.GetDispsFromBinaryMaps( x[0],x[1] ) , zip(atomIndices,binary_predictions) ))])
-#         self.predict_disp     = self.predict_disp.reshape((self.predict_disp.shape[0],self.predict_disp.shape[2]))
-        
-    def BuildDataForRegressor( self, df, binary_nonCrystalAtoms ):
-        gn                   = GraphNet()
-        gn.noise_std         = float(self.confParser['gnn']['noise_std'])
-        gn.c_out             = eval(self.confParser['gnn']['c_out'])
-        gn.cutoff            = self.r_cut
-        r_cut                = float( self.confParser['descriptors']['cutoff_kmc'] )
-        gn.verbose           = False
-        gn.transition_paths  = []
-        gn.energy            = []
-        natom                = df.shape[0]
-        nonCrystAtomIndices  = np.arange(natom)[ binary_nonCrystalAtoms ]
-        assert len( nonCrystAtomIndices ) > 0, 'no defect detected!'
-
-        #--- build neigh. list for non-crystalline atoms
-        #--- cutoff = cutoff_kmc used to define clusters
-        #--- save cords as a dump file
-        fp                   = 'dump_file_nl'
-        fout                 = 'neighbor_list.xyz'
-        if os.path.isfile( '%s/%s.xyz'%(self.save_output,fp) ):
-            os.system('rm %s/%s.xyz'%(self.save_output,fp))
-        if os.path.isfile( fout ):
-            get_ipython().system('rm $fout')
-        self.Print( fp, 0, lammps_xyz = True ) #--- save as xyz file        
-        os.system('mv %s/%s.xyz .'%(self.save_output,fp))
-        #--- update df
-        df[ 'atom_index' ]   = df.index
+    def Process( self, Ovito_Output = False, train_ratio = 0.8 ):
+        '''
+        Build dataloader in pytorch
+        '''
         #
-        atom_indices         = ' '.join(map(str,nonCrystAtomIndices))
-        lib_path             = confParser['input files']['lib_path'].split()[0]
-        #
-        os.system('ovitos %s/OvitosCna.py %s.xyz %s 1 6 %s %s'%(lib_path,fp,fout,r_cut,atom_indices))
-        nl                   = lp.ReadDumpFile(fout)
-        nl.GetCords()
-        nl                   = nl.coord_atoms_broken[0]
-        #
-        os.system( 'rm %s.xyz %s'%(fp,fout))
+        ntrain        = 1
+        num_snapshots = len( self.transition_paths ) #--- total no. of transition paths
+        snapshots     = range(num_snapshots)
+        #--- include the center atom within each cluster
+#        filtrs        = list(map(lambda x: np.array(np.ones(len(self.transition_paths[x]['center_atom_index']))).flatten().astype(bool), snapshots))
+        filtrs = list(map(lambda x: np.array(self.transition_paths[x]['center_atom_index']).flatten().astype(bool), snapshots))
+        #--- nodal cords
+        input_xyz     = [torch.from_numpy( np.c_[np.c_[self.transition_paths[ i ]['x'],\
+                                                       self.transition_paths[ i ]['y'],\
+                                                       self.transition_paths[ i ]['z']][filtrs[i]]] ).float() for i in snapshots]
+        #--- nodal descriptors
+        input_data    = [torch.from_numpy( np.c_[np.log10(np.array(self.transition_paths[ i ]['descriptors']))][filtrs[i]] ).float() for i in      snapshots]
+        #--- atom indices
+        input_atom_indx  = [torch.from_numpy( np.c_[self.transition_paths[ i ]['atom_indx']][filtrs[i]] ).int() for i in      snapshots]
+        
+        #--- target data (displacement vectors for each path)
+        displacement_vecs    = [torch.from_numpy(np.array(self.transition_paths[ i ]['diffusion_paths'])[:,:3]).float() for i in snapshots]
+        target_displacements = [torch.from_numpy(np.array(self.transition_paths[ i ]['multi_hot_encoded_diffusion_paths'])[filtrs[i]]).float() for i in snapshots]
 
-        #--- build clusters for non-crystalline atoms
-        groups               = nl.groupby(by='id').groups
-        for atomIndx in nonCrystAtomIndices:
-            atom_id          = df['id'].iloc[ atomIndx ]
-            neighbor_indices_nl = groups[ atom_id ]
-            xyz              = np.c_[ nl.iloc[ neighbor_indices_nl ]['DX DY DZ'.split()] ]
-            xyz              = np.concatenate([xyz,[[0.0,0.0,0.0]]],axis=0) #--- include center
-            #--- descriptors
-            neighbor_ids     = list( nl.iloc[ neighbor_indices_nl ].J.astype(int) )
-            neighbor_ids    += [ atom_id ]
-            neighbor_indices_df = utl.FilterDataFrame(df, key='id', val=neighbor_ids).atom_index
-            descriptors      = self.descriptors[ neighbor_indices_df ]
-            descriptors_acsf = self.descriptors_acsf[ neighbor_indices_df ]
-            center_atom_index= np.zeros( len( neighbor_ids ) )
-            center_atom_index[ -1 ] = 1
-            n                = len( neighbor_ids )
-            diffusion_paths  = np.random.random(size=(3*n)).reshape((n,3))
-            energy_barrier   = np.random.random(size=(1,))
+        #--- add gaussian noise
+        augmented_input_data           = []
+        augmented_input_xyz            = []
+        augmented_target_displacements = []
+        augmented_displacement_vecs    = []
+        n_repeat                       = 1 #np.max([1,int(ntrain/ntrain_initial)])
+        #
+        for _ in range(n_repeat):  # Repeat the augmentation process 10 times
+            augmented_input  = DataSet.augment_data( input_data,           self.noise_std )
+            augmented_target = DataSet.augment_data( target_displacements, 0.0) #self.noise_std )
+            augmented_vecs   = DataSet.augment_data( displacement_vecs,  0.0) #self.noise_std )
+            augmented_xyz    = DataSet.augment_data( input_xyz,            self.noise_std )
             #
-            sdict = {'x':xyz[:,0],'y':xyz[:,1],'z':xyz[:,2],
-                     'center_atom_index':center_atom_index,
-                     'descriptors':descriptors,
-                     'descriptors_acsf':descriptors_acsf,
-                     'diffusion_paths':diffusion_paths,
-                     'energy_barrier':energy_barrier,
-                     'atom_indx':neighbor_indices_df
-                    }
-            gn.transition_paths.append( sdict )
-        #
-        gn.DataBuilder()        
-        loader             = DataLoader(gn.large_graph, batch_size=len(gn.large_graph), shuffle=False)
-        #
-        gn.DataBuilderForEnergy()
-        large_graph        = torch_geometric.data.Batch.from_data_list(gn.graphs)
-        loader_energy      = DataLoader(large_graph, batch_size=len(gn.graphs), shuffle=False)
+            augmented_input_data.extend(augmented_input)
+            augmented_input_xyz.extend(augmented_xyz)
+            augmented_target_displacements.extend(augmented_target)
+            augmented_displacement_vecs.extend(augmented_vecs)
 
-        return loader.dataset, loader_energy.dataset
+        #--- adjacency matrix
+        adj_matrices      = self.compute_adjacency_matrices(augmented_input_xyz, rcut=self.cutoff)
+        
+        #--- verify adj matrix?
+        if Ovito_Output:
+            self.PrintOvito(adjacency = adj_matrices, input_data=input_data)
 
-    
-    def GetDisp2nd( self, fp ):
-        '''
-        Predict Displacements
-        '''
+        #--- Concatenate input data along a new dimension to form a single tensor
+        input_data = np.vstack(augmented_input_data) 
+
+        #--- Standardize the augmented input data
+        mean              = input_data.mean(axis=0)
+        std               = input_data.std(axis=0)
+        assert np.all( std > 0 ), 'std == 0!'
+        standardized_input_data = [DataSet.standardize_data(data, mean, std) for data in augmented_input_data]
+        
+        #--- Standardize edge attributes
+#         mean              = edge_attrs.mean(dim=(0, 1))
+#         std               = edge_attrs.std(dim=(0, 1))
+#         standardized_edge_attrs = [GraphNet.standardize_data(data, mean, std) for data in edge_attrs]
+
+
+        #--- Convert input data to tensors
+        target_displacements_tensor = augmented_target_displacements
+        target_disps_tensor         = augmented_displacement_vecs 
+        input_data_tensor           = standardized_input_data
+        input_xyz_tensor            = augmented_input_xyz
+#         edge_attrs_tensor           = torch.stack(standardized_edge_attrs)
+
+        #--- Concatenate nodes and edges for each graph
+        graphs = []
+        for i in range(len(input_data_tensor)):
+            x             = input_data_tensor[i]  # Node features
+            cords         = input_xyz_tensor[i]  # Node features
+            edge_index    = adj_matrices[i].nonzero().t()  # Edge indices
+#             edge_features = edge_attrs_tensor[ i ][ :, : self.edge_dim ]
+            atom_indx     = input_atom_indx[ i ]
+            y             = target_displacements_tensor[i]  # Target displacements
+            y_atom_wise   = target_disps_tensor[i]  # Target displacements
+
+            # Create a Data object for each graph
+            data = Data(x=x, edge_index=edge_index, y=y, pos=cords, atom_indx=atom_indx, y_atom_wise=y_atom_wise) #edge_attr = edge_features)
+            graphs.append(data)
+        
+        #--- Create a single large graph by concatenating Data objects
+        self.large_graph = torch_geometric.data.Batch.from_data_list(graphs)
+
+        #--- Define batch size and create DataLoader
+        batch_size = len(input_data_tensor)
+        
+        #--- Define batch sizes for  training and test dataloaders
+        train_batch_size = int( np.max([1,int(batch_size * train_ratio)]) )
+        test_batch_size  =  batch_size - train_batch_size
+        
+        #--- Create DataLoader for training dataset
+        loader           = DataLoader(self.large_graph, batch_size=train_batch_size, shuffle=False)
+
+        #--- Accessing batches in the DataLoader
+        loader_iter      = iter(loader)
+        self.dataset_train = next(loader_iter)
         if self.verbose:
-            print('predict transition paths ...')
+            print('dataset_train:',self.dataset_train)
+        self.dataset_test = self.dataset_train
+        if test_batch_size > 0:
+            self.dataset_test = next(loader_iter)
+            if self.verbose:
+                print('dataset_test:',self.dataset_test)
+
+    def DataBuilderForClassifier( self, Ovito_Output = False ):
         
-        #--- load ml model
-        if not self.model_disps_loaded_true:
-            self.model_disps   = torch.load( fp, map_location=torch.device('cpu') )
-            self.model_disps_loaded_true = True
+        ntrain        = 1 #self.ntrain
+        num_snapshots = len( self.descriptors )
+        snapshots     = range(num_snapshots)
+        #--- nodal cords
+        input_xyz     = [torch.from_numpy( np.c_[np.c_[self.descriptors[ i ]['x'],\
+                                                       self.descriptors[ i ]['y'],\
+                                                       self.descriptors[ i ]['z']]] ).float() for i in snapshots]
+        #--- nodal descriptors
+#         input_data   = [torch.from_numpy( np.c_[np.log10(np.array(self.descriptors[ i ]['descriptors'])),\
+#                                                  ] ).float() for i in      snapshots]
+        input_data    = [torch.from_numpy( np.c_[self.descriptors[ i ]['x'],\
+                                         self.descriptors[ i ]['y'],\
+                                         self.descriptors[ i ]['z'],\
+                                         np.array(self.descriptors[ i ]['descriptors_acsf'])]).float() for i in snapshots]
+
+        #--- target data
+        labels        = [torch.from_numpy(np.array(self.descriptors[ i ]['isNonCrystalline']).flatten()).long() for i in snapshots]
         
-        self.spec_events, self.predict_energy   = self.BuildDataForRegressor(self.lmpData.coord_atoms_broken[ 0 ], #--- nodal coords
-                                                        self.predict_classes.y.numpy().astype(bool) #--- binary list: non-crystalline atoms
-                                                       )
+        #--- Augment the dataset 
+        augmented_input_data           = []
+        augmented_input_xyz            = []
+        augmented_labels               = []
+        n_repeat                       = 1 #np.max([1,int(ntrain/ntrain_initial)])
 
-        self.spec_events.y = self.model_disps( self.spec_events.x, self.spec_events.edge_index )
-
-#     def BuildDataForEnergy( self, df, binary_nonCrystalAtoms ):
-#         gn                   = GraphNet()
-#         gn.noise_std         = float(self.confParser['gnn energy']['noise_std'])
-#         gn.c_out             = eval(self.confParser['gnn energy']['c_out'])
-#         gn.cutoff            = self.r_cut
-#         r_cut                = float( self.confParser['descriptors']['cutoff_kmc'] )
-#         gn.verbose           = False
-#         gn.transition_paths  = []
-#         natom                = df.shape[0]
-#         nonCrystAtomIndices  = np.arange(natom)[ binary_nonCrystalAtoms ]
-        
-#         #--- build neigh. list
-#         #--- save cords as a dump file
-#         fp                   = 'dump_file_nl'
-#         fout                 = 'neighbor_list.xyz'
-#         if os.path.isfile( '%s/%s.xyz'%(self.save_output,fp) ):
-#             os.system('rm %s/%s.xyz'%(self.save_output,fp))
-#         if os.path.isfile( fout ):
-#             !rm $fout
-#         self.Print( fp, 0, lammps_xyz = True ) #--- save as xyz file        
-#         os.system('mv %s/%s.xyz .'%(self.save_output,fp))
-#         #--- update df
-#         df[ 'atom_index' ]   = df.index
-#         #
-#         atom_indices         = ' '.join(map(str,nonCrystAtomIndices))
-#         lib_path             = confParser['input files']['lib_path'].split()[0]
-#         #
-#         os.system('ovitos %s/OvitosCna.py %s.xyz %s 1 6 %s %s'%(lib_path,fp,fout,r_cut,atom_indices))
-#         nl                   = lp.ReadDumpFile(fout)
-#         nl.GetCords()
-#         nl                   = nl.coord_atoms_broken[0]
-#         #
-#         os.system( 'rm %s.xyz %s'%(fp,fout))
-
-#         #--- build clusters for non-crystalline atoms
-#         groups               = nl.groupby(by='id').groups
-#         for atomIndx in nonCrystAtomIndices:
-#             atom_id          = df['id'].iloc[ atomIndx ]
-#             neighbor_indices_nl = groups[ atom_id ]
-#             xyz              = np.c_[ nl.iloc[ neighbor_indices_nl ]['DX DY DZ'.split()] ]
-#             xyz              = np.concatenate([xyz,[[0.0,0.0,0.0]]],axis=0) #--- include center
-#             #--- descriptors
-#             neighbor_ids     = list( nl.iloc[ neighbor_indices_nl ].J.astype(int) )
-#             neighbor_ids    += [ atom_id ]
-#             neighbor_indices_df = utl.FilterDataFrame(df, key='id', val=neighbor_ids).atom_index
-#             descriptors      = self.descriptors_acsf[ neighbor_indices_df ]
-#             center_atom_index= np.zeros( len( neighbor_ids ) )
-#             center_atom_index[ -1 ] = 1
-#             n                = len( neighbor_ids )
-#             energy_barrier   = np.random.random(size=(1,))
-#             #
-#             sdict = {'x':xyz[:,0],'y':xyz[:,1],'z':xyz[:,2],
-#                      'center_atom_index':center_atom_index,
-#                      'descriptors_acsf':descriptors,
-#                      'energy_barrier':energy_barrier,
-#                      'atom_indx':neighbor_indices_df
-#                     }
-#             gn.transition_paths.append( sdict )
-#         #
-#         gn.DataBuilderForEnergy()
-#         #        
-#         large_graph = torch_geometric.data.Batch.from_data_list(gn.graphs)
-#         loader      = DataLoader(large_graph, batch_size=len(gn.graphs), shuffle=False)
-
-#         return loader.dataset
-        
-    def GetBarrier( self, fp):
-        '''
-        Predict energy barriers
-        '''
-        if self.verbose:
-            print('predict energetics ...')
-        #--- load ml model: load every step !!!
-        if not self.model_energy_loaded_true:
-            self.model_energy     = torch.load( fp, map_location=torch.device('cpu') ) 
-            self.model_energy_loaded_true = True
-
-#         self.predict_energy   = self.BuildDataForEnergy(self.lmpData.coord_atoms_broken[ 0 ], #--- nodal coords
-#                                                         self.predict_classes.y.numpy().astype(bool) #--- binary list: non-crystalline atoms
-#                                                        )
-        self.predict_energy.y = self.model_energy( self.predict_energy.x, 
-                                                  self.predict_energy.edge_index, 
-                                                  self.predict_energy.batch )
-
-        assert torch.all( self.predict_energy.y > 0.0 ), 'predicted barrier <= 0.0!'
-        
-#         #--- setup input
-#         atomIndices    = self.predict_disp[ :, 0 ].astype( int )
-
-#         pixel_maps_input = np.c_[self.descriptors[ atomIndices ] ]
-#         vectors_input    = self.predict_disp[ :, 1: ]
-#         X                = np.c_[pixel_maps_input,vectors_input]
-
-        
-#         #---------------
-#         #--- zscore X
-#         #---------------        
-#         loaded_scaler       = pickle.load( open( scaler, 'rb' ) )
-#         X                   = loaded_scaler.transform( X )
-
-
-#         #--- reshape X
-#         shape               =  (self.shape[0],self.shape[1],self.shape[2],1) #--- rows, cols, thickness, channels: pixel map
-#         shape_vector_input  = vectors_input.shape[ 1 ]
-
-#         mdime               = X.shape[ 1 ]
-#         X_pixels            = X[:,0:mdime-shape_vector_input]
-#         X_vector            = X[:,mdime-shape_vector_input:mdime]
-#         n                   =  X.shape[ 0 ]
-#         X_pixels            =  X_pixels.reshape((n,shape[0],shape[1],shape[2],1))
-
-        
-#         self.predict_energy =  model.predict( [X_pixels,X_vector] )
-
-#     def ReturnCenterAtom( self, disp_array ):
-#         disp_sq   = disp_array**2
-#         atom_indx = (disp_sq[:,0] + disp_sq[:,1] + disp_sq[:,2]).argmax()
-#         return np.concatenate([[atom_indx], disp_array[ atom_indx ]])
-
-    def BuildCatalog( self): #, filtr ):
-        center_atoms_rows   = self.spec_events.ptr[ 1 : ] - 1
-        disp_max_per_mode   = self.spec_events.y[ center_atoms_rows ] 
-        atomIndices         = self.spec_events.atom_indx[ center_atoms_rows ].numpy().flatten()
-        atomIDs             = self.lmpData.coord_atoms_broken[0].iloc[atomIndices].id
-        atomTypes           = self.lmpData.coord_atoms_broken[0].iloc[atomIndices].type
-
-        self.nmode          = len( self.spec_events.ptr ) - 1
-        rates               = self.rate_constant_prefactor * np.exp(-self.predict_energy.y.detach().numpy()/self.kbt)
-        
-        self.catalog        = pd.DataFrame( np.c_[atomIDs, atomIndices,\
-                                                  self.predict_energy.y.detach().numpy(),\
-                                                  rates,\
-                                                  disp_max_per_mode.detach().numpy() ],
-                                     columns = 'AtomId AtomIndex barrier true_rate ux uy uz'.split()
-                                   )
-    def MCsampling( self ):
-        ktot_inv         = 1.0 / self.catalog.true_rate.sum()
-        normalized_rates = np.cumsum( self.catalog.true_rate ) * ktot_inv
-        n                = len( normalized_rates )
-        x                = np.random.random()
-        self.event_indx  = np.arange( n )[ x < normalized_rates ][ 0 ]
-        
-        #--- advance time
-        inv_rate         = ktot_inv #1.0 / self.catalog.iloc[ self.event_indx ].true_rate
-        self.mc_time    += np.random.exponential( scale = inv_rate )
-
-    def UpdateDisp( self ):
-        row_ini                  = self.spec_events.ptr[ self.event_indx ]
-        row_fin                  = self.spec_events.ptr[ self.event_indx + 1 ]
-        udisp                    = self.spec_events.y[ row_ini : row_fin ].detach().numpy()
-        atom_indices             = self.spec_events.atom_indx[ row_ini : row_fin ].numpy().flatten()
-        self.disp[ :, : ]        = 0.0
-        self.disp[atom_indices]  = udisp 
-        
-        
-        
-    def UpdateCords( self ):
-        
-        coords  = np.c_[ self.lmpData.coord_atoms_broken[ 0 ]['x y z'.split()] ]
-
-        self.lmpData0['x y z'.split()] = coords
-        
-        coords += self.disp        
-        
-        self.lmpData.coord_atoms_broken[0]['x y z'.split()] = coords
-        
-        #--- wrap coords
-        df      = self.lmpData.coord_atoms_broken[ 0 ]
-        atoms   = lp.Atoms(**df['id type x y z'.split() ].to_dict( orient = 'series' ) )
-        #  
-        wr      = lp.Wrap(atoms, self.box)
-        wr.WrapCoord()
-        #
-        self.lmpData.coord_atoms_broken[0] = pd.DataFrame(atoms.__dict__)
-        
-
-    def Print( self, fout, itime, **kwargs ):
-        '''
-        save configurations in lammps/kart formats
-        '''
-        #-----------------------
-        #--- lammps format
-        #-----------------------
-        if 'lammps_xyz' in kwargs and kwargs['lammps_xyz']:
-            df    = self.lmpData0
-            atomm = lp.Atoms(**df.to_dict(orient='series'),ux=self.disp[:,0],uy=self.disp[:,1],uz=self.disp[:,2])
+        for _ in range(n_repeat):  # Repeat the augmentation process 10 times
+            augmented_input  = DataSet.augment_data(input_data, self.noise_std)
+            augmented_target = labels #GraphNet.augment_data(labels, 0)
+            augmented_xyz    = DataSet.augment_data(input_xyz, self.noise_std)
             #
-            wd    = lp.WriteDumpFile(atomm, self.box )
-            with open('%s/%s.xyz'%(self.save_output,fout),'a') as fp:
-                wd.Write(fp,itime = itime,
-                         attrs=['id', 'type', 'x', 'y', 'z','ux','uy','uz'],
-                         fmt='%i %i %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e')
-            
-        #-----------------------
-        #--- k-art format
-        #-----------------------
-        elements = self.confParser['ml mc']['species'].split()
-        if 'kart' in kwargs and kwargs['kart']:
-            AtomIndices = kwargs[ 'AtomIndices' ] if 'AtomIndices' in kwargs else df.index
-            with open('%s/%s'%(self.save_output,fout),'a') as fp:
-                #--- half step
-                if itime > 0:
-                    fp.write('%s\n'%df.iloc[AtomIndices].shape[0])
-                    fp.write("Lattice=\" %s \" Time=%e  Step=%s  Energy=0.0  Barrier=%e\n"\
-                             %(' '.join(map(str,self.box.CellVector.flatten())),self.mc_time,itime-0.5,self.catalog.iloc[ self.event_indx ].barrier)
-                            )
-                    for item in np.c_[ df.iloc[AtomIndices] ]:
-                        element = elements[int(item[1])-1]
-                        fp.write('%s %e %e %e %d\n'%(element,item[2],item[3],item[4],item[0]))
-                #
-                #--- full step
-                fp.write('%s\n'%df.iloc[AtomIndices].shape[0])
-                fp.write("Lattice=\" %s \" Time=%e  Step=%s  Energy=0.0  Barrier=%e\n"\
-                         %(' '.join(map(str,self.box.CellVector.flatten())),self.mc_time,itime,0.0)
-                        )
-                for item in np.c_[ df.iloc[AtomIndices] ]:
-                    fp.write('Ni %e %e %e %d\n'%(item[2],item[3],item[4],item[0]))
-
-    def PrintMSD( self, fout, itime ):
-        msd = self.tdisp.var(axis=0)
-        with open('%s/%s'%(self.save_output,fout),'a') as fp:
-            if itime == 0:
-                 fp.write('#  Elapsed Time    Sqr DisplX.      Sqr DisplY.     Sqr DisplZ.  Sqr Displ\n')
-#                fp.write('#  ************    ***Total***       Atom Ni        Atom NiV  ********\n')
-            fp.write('%e %e %e %e %e\n'%(self.mc_time,msd[0],msd[1],msd[2],msd[0]+msd[1]+msd[2]))
-
-                
-    def PrintCatalog( self, fout, itime ):
-        df    = self.lmpData.coord_atoms_broken[ 0 ]
-        natom = df.shape[ 0 ]
+            augmented_input_data.extend(augmented_input)
+            augmented_input_xyz.extend(augmented_xyz)
+            augmented_labels.extend(augmented_target)
+           
+        #--- adj. matrix
+        adj_matrices_attrs      = self.compute_adjacency_matrices2nd(self.descriptors, rcut=self.cutoff)
+        adj_matrices            = adj_matrices_attrs[ 0 ]
+        edge_attrs              = adj_matrices_attrs[ 1 ]
         
-        rwj = utl.ReadWriteJson()
-        with open('%s/%s'%(self.save_output,fout),'a') as fp:
-            rwj.Write([ self.catalog.to_dict( orient = 'list' ) ], fp,
-                      mc_time = [ self.mc_time ],
-                      mc_step = [ itime ],
-                     )
-            
-        #--- save ovito
-        with open('%s/%s'%(self.save_output,'catalog_ovito.xyz'),'a') as fp:
-            for imode in range( self.nmode ):
-                row_ini = self.spec_events.ptr[imode]
-                row_fin = self.spec_events.ptr[imode+1]
-                udisp   = self.spec_events.y[row_ini:row_fin].detach().numpy()
-                atom_indices = self.spec_events.atom_indx[row_ini:row_fin].numpy().flatten()
-                disps = np.zeros(3*natom).reshape((natom,3))
-                disps[ atom_indices ] = udisp 
-                atomm   = lp.Atoms(**df.to_dict(orient='series'),DisplacementX=disps[:,0],DisplacementY=disps[:,1],DisplacementZ=disps[:,2])
-                wd      = lp.WriteDumpFile(atomm, self.box )
-                wd.Write(fp,itime,
-                          attrs=['id', 'type', 'x', 'y', 'z','DisplacementX','DisplacementY','DisplacementZ'],
-                          fmt='%i %i %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e')
-            
-            
+        #--- verify adj matrix??
+        if Ovito_Output:
+            self.PrintOvito(adjacency = adj_matrices, input_data=input_data)
+
+        #--- Concatenate input data along a new dimension to form a single tensor
+        input_data_tensor = np.vstack(augmented_input_data)
+
+        #--- Standardize the augmented input data
+        mean              = input_data_tensor.mean(axis=0)#dim=(0, 1))
+        std               = input_data_tensor.std(axis=0)#dim=(0, 1))
+        assert np.all( std > 0 ), 'std == 0!'
+        standardized_input_data = [DataSet.standardize_data(data, mean, std) for data in augmented_input_data]
         
-#     @staticmethod    
-#     def AddGaussianNoise(X,scale = 0.1):
+        #--- Standardize edge attributes
+#         mean              = edge_attrs.mean(dim=(0, 1))
+#         std               = edge_attrs.std(dim=(0, 1))
+#         standardized_edge_attrs = [GraphNet.standardize_data(data, mean, std) for data in edge_attrs]
 
-#         epsilon_x = np.random.normal(scale=scale,size=X.size).reshape(X.shape)
-#         X += epsilon_x
 
-#     @staticmethod
-#     def Zscore( X ):
-#         scaler = StandardScaler()
-#         scaler.fit(X)
-#         return scaler.transform( X )
-    
-#     @staticmethod
-#     def compute_adjacency_matrices(input_data, rcut):
-#         adj_matrices = []
+        #--- Convert input data to tensors
+        labels_tensor               = augmented_labels
+        input_data_tensor           = standardized_input_data
+        input_xyz_tensor            = augmented_input_xyz
+#         edge_attrs_tensor           = torch.stack(standardized_edge_attrs)
 
-#         for positions in input_data:
-#             num_atoms = positions.shape[0]
-#             adj_matrix = torch.zeros((num_atoms, num_atoms), dtype=torch.float)
 
-#             for i in range(num_atoms):
-#                 adj_matrix[i, i] = 1
-#                 for j in range(i + 1, num_atoms):
-#                     distance = torch.norm(positions[i] - positions[j])
-#                     if distance <= rcut:
-#                         adj_matrix[i, j] = 1
-#                         adj_matrix[j, i] = 1
-#                 assert adj_matrix[i,:].sum() > 0, 'dangling node : increase the cutoff!'
-#             adj_matrices.append(adj_matrix)
 
-#         #--- assert no 
-#         return adj_matrices
+        #--- Concatenate nodes and edges for each graph
+        graphs = []
+        for i in range(len(input_data_tensor)):
+            x             = input_data_tensor[i]  # Node features
+            cords         = input_xyz_tensor[i]  # Node features
+            edge_index    = adj_matrices[i].nonzero().t()  # Edge indices
+#             edge_features = edge_attrs_tensor[ i ][ :, : self.edge_dim ]
+            y             = labels_tensor[i]  # Target displacements
 
-#     def BuildNeighborList( self, indx, atom_indices,cutoff ):
+            #--- Create a Data object for each graph
+            data = Data(x=x, edge_index=edge_index, y=y, pos=cords) #edge_attr = edge_features)
+            graphs.append(data)
+
+        np.random.shuffle(graphs)
+
+        #--- Define batch size and create DataLoader
+        batch_size  = len(input_data)
+        
+        # Define the split ratio (e.g., 80% for training, 20% for testing)
+        train_ratio = 0.8
+
+        #--- Define batch sizes for training and test dataloaders
+        train_batch_size = int( np.max([1,int(batch_size * train_ratio)]) )
+        test_batch_size  = batch_size - train_batch_size
+        assert test_batch_size > 0, 'test_batch_size = %s'%test_batch_size
+
+        large_graph_train = torch_geometric.data.Batch.from_data_list(graphs[:train_batch_size])
+        large_graph_test  = torch_geometric.data.Batch.from_data_list(graphs[train_batch_size:])
+
+        #--- Create DataLoader for training dataset
+        self.train_dataloaders = DataLoader(large_graph_train, batch_size=train_batch_size, shuffle=False)
+        self.test_dataloaders  = DataLoader(large_graph_test, batch_size=test_batch_size, shuffle=False)
+
+    def compute_adjacency_matrices(self,input_data, rcut):
+        adj_matrices = []
+        for indx, positions in enumerate(input_data):
+            #
+            num_atoms = positions.shape[0]
+            adj_matrix = torch.zeros((num_atoms, num_atoms), dtype=torch.float)
+            #
+            for i in range(num_atoms):
+                adj_matrix[i, i] = 1
+                for j in range(i + 1, num_atoms):
+                    drij = abs(positions[i] - positions[j])
+#                    assert drij[0] <= 0.5 * lx and drij[1] <= 0.5 * ly and drij[2] <= 0.5 * lz, 'cutoff > 0.5 L!'
+                    distance = torch.norm(drij)
+                    if distance <= rcut:
+                        adj_matrix[i, j] = 1
+                        adj_matrix[j, i] = 1
+                assert adj_matrix[i,:].sum() > 0, 'dangling node : increase the cutoff!'
+            adj_matrices.append(adj_matrix)
+
+        #--- assert no 
+        return adj_matrices
+
+    def BuildNeighborList( self, indx, atom_indices,cutoff ):
 #         atom_indices = ' '.join(map(str,atom_indices))
 
 #         fp = self.dumpFiles[ indx ] #'%s/lammps_data.dat'%confParser['input files']['input_path']
-#         fout = 'neighbor_list.xyz'
+        fout = self.neighlists[ indx ] #'neighbor_list.xyz'
 #         os.system('rm %s'%fout)
 #         lib_path = confParser['input files']['lib_path'].split()[0]
 #         #--- neighbor list
 #         os.system('ovitos %s/OvitosCna.py %s %s 1 6 %s %s'%(lib_path,fp,fout,cutoff,atom_indices))
-#         nl = lp.ReadDumpFile(fout)
-#         nl.GetCords()
-#         return nl.coord_atoms_broken[0]
+        nl = lp.ReadDumpFile(fout)
+        nl.GetCords()
+        return nl.coord_atoms_broken[0]
 
-#     def GetIndxById( self, atom_ids, indx ):
-#         df              = pd.DataFrame(self.transition_paths[ indx ])
-#         df['indices']   = range(df.shape[0])
-#         atom_indices    = utl.FilterDataFrame(df,key='id',val=atom_ids)['indices']
-#         return np.c_[atom_indices].flatten()
+    def GetIndxById( self, df, atom_ids ):
+        df['indices']   = range(df.shape[0])
+        atom_indices    = utl.FilterDataFrame(df,key='id',val=atom_ids)['indices']
+        return np.c_[atom_indices].flatten()
             
-#     def compute_adjacency_matrices2nd(self,input_data, rcut):
-#         adj_matrices       = []
-#         edge_attrs         = []
-#         for indx, positions in enumerate( input_data ):
-#             num_atoms      = positions.shape[0]
-#             adj_matrix     = torch.zeros((num_atoms, num_atoms), dtype=torch.float)
-#             nl             = self.BuildNeighborList(indx,range(len(positions)),rcut) #--- neighbor list
-#             #--- add "index" columns
-#             nl['index_i']=self.GetIndxById( np.c_[nl.id].flatten(), indx )
-#             nl['index_j']=self.GetIndxById( np.c_[nl.J].flatten(), indx )
-#             groups         = nl.groupby(by='id').groups
-#             atom_i_ids     = list(groups.keys())
-#             atom_i_indices = self.GetIndxById( atom_i_ids, indx )
-#             for i, atom_id in zip(atom_i_indices,atom_i_ids):
-# #                adj_matrix[i, i] = 1
-#                 atom_j_ids       = nl.iloc[groups[ atom_id ]].J
-#                 atom_j_indices   = self.GetIndxById( atom_j_ids, indx )
-#                 for j, jatom_id in zip(atom_j_indices, atom_j_ids ): #[ atom_j_indices > i ]:
-#                     if j < i :
-#                         continue
-#                     filtr = np.all([nl.id==atom_id,nl.J==jatom_id],axis=0)
-#                     edge_features = nl.iloc[ filtr ][ ''.split() ]
-#                     adj_matrix[i, j] = 1
-#                     adj_matrix[j, i] = 1
-#                 assert adj_matrix[i,:].sum() > 0, 'dangling node : increase the cutoff!'
-# #            pdb.set_trace()
-#             #--- edge attributes
+    def compute_adjacency_matrices2nd(self,input_data, rcut):
+        adj_matrices       = []
+        edge_attrs         = []
+        for indx, positions in enumerate( input_data ):
+            df             = pd.DataFrame(positions)
+            num_atoms      = df.shape[0]
+            adj_matrix     = torch.zeros((num_atoms, num_atoms), dtype=torch.float)
+            nl             = self.BuildNeighborList(indx,range(num_atoms),rcut) #--- neighbor list
+            #--- add "index" columns
+            nl['index_i']  = self.GetIndxById( df, np.c_[nl.id].flatten() )
+            nl['index_j']  = self.GetIndxById( df, np.c_[nl.J].flatten() )
+            adj_matrix[nl['index_i'],nl['index_j']] = 1
+            #--- edge attributes
 #             keys = 'DX  DY  DZ  PBC_SHIFT_X PBC_SHIFT_Y PBC_SHIFT_Z'.split()
 #             indices = adj_matrix.nonzero().numpy()
 #             nl_reindexed = nl.set_index(['index_i','index_j'],drop=False)
 #             edge_attr = list(map(lambda x: list(nl_reindexed[keys].loc[tuple(x)]),indices))
-
-# #            pdb.set_trace()
 #             edge_attrs.append( torch.Tensor( edge_attr ) )
-#             adj_matrices.append( adj_matrix )
+            adj_matrices.append( adj_matrix )
 
-#         #--- assert no 
-#         return adj_matrices, edge_attrs
-    
-    def PrintDensityMap(self, atomIndx, fout):
-        with open(fout,'w') as fp:
-#                     disp           = np.c_[self.perAtomData.iloc[atomIndx]['ux uy uz'.split()]].flatten()
-                    df             = pd.DataFrame(np.c_[self.positions.T,self.descriptors[atomIndx]],
-                                                  columns='x y z mass'.split())
-                    utl.PrintOvito(df, fp, ' ', attr_list='x y z mass'.split())
+        #--- assert no 
+        return adj_matrices, edge_attrs
+
+
+    @staticmethod
+    def augment_data(input_data, noise_std):
+        augmented_input_data = []
         
-    def LammpsInit( self, lmp_script ):
-        '''
-        run minimization in lammps
-        '''
-        if self.verbose:
-            print('create initial data in lammps ...')
+        for data in input_data:
+            # Add Gaussian noise to input data
+            noisy_data = data + np.random.randn(*data.shape) * noise_std
+            augmented_input_data.append(noisy_data)
             
-        #--- run  lammps
-        argss            = ' '.join(lmp_script.split()[1:])
-        MEAM_library_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src/../potentials'
-        INC              = '/mnt/home/kkarimi/Project/git/crystalDefect/simulations/lmpScripts'
-        args             = "-screen none -var OUT_PATH . -var PathEam %s -var INC %s -var buff 0.0\
-                            -var nevery 1000  -var T 2000.0 -var time 1.0\
-                            -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat %s "%(MEAM_library_DIR,INC,argss)+\
-                           "-var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s"%tuple(np.random.randint(1001,9999,size=4))
-
-        lmp              = lammps.lammps( cmdargs = args.split() )
-        lmp.file( "%s/%s"%(INC,lmp_script.split()[0]) )
-        
-        #--- update coords
-        self.lmpData     = lp.ReadDumpFile('lammps_data.dat')
-        self.lmpData.ReadData()
-    
-    def Lammps( self ):
-        '''
-        run minimization in lammps
-        
-        version built at: /mnt/home/kkarimi/Project/git/lammps-2Aug2023/src
-        
-        follow instructions on 'https://docs.lammps.org/Python_head.html'
-        '''
-        if self.verbose:
-            print('minimization in lammps ...')
-
-        #--- lammps data file
-        df               = self.lmpData.coord_atoms_broken[ 0 ]
-        atom             = lp.Atoms(**df['id type x y z'.split() ].to_dict( orient = 'series' ) )
-        mass             = dict(zip(set(df.type),np.ones(len(set(df.type)))))
-        wd               = lp.WriteDataFile(atom, self.box, mass) #--- modify!!
-        fout             = 'lammps.dat'
-        wd.Write( fout )
-
             
-        #--- run lammps
-        MEAM_library_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src/../potentials'
-        INC              = '/mnt/home/kkarimi/Project/git/crystalDefect/simulations/lmpScripts'
-        args             = "-screen none -var OUT_PATH . -var PathEam %s -var INC %s -var buff 0.0 \
-                            -var nevery 1000 -var ParseData 1 -var DataFile %s -var ntype 3 -var cutoff 3.54\
-                            -var DumpFile dumpMin.xyz -var WriteData data_minimized.dat"%(MEAM_library_DIR,INC,fout)
-        lmp              = lammps.lammps( cmdargs = args.split() )
-        lmp.file( "%s/in.minimization_constant_volume"%INC )
-        
-        #--- update coords
-#        rd               = lp.ReadDumpFile('data_minimized.dat')
-        rd               = lp.ReadDumpFile('dumpMin.xyz')
-#        rd.ReadData()
-        rd.GetCords()
+        return augmented_input_data
+
+
+    @staticmethod
+    def standardize_data(data, mean, std):
+        return (data - mean) / std
     
-        itime            = list(rd.coord_atoms_broken.keys())[0]
-        cords            = np.c_[rd.coord_atoms_broken[itime]['x y z'.split()]]
-        disp_minimized   = np.c_[rd.coord_atoms_broken[itime]['c_dsp[1]  c_dsp[2]  c_dsp[3]'.split()]]
+
+class MyConvNetModel( tf.keras.Model ):
+    def __init__(self,reshape = (3,3,3), filters=16, num_hidden_layers=1, **kwargs):
+        super().__init__()
+        self.myLayers = []
+        self.myLayers.append(tf.keras.layers.Reshape(reshape))
+        self.myLayers.append( tf.keras.layers.Conv3D( filters=filters,**kwargs))
+        filters       *=  2
+        for i in range( num_hidden_layers ):
+            self.myLayers.append(tf.keras.layers.AveragePooling3D( pool_size = 2 ))
+            self.myLayers.append(tf.keras.layers.Conv3D( filters=filters,**kwargs ))
+            filters *= 2
+        self.myLayers.append(tf.keras.layers.Flatten())
         
-        self.lmpData.coord_atoms_broken[0]['x y z'.split()] = cords
-        self.disp       += disp_minimized
-        self.tdisp      += self.disp
+    def call( self, inputs ):
+        x = inputs
+        for layer in self.myLayers:
+            x = layer( x )
+        return x
+
+class MyDenseNetModel( tf.keras.Model ):
+    def __init__(self,num_hidden_layers=1,units = 10,  **kwargs):
+        super().__init__()
+        self.myLayers = []
+        for i in range( num_hidden_layers ):
+            self.myLayers.append( tf.keras.layers.Dense( units,**kwargs))
+        
+    def call( self, inputs ):
+        x = inputs
+        for layer in self.myLayers:
+            x = layer( x )
+        return x
+    
+class MyConvNetClassifier( tf.keras.Model ):
+    def __init__(self, cout = 10, **kwargs):
+        super().__init__()
+        self.convnet =  MyConvNetModel( **kwargs )
+        self.classifier = tf.keras.layers.Dense( cout, activation='sigmoid' )
+        
+    def call( self, inputs ):
+        x = self.convnet( inputs )
+        return self.classifier( x ) 
+
+class MyDenseNetClassifier( tf.keras.Model ):
+    def __init__(self, cout = 1, **kwargs):
+        super().__init__()
+        self.convnet =  MyDenseNetModel( **kwargs )
+        self.classifier = tf.keras.layers.Dense( cout, activation='sigmoid' )
+        
+    def call( self, inputs ):
+        x = self.convnet( inputs )
+        return self.classifier( x ) 
+
+def TrainingLoop(model, data_train, data_test, **kwargs):
+        optimizer = tf.keras.optimizers.Adam( learning_rate = kwargs['learning_rate'] )
+        model.compile( optimizer =  optimizer,
+                       loss      =  kwargs['loss'],
+                       metrics   =  ["mse"]
+                     )
+
+        history = model.fit( data_train.x.numpy(), data_train.y.numpy(), 
+                   validation_data      = ( data_test.x.numpy(), data_test.y.numpy() ),
+                    epochs              = kwargs['epochs'], 
+                    verbose             = True,
+                     batch_size     = 128,
+                 )
+        #--- plot vall loss
+
+        model.save(kwargs['checkpoint_file'])
+#         return model
 
 
-# # MachineLeranedMC
+class ModelValidation:
+    def __init__(self):
+         pass   
+    def SetModel(self, model):
+         self.model=model
 
-# In[16]:
+    def ConfusionMatrix(self, data, fout):
+        y_pred = ( self.model.predict(data.x.numpy()) > 0.5 ).astype(int)
+        cm = confusion_matrix(data.y, y_pred,
+                         labels=[0,1]
+                        )
+        np.savetxt(fout,np.c_[cm])
 
+    def GetDispsFromBinaryMaps( self, binaryMap, xv,yv,zv,ev,nbinx, nbiny,nbinz,nbine ):
+        binaryMapReshaped = binaryMap.reshape((nbinx, nbiny, nbinz, nbine ))
+        filtr = binaryMapReshaped == 1
+        return np.c_[yv[filtr],xv[filtr],zv[filtr],ev[filtr]]
 
-# fout = 'junk.json'
-# data={'eng':[1966,1974],'bra':[1970,1994]}
-# df=pd.DataFrame(data)
-# rwj = utl.ReadWriteJson()
-# rwj.Write([df.to_dict(orient='list')],fout,
-#          itime=[10],
-#          )
-# #help(utl.ReadWriteJson)
+    def TransitionPaths(self, data, title,umax=2.0,du=0.2,emax=2.0,de=0.2):
+        binary_maps_pred = ( self.model(data.x).numpy() > 0.5 ).astype(int)    
+        binary_maps_true  = data.y
 
+        xlin = np.arange(-umax,umax+du,du)
+        ylin = np.arange(-umax,umax+du,du)
+        zlin = np.arange(-umax,umax+du,du)
+        elin = np.arange(0,emax+de,de)
+        nbinx = len(xlin)-1
+        nbiny = len(ylin)-1
+        nbinz = len(zlin)-1
+        nbine = len(elin)-1
+        bins = (xlin, ylin, zlin, elin )
+        xv, yv, zv, ev = np.meshgrid( bins[1][:-1], bins[0][:-1], bins[2][:-1], bins[3][:-1] )
 
-# ## main()
+        u_pred = np.concatenate([list(map(lambda x: self.GetDispsFromBinaryMaps( x,xv,yv,zv,ev,nbinx, nbiny,nbinz,nbine ) , binary_maps_pred ))])
+        u_true = np.concatenate([list(map(lambda x: self.GetDispsFromBinaryMaps( x,xv,yv,zv,ev,nbinx, nbiny,nbinz,nbine ) , binary_maps_true ))])
 
-# In[4]:
+        #--- plot e
+        self.PrintOvito(data,u_pred,'%s/u_pred.xyz'%title)
+        self.PrintOvito(data,u_true, '%s/u_act.xyz'%title)
+   
+ 
+    def PrintOvito( self,data, disps, fout ):
+        os.system('rm %s'%fout)
+        ndime = 3
+        box        = lp.Box(BoxBounds=np.array([[0,10.62],[0,10.62],[0,10.62]]),\
+                            AddMissing=np.array([0,0,0]))
+
+        atom_indx_init = data.ptr[ 0 ]
+        for indx, _ in enumerate( data.ptr ):
+            if indx == 0:
+                continue
+            atom_indx_fin = data.ptr[ indx ]
+            atom_ids      = np.arange(atom_indx_init.cpu(),atom_indx_fin.cpu())+1
+            natoms        = atom_ids.shape[ 0 ]
+            types         = np.ones( natoms )
+            xyz           = data.pos[ atom_indx_init : atom_indx_fin] 
+            tmp           = xyz.cpu()# * std + mean
+            cordc         = pd.DataFrame( tmp[:,:ndime], columns='x y z'.split())
+            disp          = disps[ atom_indx_init ][:,:ndime] # : atom_indx_fin, : ]
+            for path in disp:
+                df             = pd.DataFrame(np.c_[atom_ids,types,cordc,path.reshape((1,3))],\
+                                  columns = 'id type x y z DisplacementX DisplacementY DisplacementZ'.split())
+                atom           = lp.Atoms(**df.to_dict(orient='series'))
+                wd             = lp.WriteDumpFile(atom, box)
+                with open(fout,'a') as fp:
+                    wd.Write(fp, itime=0, 
+                             attrs='id type x y z DisplacementX DisplacementY DisplacementZ'.split(), 
+                             fmt='%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e')
+
+            atom_indx_init = atom_indx_fin
 
 
 def main():
+    ds       = DataSet( confParser )
+    ds.Parse( path  = confParser['neural net']['input_path'],
+              nruns = eval(confParser['neural net regression']['nruns']))
 
-    mc_steps = eval(confParser['ml mc']['mc_steps'])
-
-
-
-    mlmc     = MachineLeranedMC(confParser,
-                                verbose = True
-                             )
-
-    #--- parse atom positions
-#      mlmc.Parse('%s/%s'%(confParser['ml mc']['input_path'],confParser['ml mc']['dump_file']))
-    mlmc.LammpsInit(confParser['ml mc']['lammps_script'])
-
-    #--- initialization
-    mlmc.Initialize()
-#     mlmc.Print(    'allconf',        itime = 0, lammps_xyz = True, kart = True )
-#     mlmc.Print(    'allconf_defect', itime = 0, lammps_xyz = True, kart = True )        
-    mlmc.PrintMSD( 'Diffusion.dat',  itime = 0 )
-#    mlmc.DiscretizeTransitionPath()
+    #--- write call backs
     
-    #--- mc loop
-    for mc_istep in range( mc_steps ):
-        print('mc_istep=',mc_istep)
-        
-        #--- build descriptors
-        mlmc.GetDescriptors()
+    #--- identification of defects
+    #--- load data
+    ds.DataBuilderForClassifier()
+    
+    #--- build model
+    myModel  = MyDenseNetClassifier( cout = 1,
+                                units=64, num_hidden_layers = 3,
+                                activation='relu')
+    
+    #--- training
+    TrainingLoop( myModel, ds.train_dataloaders.dataset, ds.test_dataloaders.dataset,
+                             learning_rate=1e-4,epochs=10, loss='binary_crossentropy',
+                              checkpoint_file = 'best_model_defect_classification/model.tf'
+                      )
+    
+    #--- validation
+    model    = tf.keras.models.load_model('best_model_defect_classification/model.tf')
+    mv       = ModelValidation()
+    mv.SetModel(model)
+    mv.ConfusionMatrix(ds.train_dataloaders.dataset,'defect_classify/cm_train.txt') 
+    mv.ConfusionMatrix(ds.test_dataloaders.dataset,'defect_classify/cm_test.txt') 
 
-#         #--- identify defects
-        mlmc.GetDefects(fp     = '%s/%s'%(confParser['ml mc']['input_path'],confParser['ml mc']['classifier_load']))
+    #--- predict reaction paths/energies
+    #--- load data
+    ds.Process()
+    
+    #--- create model
+    myModel  = MyConvNetClassifier( cout = ds.dataset_train.y.shape[1],
+                                    reshape=(10,10,10,1),
+                                filters=16, num_hidden_layers = 3,
+                                kernel_size=(3,3,3), activation='relu', padding='same',
+                              )
+    
+    #--- training
+    TrainingLoop(myModel, ds.dataset_train, ds.dataset_test,
+                 learning_rate=1e-4,loss='binary_crossentropy',epochs=4
+                  checkpoint_file = 'best_model_transition_paths/model.tf'
+                 )
+    
+    #--- inference
+    model    = tf.keras.models.load_model('best_model_transition_paths/model.tf')
+    os.system('mkdir -p predictions/train;mkdir -p predictions/test')
+    os.system('rm predictions/train/u_atoms.xyz')
+#    PrintOvito(ds.dataset_train, ds.dataset_train.y_atom_wise, 'predictions/train/u_atoms.xyz')
+    mv       = ModelValidation()
+    mv.SetModel( model )
+    mv.TransitionPaths( ds.dataset_train, title = 'predictions/train' )
+    mv.TransitionPaths( ds.dataset_test,  title = 'predictions/test'  )
 
-        #--- predict diffusion paths 
-        mlmc.GetDisp2nd(fp        = '%s/%s'%(confParser['ml mc']['input_path'],confParser['ml mc']['regressor_load']))
 
-        #--- predict energy 
-        mlmc.GetBarrier(fp     = '%s/%s'%(confParser['ml mc']['input_path'],confParser['ml mc']['regressor_barrier']))
 
-        #--- build catalog
-        # fix atoms with type 2
-        mlmc.BuildCatalog() # filtr = mlmc.atomTypes == 1 ) #--- only include atomType = 1
-#        mlmc.PrintCatalog( 'catalog.json', itime = mc_istep )
-        
-        #--- mc sampling
-        mlmc.MCsampling()
-
-        #--- update disp
-        mlmc.UpdateDisp()
-
-        #--- update coord
-        mlmc.UpdateCords()
-
-        #--- minimize via lammps: further update disp
-        mlmc.Lammps()
-        
-        #--- save output
-#         mlmc.Print( 'allconf', itime = mc_istep + 1, lammps_xyz = True, kart = True )
-#         #
-#         mlmc.Print( 'allconf_defect', itime = mc_istep + 1,
-#                    AtomIndices = list(set(mlmc.catalog.AtomIndex.astype(int))),
-#                    lammps_xyz = True, kart = True
-#                   )        
-        mlmc.PrintMSD( 'Diffusion.dat',  itime = mc_istep + 1 )
-
-            
 main()
+
+
 
