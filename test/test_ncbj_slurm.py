@@ -33,7 +33,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs                 = range( 64 )
+    runs                 = range( 1 )
     nNode                = 1
     nThreads             = 1
     path_for_simulation  = 'ni/multipleVacs/results/kmc/vac2 ni/interstitial/results/kmc'.split()[ 1 ]
@@ -41,19 +41,19 @@ if __name__ == '__main__':
                             '4':'descriptors/%s'%path_for_simulation,
                             '5':'neuralNet/%s'%path_for_simulation,
                             '6':'mlmc/%s'%path_for_simulation, 
-                            }['4']
+                            }['5']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/%s'%path_for_simulation,
                                             '5':'/descriptors/%s'%path_for_simulation,
                                             '6':'/neuralNet/%s'%path_for_simulation, 
-                                        }['4'] #--- source
+                                        }['5'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 0
+    keyno                = 1
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '32gb'
@@ -88,5 +88,5 @@ if __name__ == '__main__':
                             % ( partition, mem, durtn, additional_args, jobname0, counter, jobname0, counter, jobname0, counter \
                                 , writPath, nThreads, nNode, writPath, writPath ) ) # --- runs oarScript.sh! 
 #         os.system('echo $slurm_path')
-    print('job name=%s'%jobname)
+    print('job %s'%jobname)
 
