@@ -101,7 +101,7 @@ if __name__ == '__main__':
                         9:'in.elastic',
                         10:'in.elasticSoftWall',
                          11:'in.pka-simulation',
-                         12:'in.interestitial',
+                         12:'in.interstitial',
                          13:'in.defects',
                          14:'in.vac',
                          15:'in.void',                     
