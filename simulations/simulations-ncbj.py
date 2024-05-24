@@ -30,16 +30,17 @@ if __name__ == '__main__':
         nNode	 = 1
         #
         jobname  = {
-                    4:'ni/niNatom1KTemp300K', 
                     5:'ni/void_2d_training', 
                     7:'ni/dislocation14th', 
                     8:'ni/irradiation/cascade3rd', 
-                    9:'ni/irradiation/kmc3rd', 
+            
+                    4:'ni/interstitial/results/md',      #--- interstitial
+                   41:'ni/interstitial/results/kmc', 
             
                     5:'ni/multipleVacs/results/md/vac0', #--- multiple vacancies
                    51:'ni/multipleVacs/results/kmc/vac0', 
             
-                    6:'ni/pure/results/md',         #--- single vacancy 
+                    6:'ni/pure/results/md',              #--- single vacancy 
                    61:'ni/pure/results/kmc', 
 
                     7:'ni/void/results/md',         #--- void 
@@ -50,29 +51,30 @@ if __name__ == '__main__':
 
                     9:'ni/ext_dislocation/results/md', #--- elliptical void
                    91:'ni/ext_dislocation/results/kmc3rd', 
-                   }[51]
+                   }[41]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
                         1:'/../postprocess/NiCoCrNatom1K',
+                        4:'ni/interstitial/results/md', 
                         5:'/ni/multipleVacs/results/md/vac0',
                         6:'/ni/pure/results/md',
                         7:'/ni/void/results/md',
                         8:'/ni/ellipse/results/md',
                         9:'/ni/ext_dislocation/results/md',
-                    }[5] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[4] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
                         2:['data.txt','ScriptGroup.txt'],
                         3:['data.txt'], 
-                        4:['data_minimized.txt'],
+                        4:['lammps_data.dat'],
                         5:['lammps_data.dat'], #--- only one partition! for multiple ones, use 'submit.py'
                         6:['lammps_data.dat'], 
                         7:['lammps_data.dat'], 
                         8:['lammps_data.dat'], 
                         9:['lammps_data.dat'], 
-                     }[5] #--- to be copied from the above directory. set it to '0' if no file
+                     }[4] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -99,7 +101,7 @@ if __name__ == '__main__':
                         9:'in.elastic',
                         10:'in.elasticSoftWall',
                          11:'in.pka-simulation',
-                         12:'in.vacancyInterestitial',
+                         12:'in.interestitial',
                          13:'in.defects',
                          14:'in.vac',
                          15:'in.void',                     
@@ -132,8 +134,8 @@ if __name__ == '__main__':
                     9:' -var natoms 1000 -var cutoff 3.52 -var ParseData 1',
                     10:' -var ParseData 1 -var DataFile swapped_600.dat',
                     11:' -var DataFile lammps_data.dat -var epka 5 ',
-                    12:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
                     13:' -var buff 0.0 -var nevery 1000 -var ntype 2 -var cutoff 3.54  -var DumpFile dumpMin.xyz -var WriteData lammps_data.dat -var seed0 %s -var seed1 %s -var seed2 %s -var seed3 %s'%tuple(np.random.randint(1001,9999,size=4)), 
+                    12:' -var buff 0.0 -var nvac 1 -var T 2000.0 -var P 0.0 -var time 10000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     14:' -var buff 0.0 -var nvac 1 -var T 2000.0 -var P 0.0 -var time 10000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     15:' -var buff 0.0 -var nvac 1 -var T 2000.0 -var P 0.0 -var time 100000.0 -var nevery 10000 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
                     16:' -var buff 0.0 -var T 2000.0 -var P 0.0 -var time 1000.0 -var nevery 100 -var DumpFile dumpThermalized.xyz -var WriteData lammps_data.dat -var rnd %s -var rnd1 %s -var rnd2 %s -var rnd3 %s'%tuple(np.random.randint(1001,9999,size=4)),
@@ -176,8 +178,8 @@ if __name__ == '__main__':
                     92:[12,'p3','p5',1.0], #--- min., add interestitial, min., kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
 
-                 444:[14],           #--- vacancy: md
-                  44:['p3','p5',1.0],#--- vacancy: kmc input,.sh_to_bash,invoke kart
+                 444:[14],           #--- interstitial: md
+                  44:['p3','p5',1.0],#--- interstitial: kmc input,.sh_to_bash,invoke kart
 
 
                  333:['p2', 51, 'p4', 51, 'p7', 7 ], #--- md: put disc, min, add vacancy, min, add subgroup, thermalize
@@ -194,7 +196,7 @@ if __name__ == '__main__':
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[44]
+                  }[444]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
