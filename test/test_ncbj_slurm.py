@@ -7,10 +7,10 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     confParser.set('input files','input_path',argv)
     confParser.set('ml mc','input_path',argv)
     confParser.set('neural net','input_path',argvv)
-    confParser.set('gnn','input_path',argvv)
-    confParser.set('gnn classifier','input_path',argvv)
-    confParser.set('gnn energy','input_path',argvv)
-    confParser.set('ml mc','lammps_script','in.vac -var nvac 1')
+#    confParser.set('gnn','input_path',argvv)
+#    confParser.set('gnn classifier','input_path',argvv)
+#    confParser.set('gnn energy','input_path',argvv)
+    confParser.set('ml mc','lammps_script','in.interstitial')
     #
 #    confParser.set('gnn','num_layers','8')
 #    confParser.set('gnn','c_hidden','16')
@@ -22,8 +22,8 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
     print('#!/bin/bash\n',file=someFile)
     print('EXEC_DIR=%s\n\n'%( EXEC_DIR ),file=someFile)
 #    print('source /mnt/opt/spack-0.17/share/spack/setup-env.sh\n\nspack load python@3.8.12%%gcc@8.3.0\n\n',file=someFile)
-#    print('source activate pytorch_gpu4th',file=someFile)
-    print('source activate tf_gpu5th',file=someFile)
+    print('source activate pytorch_gpu4th',file=someFile)
+#    print('source activate tf_gpu5th',file=someFile)
     if convert_to_py:
         print("/usr/bin/time -f \'%e\' ipython3 py_script.py\n",file=someFile)
     else:
@@ -33,7 +33,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 if __name__ == '__main__':
     import os
 #
-    runs                 = range( 1 )
+    runs                 = range( 8 )
     nNode                = 1
     nThreads             = 1
     path_for_simulation  = 'ni/multipleVacs/results/kmc/vac2 ni/interstitial/results/kmc'.split()[ 1 ]
@@ -41,29 +41,29 @@ if __name__ == '__main__':
                             '4':'descriptors/%s'%path_for_simulation,
                             '5':'neuralNet/%s'%path_for_simulation,
                             '6':'mlmc/%s'%path_for_simulation, 
-                            }['5']
+                            }['4']
     DeleteExistingFolder = True
     readPath             = os.getcwd() + {
                                             '4':'/../simulations/%s'%path_for_simulation,
                                             '5':'/descriptors/%s'%path_for_simulation,
                                             '6':'/neuralNet/%s'%path_for_simulation, 
-                                        }['5'] #--- source
+                                        }['4'] #--- source
     PYFILdic             = { 
                             0:'buildDescriptors.ipynb',
                             1:'neuralNetwork.ipynb',
                             2:'mlmc.ipynb',
                             }
-    keyno                = 1
+    keyno                = 0
     EXEC_DIR             = '.'     #--- path for executable file
     durtn                = '23:59:59'
     mem                  = '32gb'
-    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ -1 ]
+    partition            = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL','GPU_K80'][ 1 ]
     argv                 = "%s"%(readPath) #--- don't change! 
     convert_to_py        = True
 #---
     additional_args      = ''
     if partition         == 'GPU_K80':
-        additional_args  = '--gres=gpu:tesla:1'
+        additional_args  = '--gres=gpu:tesla:3'
     PYFIL                = PYFILdic[ keyno ]
     if convert_to_py:
         os.system('jupyter nbconvert --to script %s --output py_script\n'%PYFIL)
