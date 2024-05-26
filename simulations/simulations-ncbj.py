@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns    = 3 #16 #64
+        nruns    = 128 #3 #16 #64
         #
         nThreads = 4 #16
         nNode	 = 1
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
                     9:'ni/ext_dislocation/results/md', #--- elliptical void
                    91:'ni/ext_dislocation/results/kmc3rd', 
-                   }[41]
+                   }[4]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                         7:'/ni/void/results/md',
                         8:'/ni/ellipse/results/md',
                         9:'/ni/ext_dislocation/results/md',
-                    }[4] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -74,7 +74,7 @@ if __name__ == '__main__':
                         7:['lammps_data.dat'], 
                         8:['lammps_data.dat'], 
                         9:['lammps_data.dat'], 
-                     }[4] #--- to be copied from the above directory. set it to '0' if no file
+                     }[0] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -178,7 +178,7 @@ if __name__ == '__main__':
                     92:[12,'p3','p5',1.0], #--- min., add interestitial, min., kart input, kart.sh to bash shell ,invoke kart
                     93:[13,'p3','p5',1.0], #--- min., add defects, min., kart input, kart.sh to bash shell ,invoke kart
 
-                 444:[14],           #--- interstitial: md
+                 444:[12],           #--- interstitial: md
                   44:['p3','p5',1.0],#--- interstitial: kmc input,.sh_to_bash,invoke kart
 
 
