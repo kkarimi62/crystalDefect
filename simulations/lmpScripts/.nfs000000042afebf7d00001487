@@ -13,12 +13,6 @@ include ${INC}/buffer.mod
 # -------------------------------------- Minimization -------------------------------------------#
 
 
-group       single_atom id ${fixed_atom_id}
-group       bulk subtract all single_atom
-velocity    single_atom set 0.0 0.0 0.0 units box
-fix         freeze single_atom setforce 0.0 0.0 0.0
-
-
 #-----------------------------
 #--- compute & dump variables
 #-----------------------------
@@ -33,22 +27,11 @@ compute   dsp all displace/atom
 
 # Set velocities
 variable				  Tinit     equal     0.01
-velocity                  bulk create     ${Tinit}     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
-fix                      f1        bulk nvt temp   ${Tinit}  ${Tinit}  ${damp_t}  
-run 2000
-#undump 1
-
-velocity    single_atom set NULL NULL NULL units box
-unfix         freeze 
-
-#minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
-
-unfix f1
+velocity                  all create     ${Tinit}     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        all nvt temp   ${Tinit}  ${Tinit}  ${damp_t}  
 run 2000
 unfix f1
-
-#minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
+#undump 1
 
 dump        1 all custom 1 ${OUT_PATH}/${DumpFile} id type x y z c_dsp[1] c_dsp[2] c_dsp[3] # c_1[1] c_1[2] c_1[3] c_1[4] c_1[5] c_1[6]
 dump_modify 1 flush yes format line "%d %d %4.3e %4.3e %4.3e %4.3e %4.3e %4.3e" # %4.3e %4.3e %4.3e"

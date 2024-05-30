@@ -33,6 +33,7 @@ variable iyy equal ${iy}*${sign_yyy}
 variable ixxx equal ${ixx}+0.5
 variable iyyy equal ${iyy}+0.5
 create_atoms 2 single ${ixxx} ${iyyy} 0.5
+#create_atoms 2 single 0 0 0.5
 
 
 # Define mass for Ni atoms
