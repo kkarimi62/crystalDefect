@@ -24,7 +24,7 @@ if __name__ == '__main__':
         import os
         import numpy as np
 
-        nruns    = 128 #3 #16 #64
+        nruns    = 8 #3 #16 #64
         #
         nThreads = 4 #16
         nNode	 = 1
@@ -36,6 +36,7 @@ if __name__ == '__main__':
             
                     4:'ni/interstitial/results/md',      #--- interstitial
                    41:'ni/interstitial/results/kmc', 
+                   42:'ni/interstitial/benchmark2nd/kmc', 
             
                     5:'ni/multipleVacs/results/md/vac0', #--- multiple vacancies
                    51:'ni/multipleVacs/results/kmc/vac0', 
@@ -51,18 +52,18 @@ if __name__ == '__main__':
 
                     9:'ni/ext_dislocation/results/md', #--- elliptical void
                    91:'ni/ext_dislocation/results/kmc3rd', 
-                   }[4]
+                   }[42]
         sourcePath = os.getcwd() +\
                     {	
                         0:'/junk',
                         1:'/../postprocess/NiCoCrNatom1K',
-                        4:'ni/interstitial/results/md', 
+                        4:'/ni/interstitial/results/md', 
                         5:'/ni/multipleVacs/results/md/vac0',
                         6:'/ni/pure/results/md',
                         7:'/ni/void/results/md',
                         8:'/ni/ellipse/results/md',
                         9:'/ni/ext_dislocation/results/md',
-                    }[0] #--- must be different than sourcePath. set it to 'junk' if no path
+                    }[4] #--- must be different than sourcePath. set it to 'junk' if no path
             #
         sourceFiles = { 0:False,
                         1:['Equilibrated_300.dat'],
@@ -74,7 +75,7 @@ if __name__ == '__main__':
                         7:['lammps_data.dat'], 
                         8:['lammps_data.dat'], 
                         9:['lammps_data.dat'], 
-                     }[0] #--- to be copied from the above directory. set it to '0' if no file
+                     }[4] #--- to be copied from the above directory. set it to '0' if no file
         #
         EXEC_DIR = '/mnt/home/kkarimi/Project/git/lammps-27May2021/src' #--- path for executable file
         kmc_exec = '/mnt/home/kkarimi/Project/git/kart-master/src/KMCART_exec'
@@ -196,11 +197,11 @@ if __name__ == '__main__':
 
                     94:[5,7,'p4',7], #--- minimize, thermalize, add vacancy, thermalize
                     9:[5,'p4',51,'p3','p5',1.0], #--- minimize, add vacancy, minimize, kart input, kart.sh to bash shell ,invoke kart
-                  }[444]
+                  }[44]
         Pipeline = list(map(lambda x:LmpScript[x],indices))
         #
         EXEC_lmp = ['lmp_g++_openmpi'][0]
-        durtn = ['23:59:59','47:59:59','167:59:59'][ 0 ]
+        durtn = ['23:59:59','47:59:59','167:59:59'][ 1 ]
         mem = '16gb' #'22gb'
         partition = ['INTEL_PHI','INTEL_CASCADE','INTEL_SKYLAKE','INTEL_IVY','INTEL_HASWELL'][1]
         #--

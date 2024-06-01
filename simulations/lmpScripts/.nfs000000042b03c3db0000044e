@@ -35,7 +35,7 @@ compute   dsp all displace/atom
 variable				  Tinit     equal     0.01
 velocity                  bulk create     ${Tinit}     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
 fix                      f1        bulk nvt temp   ${Tinit}  ${Tinit}  ${damp_t}  
-run 4000
+run 2000
 #undump 1
 
 velocity    single_atom set NULL NULL NULL units box
@@ -45,7 +45,7 @@ unfix         freeze
 
 unfix f1
 fix                      f1        all nvt temp   ${Tinit}  ${Tinit}  ${damp_t}  
-run 4000
+run 2000
 unfix f1
 
 #minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
