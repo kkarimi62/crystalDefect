@@ -28,20 +28,20 @@ compute   dsp all displace/atom
 #dump        1 all custom ${nevery} ${OUT_PATH}/dump.xyz id type x y z 
 #dump_modify 1 flush yes append yes format line "%d %d %4.3e %4.3e %4.3e" 
 
-# -------------------------------------- Minimization -------------------------------------------#
-#minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
 
 # Set velocities
 variable				  Tinit     equal     0.01
 velocity                  bulk create     ${Tinit}     ${rnd}  mom    yes  rot  yes  dist  gaussian  # Dynamics starts
-fix                      f1        bulk nvt temp   ${Tinit}  ${Tinit}  ${damp_t}  
+fix                      f1        bulk nvt temp   ${Tinit}  ${Tinit}  ${damp_t}
+fix                      2 all recenter INIT INIT INIT
 run 4000
 #undump 1
+
+#minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
 
 velocity    single_atom set NULL NULL NULL units box
 unfix         freeze 
 
-#minimize ${etol} ${ftol} ${maxiter} ${maxeval} #--- initial state is already in equilibrium!
 
 unfix f1
 fix                      f1        all nvt temp   ${Tinit}  ${Tinit}  ${damp_t}  
