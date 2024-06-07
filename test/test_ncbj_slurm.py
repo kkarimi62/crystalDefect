@@ -10,7 +10,7 @@ def makeOAR( EXEC_DIR, node, core, tpartitionime, PYFIL, argv,argvv):
 #    confParser.set('gnn','input_path',argvv)
 #    confParser.set('gnn classifier','input_path',argvv)
 #    confParser.set('gnn energy','input_path',argvv)
-    confParser.set('ml mc','lammps_script','in.interstitial')
+#    confParser.set('ml mc','lammps_script','in.interstitial')
     #
 #    confParser.set('gnn','num_layers','8')
 #    confParser.set('gnn','c_hidden','16')
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     runs                 = range( 8 )
     nNode                = 1
     nThreads             = 1
-    path_for_simulation  = 'ni/multipleVacs/results/kmc/vac2 ni/interstitial/results/kmc'.split()[ 1 ]
+    path_for_simulation  = 'ni/pure/results/kmc ni/interstitial/results/kmc'.split()[ 0 ]
     jobname              = {
                             '4':'descriptors/%s'%path_for_simulation,
                             '5':'neuralNet/%s'%path_for_simulation,
