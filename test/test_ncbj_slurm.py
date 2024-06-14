@@ -36,7 +36,7 @@ if __name__ == '__main__':
     runs                 = range( 8 )
     nNode                = 1
     nThreads             = 1
-    path_for_simulation  = 'ni/pure/results/kmc ni/interstitial/results/kmc'.split()[ 0 ]
+    path_for_simulation  = 'ni/pure/results/kmc ni/interstitial/results/kmc'.split()[ 1 ]
     jobname              = {
                             '4':'descriptors/%s'%path_for_simulation,
                             '5':'neuralNet/%s'%path_for_simulation,
