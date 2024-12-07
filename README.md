@@ -1,4 +1,4 @@
-# K-Art Neural Network for Predicting Defect Diffusion in Nickel (Ni)
+# k-Art Neural Network for Predicting Defect Diffusion in Nickel (Ni)
 
 ## Overview
 This repository contains code and resources for a project that combines K-Art (kinetic Activation Relaxation Technique) with neural networks to predict the thermal diffusion of defects in irradiated Nickel (Ni). The aim is to provide a comprehensive tool for researchers and engineers to understand and predict defect diffusion behavior in Ni-based materials, aiding in materials design and engineering.
